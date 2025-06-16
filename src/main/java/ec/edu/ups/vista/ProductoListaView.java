@@ -20,7 +20,7 @@ public class ProductoListaView extends JFrame {
         setContentPane(panelPrincipal);
         setTitle("Listado de Productos");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 500);
+        setSize(900, 500);
         setLocationRelativeTo(null);
         setVisible(true);
 
