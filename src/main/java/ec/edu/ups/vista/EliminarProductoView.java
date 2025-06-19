@@ -1,24 +1,21 @@
 package ec.edu.ups.vista;
 
 import ec.edu.ups.modelo.Producto;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-public class ModificarProductoView extends JInternalFrame {
-
+public class EliminarProductoView extends JInternalFrame {
     private JPanel panelPrincipal;
-
-    private JTextField textProducto;
+    private JTextField textField1;
     private JButton buscarButton;
     private JTable tblProductos;
-    private JTextField textNombre;
-    private JTextField textPrecio;
-    private JButton modificarButton;
+    private JButton eliminarButton;
     private DefaultTableModel modeloTabla;
 
-    public ModificarProductoView() {
-        setTitle("Modificar Producto");
+    public EliminarProductoView() {
+        setTitle("Eliminar Producto");
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(800, 600);
@@ -28,22 +25,35 @@ public class ModificarProductoView extends JInternalFrame {
         setResizable(true);
         setVisible(false);
 
-        modeloTabla = new DefaultTableModel();
+        modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
         Object[] columnas = {"Codigo", "Nombre", "Precio"};
         modeloTabla.setColumnIdentifiers(columnas);
         tblProductos.setModel(modeloTabla);
+        tblProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     public void cargarDatosTabla(List<Producto> listaProductos) {
-        modeloTabla.setNumRows(0);
-
-        for (Producto producto : listaProductos) {
-            Object[] fila = {
+        modeloTabla.setRowCount(0);
+        
+        if (listaProductos != null) {
+            for (Producto producto : listaProductos) {
+                Object[] fila = {
                     producto.getCodigo(),
                     producto.getNombre(),
                     producto.getPrecio()
-            };
-            modeloTabla.addRow(fila);
+                };
+                modeloTabla.addRow(fila);
+            }
+        }
+        
+        if (modeloTabla.getRowCount() > 0) {
+            tblProductos.setRowSelectionInterval(0, 0);
         }
     }
 
@@ -51,8 +61,8 @@ public class ModificarProductoView extends JInternalFrame {
         return panelPrincipal;
     }
 
-    public JTextField getTextProducto() {
-        return textProducto;
+    public JTextField getTextField1() {
+        return textField1;
     }
 
     public JButton getBuscarButton() {
@@ -63,19 +73,8 @@ public class ModificarProductoView extends JInternalFrame {
         return tblProductos;
     }
 
-    public JTextField getTextNombre() {
-        return textNombre;
+    public JButton getEliminarButton() {
+        return eliminarButton;
     }
 
-    public JTextField getTextPrecio() {
-        return textPrecio;
-    }
-
-    public JButton getModificarButton() {
-        return modificarButton;
-    }
-
-    public DefaultTableModel getModeloTabla() {
-        return modeloTabla;
-    }
 }
