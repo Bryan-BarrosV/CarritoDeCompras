@@ -32,13 +32,13 @@ public class ProductoDAOMemoria implements ProductoDAO {
 
     @Override
     public List<Producto> buscarPorNombre(String nombre) {
-        List<Producto> encontrados = new ArrayList<>();
+        List<Producto> productosEncontrados = new ArrayList<>();
         for (Producto producto : productos) {
-            if (producto.getNombre().toLowerCase().contains(nombre.toLowerCase())) {
-                encontrados.add(producto);
+            if (producto.getNombre().startsWith(nombre)) {
+                productosEncontrados.add(producto);
             }
         }
-        return encontrados;
+        return productosEncontrados;
     }
 
     @Override
@@ -46,6 +46,7 @@ public class ProductoDAOMemoria implements ProductoDAO {
         for (int i = 0; i < productos.size(); i++) {
             if (productos.get(i).getCodigo() == producto.getCodigo()) {
                 productos.set(i, producto);
+                break;
             }
         }
     }

@@ -1,6 +1,7 @@
 package ec.edu.ups.vista;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class CarritoAnadirView extends JInternalFrame {
     private JButton btnBuscar;
@@ -16,13 +17,19 @@ public class CarritoAnadirView extends JInternalFrame {
     private JButton btnLimpiar;
     private JComboBox cbxCantidad;
     private JPanel panelPrincipal;
+    private JTextField textNumero;
 
     public CarritoAnadirView(){
-
         super("Carrito de Compras", true, true, false, true);
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
+
+        DefaultTableModel modelo = new DefaultTableModel();
+        Object[] columnas = {"Codigo", "Nombre", "Precio", "Cantidad", "Subtotal"};
+        modelo.setColumnIdentifiers(columnas);
+        tblProductos.setModel(modelo);
+
         cargarDatos();
 
     }
@@ -84,6 +91,21 @@ public class CarritoAnadirView extends JInternalFrame {
 
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
+    }
+
+    public JTextField getTextNumero() { return textNumero; }
+
+    public void limpiarCampos() {
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtPrecio.setText("");
+        cbxCantidad.setSelectedIndex(0);
+        txtSubtotal.setText("");
+        txtIva.setText("");
+        txtTotal.setText("");
+        textNumero.setText("");
+        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+        modelo.setRowCount(0);
     }
 
     public void mostrarMensaje(String mensaje) {
