@@ -11,9 +11,9 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
     private List<Usuario> usuarios = new ArrayList<>();
 
     public UsuarioDAOMemoria() {
-        usuarios.add(new Usuario("admin", "admin123", Rol.ADMINISTRADOR));
-    }
+        usuarios.add(new Usuario( "admin", "12345", Rol.ADMINISTRADOR));
 
+    }
     @Override
     public Usuario autenticar(String username, String contrasenia) {
         for (Usuario u : usuarios) {
@@ -67,10 +67,5 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
             }
         }
         return filtrados;
-    }
-
-    @Override
-    public Usuario buscarPorCodigo(int id) {
-        return null;
     }
 }

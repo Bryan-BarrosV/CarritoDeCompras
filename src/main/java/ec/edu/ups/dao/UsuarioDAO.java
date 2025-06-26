@@ -21,6 +21,4 @@ public interface UsuarioDAO {
 
     List<Usuario> listarPorRol(Rol rol);
 
-    Usuario buscarPorCodigo(int id);
-
 }

@@ -24,9 +24,10 @@ public class UsuarioListarView extends JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setVisible(false);
 
         modelo = new DefaultTableModel();
-        String[] columnas = {"ID", "Username", "Nombre", "Rol"};
+        String[] columnas = {"Username", "Nombre", "Rol"};
         modelo.setColumnIdentifiers(columnas);
         tblUsuarios.setModel(modelo);
     }
@@ -35,7 +36,6 @@ public class UsuarioListarView extends JInternalFrame {
         modelo.setRowCount(0);
         for (Usuario u : listaUsuarios) {
             Object[] fila = {
-                    u.getId(),
                     u.getUsername(),
                     u.getNombre(),
                     u.getRol().name()
