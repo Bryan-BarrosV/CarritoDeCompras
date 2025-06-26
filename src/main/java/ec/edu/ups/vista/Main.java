@@ -9,10 +9,12 @@ import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.dao.impl.CarritoDAOMemoria;
 import ec.edu.ups.dao.impl.ProductoDAOMemoria;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
+import ec.edu.ups.modelo.Rol;
+import ec.edu.ups.modelo.Usuario;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,11 +25,12 @@ public class Main {
                 CarritoDAO carritoDAO = new CarritoDAOMemoria();
                 UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
 
+                LoginView loginView = new LoginView();
                 MenuPrincipalView principalView = new MenuPrincipalView();
                 ProductoAnadirView productoAnadirView = new ProductoAnadirView();
                 ProductoListaView productoListaView = new ProductoListaView();
                 CarritoAnadirView carritoAnadirView = new CarritoAnadirView();
-                EliminarProductoView eliminarProductoView = new  EliminarProductoView();
+                EliminarProductoView eliminarProductoView = new EliminarProductoView();
                 ModificarProductoView modificarProductoView = new ModificarProductoView();
                 EliminarCarritoView eliminarCarritoView = new EliminarCarritoView();
                 ListarCarritoView listarCarritoView = new ListarCarritoView();
@@ -36,125 +39,90 @@ public class Main {
                 UsuarioListarView usuarioListarView = new UsuarioListarView();
                 UsuarioModificarView usuarioModificarView = new UsuarioModificarView();
 
-                productoAnadirView.setVisible(false);
-                productoListaView.setVisible(false);
-                carritoAnadirView.setVisible(false);
-                eliminarProductoView.setVisible(false);
-                modificarProductoView.setVisible(false);
-                eliminarCarritoView.setVisible(false);
-                listarCarritoView.setVisible(false);
-                usuarioAnadirView.setVisible(false);
-                usuarioEliminarView.setVisible(false);
-                usuarioListarView.setVisible(false);
-                usuarioModificarView.setVisible(false);
-
-
-                ProductoController productoController = new ProductoController(productoDAO,
-                        productoAnadirView, productoListaView, carritoAnadirView, 
-                        eliminarProductoView, modificarProductoView);
-
-                CarritoController carritoController = new CarritoController(carritoDAO,
-                        productoDAO, carritoAnadirView, eliminarCarritoView, listarCarritoView);
-
-
                 UsuarioController usuarioController = new UsuarioController(
-                        principalView, usuarioAnadirView, usuarioListarView, usuarioModificarView,
-                        usuarioEliminarView, usuarioDAO
+                        usuarioDAO,
+                        principalView,
+                        usuarioAnadirView,
+                        usuarioListarView,
+                        usuarioModificarView,
+                        usuarioEliminarView,
+                        loginView
                 );
 
-                principalView.getMenuItemListarCarrito().addActionListener(new ActionListener() {
+                ProductoController productoController = new ProductoController(
+                        productoDAO,
+                        productoAnadirView,
+                        productoListaView,
+                        carritoAnadirView,
+                        eliminarProductoView,
+                        modificarProductoView
+                );
+
+                CarritoController carritoController = new CarritoController(
+                        carritoDAO,
+                        productoDAO,
+                        carritoAnadirView,
+                        eliminarCarritoView,
+                        listarCarritoView
+                );
+                principalView.getMenuItemCerrarSesion().addActionListener(e -> {
+                    principalView.dispose();
+                    loginView.setVisible(true);
+                });
+
+                loginView.setVisible(true);
+                loginView.addWindowListener(new WindowAdapter() {
                     @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!listarCarritoView.isVisible()) {
-                            principalView.getjDesktopPane().add(listarCarritoView);
-                            listarCarritoView.setVisible(true);
-                            listarCarritoView.toFront();
-                        } else {
-                            listarCarritoView.toFront();
+                    public void windowClosed(WindowEvent e) {
+                        Usuario usuarioAutenticado = usuarioController.getUsuarioAutenticado();
+                        if (usuarioAutenticado != null) {
+                            principalView.mostrarMensaje("Bienvenido: " + usuarioAutenticado.getUsername());
+                            if (usuarioAutenticado.getRol().equals(Rol.USUARIO)) {
+                                principalView.deshabilitarMenusAdministrador();
+                            }
+                            principalView.setVisible(true);
                         }
                     }
                 });
 
-                principalView.getMenuItemEliminarCarrito().addActionListener(new ActionListener() {
-
+                loginView.getBtnRegistrarse().addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (!eliminarCarritoView.isVisible()) {
-                            principalView.getjDesktopPane().add(eliminarCarritoView);
-                            eliminarCarritoView.setVisible(true);
-                            eliminarCarritoView.toFront();
-                        } else {
-                            eliminarCarritoView.toFront();
-                        }
+                        loginView.getLayeredPane().add(usuarioAnadirView);
+                        usuarioAnadirView.setVisible(true);
+                        usuarioAnadirView.toFront();
                     }
                 });
 
-                principalView.getMenuItemCrearProducto().addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if(!productoAnadirView.isVisible()) {
-                            principalView.getjDesktopPane().add(productoAnadirView);
-                            productoAnadirView.setVisible(true);
-                            productoAnadirView.toFront();
-                        } else {
-                            productoAnadirView.toFront();
-                        }
-                    }
-                });
+                principalView.getMenuItemCrearProducto().addActionListener(e -> mostrarVentana(principalView, productoAnadirView));
+                principalView.getMenuItemActualizarProducto().addActionListener(e -> mostrarVentana(principalView, modificarProductoView));
+                principalView.getMenuItemBuscarProducto().addActionListener(e -> mostrarVentana(principalView, productoListaView));
+                principalView.getMenuItemCrearProducto().addActionListener(e -> mostrarVentana(principalView, productoAnadirView));
+                principalView.getMenuItemEliminarProducto().addActionListener(e -> mostrarVentana(principalView, eliminarProductoView));
 
-                principalView.getMenuItemActualizarProducto().addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!modificarProductoView.isVisible()) {
-                            principalView.getjDesktopPane().add(modificarProductoView);
-                            modificarProductoView.setVisible(true);
-                            modificarProductoView.toFront();
-                        } else {
-                            modificarProductoView.toFront();
-                        }
-                    }
-                });
+                principalView.getMenuItemListarCarrito().addActionListener(e -> mostrarVentana(principalView, listarCarritoView));
+                principalView.getMenuItemEliminarCarrito().addActionListener(e -> mostrarVentana(principalView, eliminarCarritoView));
+                principalView.getMenuItemCrearCarrito().addActionListener(e -> mostrarVentana(principalView, carritoAnadirView));
 
-                principalView.getMenuItemCrearCarrito().addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if(!carritoAnadirView.isVisible()) {
-                            principalView.getjDesktopPane().add(carritoAnadirView);
-                            carritoAnadirView.setVisible(true);
-                            carritoAnadirView.toFront();
-                        } else {
-                            carritoAnadirView.toFront();
-                        }
-                    }
-                });
+                principalView.getMenuItemCrearUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioAnadirView));
+                principalView.getMenuItemListarUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioListarView));
+                principalView.getMenuItemModificarUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioModificarView));
+                principalView.getMenuItemEliminarUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioEliminarView));
 
-                principalView.getMenuItemBuscarProducto().addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!productoListaView.isVisible()) {
-                            principalView.getjDesktopPane().add(productoListaView);
-                            productoListaView.setVisible(true);
-                            productoListaView.toFront();
-                        } else {
-                            productoListaView.toFront();
-                        }
-                    }
-                });
 
-                principalView.getMenuItemEliminarProducto().addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (!eliminarProductoView.isVisible()) {
-                            principalView.getjDesktopPane().add(eliminarProductoView);
-                            eliminarProductoView.setVisible(true);
-                            eliminarProductoView.toFront();
-                        } else {
-                            eliminarProductoView.toFront();
-                        }
-                    }
-                });
-                principalView.setVisible(true);
+            }
+
+            private void mostrarVentana(MenuPrincipalView principal, JInternalFrame vista) {
+                if (!vista.isVisible()) {
+                    principal.getjDesktopPane().add(vista);
+                    vista.setVisible(true);
+                    vista.toFront();
+                } else {
+                    vista.toFront();
+                }
             }
         });
+
+
     }
 }
