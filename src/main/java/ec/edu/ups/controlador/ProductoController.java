@@ -135,36 +135,36 @@ public class ProductoController {
         if (filaSeleccionada >= 0) {
             int codigo = (int) eliminarProductoView.getTblProductos().getValueAt(filaSeleccionada, 0);
             String nombre = (String) eliminarProductoView.getTblProductos().getValueAt(filaSeleccionada, 1);
-        
-        int confirmacion = JOptionPane.showConfirmDialog(
-            eliminarProductoView,
-            "¿Está seguro que desea eliminar el producto:\n" + 
-            "Código: " + codigo + "\n" +
-            "Nombre: " + nombre + "?",
-            "Confirmar Eliminación",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
-        );
-        
-        if (confirmacion == JOptionPane.YES_OPTION) {
-            productoDAO.eliminar(codigo);
-            buscarProductoParaEliminar();
+
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    eliminarProductoView,
+                    "¿Está seguro que desea eliminar el producto:\n" +
+                            "Código: " + codigo + "\n" +
+                            "Nombre: " + nombre + "?",
+                    "Confirmar Eliminación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                productoDAO.eliminar(codigo);
+                buscarProductoParaEliminar();
+                JOptionPane.showMessageDialog(
+                        eliminarProductoView,
+                        "Producto eliminado correctamente",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        } else {
             JOptionPane.showMessageDialog(
-                eliminarProductoView, 
-                "Producto eliminado correctamente", 
-                "Éxito", 
-                JOptionPane.INFORMATION_MESSAGE
+                    eliminarProductoView,
+                    "Por favor, seleccione un producto para eliminar",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE
             );
         }
-    } else {
-        JOptionPane.showMessageDialog(
-            eliminarProductoView, 
-            "Por favor, seleccione un producto para eliminar", 
-            "Aviso", 
-            JOptionPane.WARNING_MESSAGE
-        );
     }
-}
 
     private void guardarProducto() {
         int codigo = Integer.parseInt(productoAnadirView.getTxtCodigo().getText());

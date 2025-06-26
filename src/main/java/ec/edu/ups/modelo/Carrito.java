@@ -23,7 +23,7 @@ public class Carrito {
         codigo = contador++;
         items = new ArrayList<>();
         fechaCreacion = new GregorianCalendar();
-        this.usuario = usuario;
+        this.usuario = null; // Se asignará al guardar el carrito
     }
     public Usuario getUsuario() {
         return usuario;

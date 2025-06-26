@@ -26,7 +26,7 @@ public class ProductoAnadirView extends JInternalFrame {
         setIconifiable(true);
         setResizable(true);
         //setResizable(false);
-        setVisible(true);
+        setVisible(false);
         //pack();
 
         btnLimpiar.addActionListener(new ActionListener() {
