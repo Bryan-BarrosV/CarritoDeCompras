@@ -1,5 +1,7 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.dao.UsuarioDAO;
+
 import javax.swing.*;
 
 public class LoginView extends JFrame {
@@ -9,6 +11,7 @@ public class LoginView extends JFrame {
     private JPasswordField txtContrasenia;
     private JButton btnIniciarSesion;
     private JButton btnRegistrarse;
+    private UsuarioDAO usuarioDAO;
 
     public LoginView() {
         setContentPane(panelPrincipal);
@@ -70,3 +73,4 @@ public class LoginView extends JFrame {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 }
+    
