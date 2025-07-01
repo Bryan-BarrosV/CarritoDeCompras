@@ -5,8 +5,8 @@ import java.util.List;
 public class Contrasena {
 
     private String username;
-    private List<String> preguntas; // Esta lista contendrá las 5 preguntas
-    private List<String> respuestas; // Esta lista contendrá las 5 respuestas
+    private List<String> preguntas;
+    private List<String> respuestas;
 
     public Contrasena(String username, List<String> preguntas, List<String> respuestas) {
         this.username = username;

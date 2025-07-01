@@ -11,9 +11,10 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
     private List<Usuario> usuarios = new ArrayList<>();
 
     public UsuarioDAOMemoria() {
-        usuarios.add(new Usuario( "admin", "12345", Rol.ADMINISTRADOR));
-
+        // Usuario administrador inicial
+        usuarios.add(new Usuario("admin", "12345", Rol.ADMINISTRADOR));
     }
+
     @Override
     public Usuario autenticar(String username, String contrasenia) {
         for (Usuario u : usuarios) {
@@ -46,16 +47,18 @@ public class UsuarioDAOMemoria implements UsuarioDAO {
 
     @Override
     public void actualizar(Usuario usuario) {
+        // Esta parte es clave para la recuperación de contraseña
         for (int i = 0; i < usuarios.size(); i++) {
             if (usuarios.get(i).getUsername().equals(usuario.getUsername())) {
-                usuarios.set(i, usuario);
+                usuarios.set(i, usuario); // Sobrescribe con el actualizado
+                return;
             }
         }
     }
 
     @Override
     public List<Usuario> listarTodos() {
-        return usuarios;
+        return new ArrayList<>(usuarios); // evita exponer lista interna directamente
     }
 
     @Override
