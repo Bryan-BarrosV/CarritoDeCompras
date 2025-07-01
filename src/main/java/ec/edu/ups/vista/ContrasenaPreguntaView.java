@@ -10,7 +10,7 @@ public class ContrasenaPreguntaView extends JInternalFrame {
     private JTextField txtRespuesta1;
     private JTextField txtRespuesta2;
     private JButton btnGuardar;
-    private String username; // guardamos internamente el nombre
+    private String username;
 
     public ContrasenaPreguntaView() {
         super("Preguntas de Seguridad", true, true, false, true);
@@ -27,7 +27,7 @@ public class ContrasenaPreguntaView extends JInternalFrame {
         add(txtRespuesta1);
         add(lblPregunta2);
         add(txtRespuesta2);
-        add(new JLabel()); // espacio
+        add(new JLabel());
         add(btnGuardar);
     }
 

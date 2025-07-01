@@ -1,47 +1,65 @@
 package ec.edu.ups.vista;
 
+import ec.edu.ups.modelo.Usuario;
+
 import javax.swing.*;
 
 public class UsuarioEliminarView extends JInternalFrame {
 
     private JPanel panelPrincipal;
-    private JTextField textID;
-    private JButton buscarButton;
-    private JTable tblProductos;
-    private JButton eliminarButton;
+    private JTextField textUsername;
+    private JPasswordField textContrasena;
+    private JButton btnBuscar;
+    private JButton btnEliminar;
 
     public UsuarioEliminarView() {
         setTitle("Eliminar Usuario");
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-        setSize(700, 400);
+        setSize(600, 400);
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
+        setVisible(false);
     }
 
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
 
-    public JTextField getTextID() {
-        return textID;
+    public JTextField getTextCodigo() {
+        return textUsername;
     }
 
-    public JButton getBuscarButton() {
-        return buscarButton;
+    public JPasswordField getTextContrasenia() {
+        return textContrasena;
     }
 
-    public JTable getTblProductos() {
-        return tblProductos;
+    public JButton getBtnBuscar() {
+        return btnBuscar;
     }
 
-    public JButton getEliminarButton() {
-        return eliminarButton;
+    public JButton getBtnEliminar() {
+        return btnEliminar;
     }
 
-    public void mostrarMensaje(String s) {
-        JOptionPane.showMessageDialog(this, s);
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    public void limpiarCampos() {
+        textUsername.setText("");
+        textContrasena.setText("");  // Esto es válido para JPasswordField
+    }
+
+    public void mostrarUsuario(Usuario usuario) {
+        if (usuario != null) {
+            textContrasena.setText(usuario.getContrasenia());
+        } else {
+            mostrarMensaje("Usuario no encontrado.");
+            limpiarCampos();
+        }
     }
 }
+

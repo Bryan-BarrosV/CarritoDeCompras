@@ -14,6 +14,10 @@ public class ContrasenaView extends JInternalFrame {
     private JPasswordField txtNuevaContrasena;
     private JButton btnGuardar;
     private JPasswordField txtConfirmarContrasena;
+    private JPanel panelUsuarioValidar;
+    private JPanel panelPreguntas;
+    private JPanel panelContrasenas;
+    private JPanel panelBoton;
 
     public ContrasenaView() {
         super("Recuperar Contraseña", true, true, false, true);

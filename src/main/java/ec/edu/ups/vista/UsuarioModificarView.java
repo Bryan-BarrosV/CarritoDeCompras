@@ -5,7 +5,6 @@ import javax.swing.*;
 public class UsuarioModificarView extends JInternalFrame {
 
     private JPanel panelPrincipal;
-    private JTextField txtID;
     private JTextField txtNombre;
     private JPasswordField txtContrasenia;
     private JComboBox<String> cmbRol;
@@ -25,10 +24,6 @@ public class UsuarioModificarView extends JInternalFrame {
 
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
-    }
-
-    public JTextField getTxtID() {
-        return txtID;
     }
 
     public JTextField getTxtNombre() {
@@ -56,7 +51,7 @@ public class UsuarioModificarView extends JInternalFrame {
     }
 
     public void limpiarCampos() {
-        txtID.setText("");
+
         txtNombre.setText("");
         txtContrasenia.setText("");
         cmbRol.setSelectedIndex(0);

@@ -1,76 +1,69 @@
 package ec.edu.ups.vista;
 
-import ec.edu.ups.dao.UsuarioDAO;
-
 import javax.swing.*;
 
 public class LoginView extends JFrame {
+
+    // Estos componentes son generados automáticamente por IntelliJ IDEA a partir del .form
     private JPanel panelPrincipal;
-    private JPanel panelSecundario;
     private JTextField txtUsername;
     private JPasswordField txtContrasenia;
     private JButton btnIniciarSesion;
     private JButton btnRegistrarse;
-    private UsuarioDAO usuarioDAO;
+    private JButton btnOlvidoContrasena;
+    private JPanel panelCredenciales;
+    private JPanel panelBotones;
+    private JPanel panelSecundario;
+    private JLabel nombreLabel;
+    private JLabel contraseñaLabel;
 
     public LoginView() {
-        setContentPane(panelPrincipal);
         setTitle("Iniciar Sesión");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+
+        // Establece el panel principal diseñado en el .form
+        setContentPane(panelPrincipal);
+
+        // Ajusta el tamaño automáticamente según los componentes
+        pack();
+
+        // Centra la ventana en la pantalla
         setLocationRelativeTo(null);
+
+        // Opcional: visible solo cuando lo invoques desde tu Main
+        setVisible(false); // o true si quieres mostrarlo aquí
     }
 
-    public JPanel getPanelPrincipal() {
-        return panelPrincipal;
-    }
-
-    public void setPanelPrincipal(JPanel panelPrincipal) {
-        this.panelPrincipal = panelPrincipal;
-    }
-
-    public JPanel getPanelSecundario() {
-        return panelSecundario;
-    }
-
-    public void setPanelSecundario(JPanel panelSecundario) {
-        this.panelSecundario = panelSecundario;
-    }
+    // Métodos getters para que tus controladores puedan acceder a los botones y campos
 
     public JTextField getTxtUsername() {
         return txtUsername;
-    }
-
-    public void setTxtUsername(JTextField txtUsername) {
-        this.txtUsername = txtUsername;
     }
 
     public JPasswordField getTxtContrasenia() {
         return txtContrasenia;
     }
 
-    public void setTxtContrasenia(JPasswordField txtContrasenia) {
-        this.txtContrasenia = txtContrasenia;
-    }
-
     public JButton getBtnIniciarSesion() {
         return btnIniciarSesion;
-    }
-
-    public void setBtnIniciarSesion(JButton btnIniciarSesion) {
-        this.btnIniciarSesion = btnIniciarSesion;
     }
 
     public JButton getBtnRegistrarse() {
         return btnRegistrarse;
     }
 
-    public void setBtnRegistrarse(JButton btnRegistrarse) {
-        this.btnRegistrarse = btnRegistrarse;
+    public JButton getBtnOlvidoContrasena() {
+        return btnOlvidoContrasena;
     }
 
+    // Método para mostrar mensajes en ventana
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
+    // Método opcional para limpiar campos
+    public void limpiarCampos() {
+        txtUsername.setText("");
+        txtContrasenia.setText("");
+    }
 }
-    
