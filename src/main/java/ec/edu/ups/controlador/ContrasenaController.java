@@ -22,7 +22,6 @@ public class ContrasenaController {
         this.usuarioDAO = usuarioDAO;
         this.contrasenaView = contrasenaView;
 
-        // Evento: Validar usuario
         contrasenaView.getBtnValidarUsuario().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -34,7 +33,6 @@ public class ContrasenaController {
                     return;
                 }
 
-                // Mostrar preguntas
                 contrasenaView.setPreguntas(
                         contrasena.getPreguntas().get(0),
                         contrasena.getPreguntas().get(1)
@@ -42,7 +40,6 @@ public class ContrasenaController {
             }
         });
 
-        // Evento: Guardar nueva contraseña
         contrasenaView.getBtnGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,7 +74,7 @@ public class ContrasenaController {
                 usuario.setContrasenia(nueva);
                 usuarioDAO.actualizar(usuario);
                 contrasenaView.mostrarMensaje("Contraseña actualizada correctamente.");
-                contrasenaView.dispose(); // cerrar ventana
+                contrasenaView.dispose();
             }
         });
     }
