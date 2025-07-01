@@ -22,6 +22,7 @@ public class EliminarCarritoView extends  JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setVisible(false);
     }
     public JPanel getPanelPrincipal() {
         return panelPrincipal;

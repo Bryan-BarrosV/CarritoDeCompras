@@ -17,7 +17,7 @@ public class CarritoAnadirView extends JInternalFrame {
     private JButton btnLimpiar;
     private JComboBox cbxCantidad;
     private JPanel panelPrincipal;
-    private JTextField textNumero;
+    private JTextField textUsername;
 
     public CarritoAnadirView(){
         super("Carrito de Compras", true, true, false, true);
@@ -31,6 +31,7 @@ public class CarritoAnadirView extends JInternalFrame {
         tblProductos.setModel(modelo);
 
         cargarDatos();
+        setVisible(false);
 
     }
 
@@ -93,7 +94,7 @@ public class CarritoAnadirView extends JInternalFrame {
         return panelPrincipal;
     }
 
-    public JTextField getTextNumero() { return textNumero; }
+    public JTextField getTextUsername() { return textUsername; }
 
     public void limpiarCampos() {
         txtCodigo.setText("");
@@ -103,7 +104,7 @@ public class CarritoAnadirView extends JInternalFrame {
         txtSubtotal.setText("");
         txtIva.setText("");
         txtTotal.setText("");
-        textNumero.setText("");
+        textUsername.setText("");
         DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
         modelo.setRowCount(0);
     }
@@ -111,4 +112,13 @@ public class CarritoAnadirView extends JInternalFrame {
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+    public void setNombreUsuario(String username) {
+        this.textUsername.setText(username);
+        this.textUsername.setEditable(false);
+    }
+    public void setUsu(String username) {
+        this.textUsername.setText(username);
+        this.textUsername.setEditable(false);
+    }
+
 }
