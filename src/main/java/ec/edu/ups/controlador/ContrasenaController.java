@@ -8,14 +8,14 @@ import ec.edu.ups.vista.ContrasenaView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ContrasenaController {
 
     private final ContrasenaDAO contrasenaDAO;
     private final UsuarioDAO usuarioDAO;
     private final ContrasenaView contrasenaView;
+    private List<Integer> indicesPreguntasSeleccionadas;
 
     public ContrasenaController(ContrasenaDAO contrasenaDAO, UsuarioDAO usuarioDAO, ContrasenaView contrasenaView) {
         this.contrasenaDAO = contrasenaDAO;
@@ -28,14 +28,17 @@ public class ContrasenaController {
                 String username = contrasenaView.getTxtUsername().getText().trim();
                 Contrasena contrasena = contrasenaDAO.buscarPorUsername(username);
 
-                if (contrasena == null || contrasena.getPreguntas().size() < 2) {
-                    contrasenaView.mostrarMensaje("Usuario no encontrado o no tiene preguntas registradas.");
+                if (contrasena == null || contrasena.getPreguntas().size() < 3) {
+                    contrasenaView.mostrarMensaje("Usuario no encontrado o no tiene suficientes preguntas registradas.");
                     return;
                 }
 
+                indicesPreguntasSeleccionadas = obtenerTresIndicesAleatorios(contrasena.getPreguntas().size());
+
                 contrasenaView.setPreguntas(
-                        contrasena.getPreguntas().get(0),
-                        contrasena.getPreguntas().get(1)
+                        contrasena.getPreguntas().get(indicesPreguntasSeleccionadas.get(0)),
+                        contrasena.getPreguntas().get(indicesPreguntasSeleccionadas.get(1)),
+                        contrasena.getPreguntas().get(indicesPreguntasSeleccionadas.get(2))
                 );
             }
         });
@@ -44,24 +47,39 @@ public class ContrasenaController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = contrasenaView.getTxtUsername().getText().trim();
-                String respuesta1 = contrasenaView.getTxtRespuesta1().getText().trim();
-                String respuesta2 = contrasenaView.getTxtRespuesta2().getText().trim();
-                String nueva = new String(contrasenaView.getTxtNuevaContrasena().getPassword()).trim();
+                String nuevaContrasena = new String(contrasenaView.getTxtNuevaContrasena().getPassword()).trim();
 
-                if (username.isEmpty() || respuesta1.isEmpty() || respuesta2.isEmpty() || nueva.isEmpty()) {
+                if (username.isEmpty() || nuevaContrasena.isEmpty()) {
                     contrasenaView.mostrarMensaje("Debe completar todos los campos.");
                     return;
                 }
 
                 Contrasena contrasena = contrasenaDAO.buscarPorUsername(username);
-                if (contrasena == null) {
-                    contrasenaView.mostrarMensaje("No se encontraron preguntas para este usuario.");
+                if (contrasena == null || indicesPreguntasSeleccionadas == null || indicesPreguntasSeleccionadas.size() < 3) {
+                    contrasenaView.mostrarMensaje("No se puede verificar. Intente validar el usuario primero.");
                     return;
                 }
 
-                boolean validado = contrasena.verificarRespuestas(Arrays.asList(respuesta1, respuesta2));
-                if (!validado) {
-                    contrasenaView.mostrarMensaje("Respuestas incorrectas. Intente nuevamente.");
+                List<String> respuestasUsuario = Arrays.asList(
+                        contrasenaView.getTxtRespuesta1().getText().trim(),
+                        contrasenaView.getTxtRespuesta2().getText().trim(),
+                        contrasenaView.getTxtRespuesta3().getText().trim()
+                );
+
+                List<String> respuestasCorrectas = new ArrayList<>();
+                for (int idx : indicesPreguntasSeleccionadas) {
+                    respuestasCorrectas.add(contrasena.getRespuestas().get(idx));
+                }
+
+                int correctas = 0;
+                for (int i = 0; i < 3; i++) {
+                    if (respuestasCorrectas.get(i).equalsIgnoreCase(respuestasUsuario.get(i))) {
+                        correctas++;
+                    }
+                }
+
+                if (correctas < 2) {
+                    contrasenaView.mostrarMensaje("Respuestas incorrectas. Debe acertar al menos 2.");
                     return;
                 }
 
@@ -71,11 +89,23 @@ public class ContrasenaController {
                     return;
                 }
 
-                usuario.setContrasenia(nueva);
+                usuario.setContrasenia(nuevaContrasena);
                 usuarioDAO.actualizar(usuario);
                 contrasenaView.mostrarMensaje("Contraseña actualizada correctamente.");
                 contrasenaView.dispose();
             }
         });
+    }
+
+    private List<Integer> obtenerTresIndicesAleatorios(int max) {
+        List<Integer> indices = new ArrayList<>();
+        Random random = new Random();
+        while (indices.size() < 3) {
+            int rand = random.nextInt(max);
+            if (!indices.contains(rand)) {
+                indices.add(rand);
+            }
+        }
+        return indices;
     }
 }

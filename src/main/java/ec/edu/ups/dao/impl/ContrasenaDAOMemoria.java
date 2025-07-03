@@ -2,8 +2,8 @@ package ec.edu.ups.dao.impl;
 
 import ec.edu.ups.dao.ContrasenaDAO;
 import ec.edu.ups.modelo.Contrasena;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ContrasenaDAOMemoria implements ContrasenaDAO {

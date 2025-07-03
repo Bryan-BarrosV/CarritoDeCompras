@@ -18,6 +18,8 @@ public class ContrasenaView extends JInternalFrame {
     private JPanel panelPreguntas;
     private JPanel panelContrasenas;
     private JPanel panelBoton;
+    private JTextField txtRespuesta3;
+    private JLabel lblPregunta3;
 
     public ContrasenaView() {
         super("Recuperar Contraseña", true, true, false, true);
@@ -30,7 +32,7 @@ public class ContrasenaView extends JInternalFrame {
 
         btnValidarUsuario = new JButton("Validar Usuario");
         add(btnValidarUsuario);
-        add(new JLabel()); // espacio vacío para balancear
+        add(new JLabel());
 
         lblPregunta1 = new JLabel("Pregunta 1:");
         add(lblPregunta1);
@@ -42,6 +44,11 @@ public class ContrasenaView extends JInternalFrame {
         txtRespuesta2 = new JTextField();
         add(txtRespuesta2);
 
+        lblPregunta3 = new JLabel("Pregunta 3:");
+        add(lblPregunta3);
+        txtRespuesta3 = new JTextField();
+        add(txtRespuesta3);
+
         add(new JLabel("Nueva Contraseña:"));
         txtNuevaContrasena = new JPasswordField();
         add(txtNuevaContrasena);
@@ -51,7 +58,6 @@ public class ContrasenaView extends JInternalFrame {
         add(new JLabel());
     }
 
-    // Getters
     public JTextField getTxtUsername() {
         return txtUsername;
     }
@@ -68,6 +74,8 @@ public class ContrasenaView extends JInternalFrame {
         return lblPregunta2;
     }
 
+    public JLabel getLblPregunta3() {return lblPregunta3;}
+
     public JTextField getTxtRespuesta1() {
         return txtRespuesta1;
     }
@@ -75,6 +83,8 @@ public class ContrasenaView extends JInternalFrame {
     public JTextField getTxtRespuesta2() {
         return txtRespuesta2;
     }
+
+    public JTextField getTxtRespuesta3() {return txtRespuesta3;}
 
     public JPasswordField getTxtNuevaContrasena() {
         return txtNuevaContrasena;
@@ -88,9 +98,10 @@ public class ContrasenaView extends JInternalFrame {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
-    public void setPreguntas(String p1, String p2) {
+    public void setPreguntas(String p1, String p2, String p3) {
         lblPregunta1.setText(p1);
         lblPregunta2.setText(p2);
+        lblPregunta3.setText(p3);
     }
     public void setUsername(String username) {
         txtUsername.setText(username);
