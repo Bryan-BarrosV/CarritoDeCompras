@@ -26,7 +26,7 @@ public class UsuarioController {
     private final ContrasenaView contrasenaView;
     private final ContrasenaPreguntaView contrasenaPreguntaView;
 
-    private Usuario usuarioTemporal; // para almacenar antes de guardar
+    private Usuario usuarioTemporal;
     private boolean esperandoPreguntas = false;
     private Usuario usuarioAutenticado;
 
@@ -57,7 +57,6 @@ public class UsuarioController {
     }
 
     private void configurarEventos() {
-        // Registro
         usuarioAnadirView.getBtnRegistrar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,7 +64,6 @@ public class UsuarioController {
             }
         });
 
-        // Guardar preguntas
         contrasenaPreguntaView.getBtnGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +71,6 @@ public class UsuarioController {
             }
         });
 
-        // Inicio de sesión
         loginView.getBtnIniciarSesion().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -88,7 +85,7 @@ public class UsuarioController {
                 Usuario usuario = usuarioDAO.autenticar(username, contrasenia);
                 if (usuario != null) {
                     usuarioAutenticado = usuario;
-                    loginView.dispose(); // Cierra login (esto activa windowClosed en Main)
+                    loginView.dispose();
                 } else {
                     loginView.mostrarMensaje("Usuario o contraseña incorrectos.");
                 }
@@ -110,10 +107,23 @@ public class UsuarioController {
             return;
         }
 
+        String nombreCompleto = usuarioAnadirView.getTxtNombreCompleto().getText().trim();
+        String correo = usuarioAnadirView.getTxtCorreo().getText().trim();
+        String telefono = usuarioAnadirView.getTxtTelefono().getText().trim();
+
+        if (nombreCompleto.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
+            usuarioAnadirView.mostrarMensaje("Debe completar todos los campos del formulario.");
+            return;
+        }
+
         usuarioTemporal = new Usuario();
         usuarioTemporal.setUsername(username);
         usuarioTemporal.setContrasenia(contrasenia);
         usuarioTemporal.setRol(Rol.USUARIO);
+        usuarioTemporal.setNombreCompleto(nombreCompleto);
+        usuarioTemporal.setCorreo(correo);
+        usuarioTemporal.setTelefono(telefono);
+
 
         contrasenaPreguntaView.setUsername(username);
         loginView.getLayeredPane().add(contrasenaPreguntaView);
@@ -127,29 +137,62 @@ public class UsuarioController {
             contrasenaPreguntaView.mostrarMensaje("Error interno. Intente registrar nuevamente.");
             return;
         }
+        String[] respuestas = {
+                contrasenaPreguntaView.getTxtRespuesta1().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta2().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta3().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta4().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta5().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta6().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta7().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta8().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta9().getText().trim(),
+                contrasenaPreguntaView.getTxtRespuesta10().getText().trim()
+        };
 
-        String r1 = contrasenaPreguntaView.getTxtRespuesta1().getText().trim();
-        String r2 = contrasenaPreguntaView.getTxtRespuesta2().getText().trim();
-
-        if (r1.isEmpty() || r2.isEmpty()) {
-            contrasenaPreguntaView.mostrarMensaje("Debe completar ambas respuestas.");
-            return;
+        for (String r : respuestas) {
+            if (r.isEmpty()) {
+                contrasenaPreguntaView.mostrarMensaje("Debe completar todas las respuestas.");
+                return;
+            }
         }
 
         usuarioDAO.crear(usuarioTemporal);
 
+        String[] preguntas = {
+                "¿Cuál es el nombre de tu madre?",
+                "¿Cuál es tu equipo favorito de fútbol?",
+                "¿Cuál es su color favorito?",
+                "¿Cuál es el segundo nombre de tu padre?",
+                "¿Cómo se llama tu mascota?",
+                "¿En qué ciudad naciste?",
+                "¿Cuál es tu película favorita?",
+                "¿Cuál es tu comida favorita?",
+                "¿Cuál es tu canción favorita?",
+                "¿Cómo se llama tu abuela?"
+        };
+
         Contrasena contrasena = new Contrasena(
                 usuarioTemporal.getUsername(),
-                Arrays.asList("¿Cuál es el nombre de tu madre?", "¿Cuál es tu equipo favorito de fútbol?"),
-                Arrays.asList(r1, r2)
+                Arrays.asList(preguntas),
+                Arrays.asList(respuestas)
         );
         contrasenaDAO.guardar(contrasena);
 
         contrasenaPreguntaView.setVisible(false);
         usuarioAnadirView.setVisible(false);
         usuarioAnadirView.limpiarCampos();
+
         contrasenaPreguntaView.getTxtRespuesta1().setText("");
         contrasenaPreguntaView.getTxtRespuesta2().setText("");
+        contrasenaPreguntaView.getTxtRespuesta3().setText("");
+        contrasenaPreguntaView.getTxtRespuesta4().setText("");
+        contrasenaPreguntaView.getTxtRespuesta5().setText("");
+        contrasenaPreguntaView.getTxtRespuesta6().setText("");
+        contrasenaPreguntaView.getTxtRespuesta7().setText("");
+        contrasenaPreguntaView.getTxtRespuesta8().setText("");
+        contrasenaPreguntaView.getTxtRespuesta9().setText("");
+        contrasenaPreguntaView.getTxtRespuesta10().setText("");
 
         loginView.mostrarMensaje("Usuario registrado correctamente");
         esperandoPreguntas = false;

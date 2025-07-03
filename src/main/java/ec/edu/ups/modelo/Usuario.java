@@ -5,6 +5,9 @@ public class Usuario {
     private String contrasenia;
     private Rol rol;
     private String nombre;
+    private String nombreCompleto;
+    private String correo;
+    private String telefono;
 
     public Usuario(String username, String contrasenia, Rol rol) {
         this.username = username;
@@ -24,6 +27,15 @@ public class Usuario {
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public String getNombreCompleto() { return nombreCompleto; }
+    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
+
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
     @Override
     public String toString() {

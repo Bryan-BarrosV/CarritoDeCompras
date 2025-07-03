@@ -9,6 +9,9 @@ public class UsuarioAnadirView extends JInternalFrame {
     private JPasswordField txtContrasenia;
     private JButton btnRegistrar;
     private JButton btnLimpiar;
+    private JTextField txtNombreCompleto;
+    private JTextField txtCorreo;
+    private JTextField txtTelefono;
 
     public UsuarioAnadirView() {
         super("Registrar Usuario", true, true, false, true);
@@ -37,6 +40,12 @@ public class UsuarioAnadirView extends JInternalFrame {
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
+
+    public JTextField getTxtNombreCompleto() {return txtNombreCompleto;}
+
+    public JTextField getTxtCorreo() {return txtCorreo;}
+
+    public JTextField getTxtTelefono() {return txtTelefono;}
 
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);

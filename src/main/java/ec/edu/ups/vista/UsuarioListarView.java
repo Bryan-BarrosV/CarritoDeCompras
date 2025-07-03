@@ -19,7 +19,7 @@ public class UsuarioListarView extends JInternalFrame {
         setTitle("Listar Usuarios");
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-        setSize(700, 500);
+        setSize(800, 500);
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -27,7 +27,7 @@ public class UsuarioListarView extends JInternalFrame {
         setVisible(false);
 
         modelo = new DefaultTableModel();
-        String[] columnas = {"Username", "Nombre", "Rol"};
+        String[] columnas = {"Username", "Nombre Completo", "Correo", "Teléfono", "Rol"};
         modelo.setColumnIdentifiers(columnas);
         tblUsuarios.setModel(modelo);
     }
@@ -37,7 +37,9 @@ public class UsuarioListarView extends JInternalFrame {
         for (Usuario u : listaUsuarios) {
             Object[] fila = {
                     u.getUsername(),
-                    u.getNombre(),
+                    u.getNombreCompleto(),
+                    u.getCorreo(),
+                    u.getTelefono(),
                     u.getRol().name()
             };
             modelo.addRow(fila);
