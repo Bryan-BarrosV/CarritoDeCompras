@@ -13,6 +13,7 @@ import ec.edu.ups.dao.impl.ContrasenaDAOMemoria;
 import ec.edu.ups.dao.impl.ProductoDAOMemoria;
 import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,12 +96,15 @@ public class Main {
                     Usuario usuarioAutenticado = usuarioController.getUsuarioAutenticado();
                     if (usuarioAutenticado != null) {
                         carritoController.setUsuarioAutenticado(usuarioAutenticado);
-                        principalView.mostrarMensaje("Bienvenido: " + usuarioAutenticado.getUsername());
+                        principalView.actualizarTexto();
+                        String bienvenida = MensajeInternacionalizacionHandler.getInstance().get("mensaje.bienvenida") + ": " + usuarioAutenticado.getUsername();
+                        principalView.mostrarMensaje(bienvenida);
                         principalView.configurarOpcionesPorRol(usuarioAutenticado.getRol().name());
                         principalView.setVisible(true);
                     }
                 }
             });
+
 
             loginView.getBtnRegistrarse().addActionListener(e -> {
                 loginView.getLayeredPane().add(usuarioAnadirView);
@@ -145,4 +149,5 @@ public class Main {
             vista.toFront();
         }
     }
+
 }

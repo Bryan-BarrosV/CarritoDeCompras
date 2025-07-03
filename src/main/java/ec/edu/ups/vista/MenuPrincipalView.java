@@ -43,7 +43,8 @@ public class MenuPrincipalView extends JFrame {
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
     public MenuPrincipalView() {
-        mensajeInternacionalizacionHandler = new MensajeInternacionalizacionHandler("es", "EC");
+        mensajeInternacionalizacionHandler = MensajeInternacionalizacionHandler.getInstance();
+
 
         jDesktopPane = new JDesktopPane();
         menuBar = new JMenuBar();
@@ -137,7 +138,7 @@ public class MenuPrincipalView extends JFrame {
         });
     }
 
-    private void actualizarTexto() {
+    public void actualizarTexto() {
         setTitle(mensajeInternacionalizacionHandler.get("app.titulo"));
 
         menuProducto.setText(mensajeInternacionalizacionHandler.get("menu.producto"));
@@ -148,17 +149,16 @@ public class MenuPrincipalView extends JFrame {
 
         menuCarrito.setText(mensajeInternacionalizacionHandler.get("menu.carrito"));
         menuItemCrearCarrito.setText(mensajeInternacionalizacionHandler.get("menu.carrito.crear"));
-        menuItemListarCarrito.setText("Listar Carrito");
-        menuItemEliminarCarrito.setText("Eliminar Carrito");
-        menuItemModificarCarrito.setText("Modificar Carrito");
+        menuItemListarCarrito.setText(mensajeInternacionalizacionHandler.get("menu.carrito.listar"));
+        menuItemEliminarCarrito.setText(mensajeInternacionalizacionHandler.get("menu.carrito.eliminar"));
+        menuItemModificarCarrito.setText(mensajeInternacionalizacionHandler.get("menu.carrito.modificar"));
 
         menuUsuario.setText("Usuario");
-        menuItemCrearUsuario.setText("Crear Usuario");
-        menuItemListarUsuario.setText("Listar Usuarios");
-        menuItemModificarUsuario.setText("Modificar Usuario");
-        menuItemEliminarUsuario.setText("Eliminar Usuario");
+        menuItemCrearUsuario.setText(mensajeInternacionalizacionHandler.get("menu.usuario.crear"));
+        menuItemListarUsuario.setText(mensajeInternacionalizacionHandler.get("menu.usuario.listar"));
+        menuItemModificarUsuario.setText(mensajeInternacionalizacionHandler.get("menu.usuario.modificar"));
+        menuItemEliminarUsuario.setText(mensajeInternacionalizacionHandler.get("menu.usuario.eliminar"));
 
-        menuSesion.setText(mensajeInternacionalizacionHandler.get("menu.salir"));
         menuItemCerrarSesion.setText(mensajeInternacionalizacionHandler.get("menu.salir.cerrar"));
 
         menuIdioma.setText(mensajeInternacionalizacionHandler.get("menu.idiomas"));

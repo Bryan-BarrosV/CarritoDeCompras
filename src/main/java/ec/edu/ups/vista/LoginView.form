@@ -83,16 +83,38 @@
           </component>
         </children>
       </grid>
-      <grid id="6b731" binding="panelBotones" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+      <grid id="6b731" binding="panelBotones" layout-manager="GridBagLayout">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag top="10" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0"/>
+          <gridbag top="15" left="0" bottom="20" right="0" weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
+          <component id="471d3" class="javax.swing.JLabel" binding="lblIdioma">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <text value="Idioma"/>
+            </properties>
+          </component>
+          <component id="c76e" class="javax.swing.JComboBox" binding="comboIdioma">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="20" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <model/>
+              <preferredSize width="150" height="30"/>
+            </properties>
+          </component>
           <component id="3af68" class="javax.swing.JButton" binding="btnOlvidoContrasena">
-            <constraints/>
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
             <properties>
               <text value="¿Olvido su Contraseña?"/>
             </properties>
