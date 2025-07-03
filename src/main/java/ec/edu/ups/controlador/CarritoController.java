@@ -56,6 +56,12 @@ public class CarritoController {
         carritoAnadirView.getBtnAnadir().addActionListener(e -> {
             int codigo = Integer.parseInt(carritoAnadirView.getTxtCodigo().getText());
             Producto producto = productoDAO.buscarPorCodigo(codigo);
+
+            if (producto == null) {
+                carritoAnadirView.mostrarMensaje("Producto no encontrado. Verifique el código.");
+                return;
+            }
+
             int cantidad = Integer.parseInt(carritoAnadirView.getCbxCantidad().getSelectedItem().toString());
 
             DefaultTableModel modelo = (DefaultTableModel) carritoAnadirView.getTblProductos().getModel();
@@ -178,6 +184,17 @@ public class CarritoController {
                 carritoModificarView.mostrarMensaje("Código inválido o cantidad incorrecta.");
             }
         });
+        carritoAnadirView.getBtnEliminar().addActionListener(e -> {
+            int filaSeleccionada = carritoAnadirView.getTblProductos().getSelectedRow();
+            if (filaSeleccionada != -1) {
+                DefaultTableModel modelo = (DefaultTableModel) carritoAnadirView.getTblProductos().getModel();
+                modelo.removeRow(filaSeleccionada);
+                actualizarTotales();
+            } else {
+                carritoAnadirView.mostrarMensaje("Seleccione un producto de la tabla para eliminar.");
+            }
+        });
+
     }
 
 
@@ -196,6 +213,23 @@ public class CarritoController {
         txtIVA.setText(String.format("%.2f", iva));
         txtTotal.setText(String.format("%.2f", total));
     }
+
+    private void actualizarTotales() {
+        DefaultTableModel modelo = (DefaultTableModel) carritoAnadirView.getTblProductos().getModel();
+        double subtotal = 0.0;
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            subtotal += Double.parseDouble(modelo.getValueAt(i, 4).toString());
+        }
+
+        double iva = subtotal * 0.12;
+        double total = subtotal + iva;
+
+        carritoAnadirView.getTxtSubtotal().setText(String.format("%.2f", subtotal));
+        carritoAnadirView.getTxtIva().setText(String.format("%.2f", iva));
+        carritoAnadirView.getTxtTotal().setText(String.format("%.2f", total));
+    }
+
 
     public void setUsuarioAutenticado(Usuario usuarioAutenticado) {
         this.usuarioAutenticado = usuarioAutenticado;

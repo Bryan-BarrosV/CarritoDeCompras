@@ -33,13 +33,14 @@ public class CarritoDAOMemoria implements CarritoDAO {
 
     @Override
     public void actualizar(Carrito carrito) {
-//        for (int i = 0; i < carritos.size(); i++) {
-//            if (carritos.get(i).getCodigo() == carrito.getCodigo()) {
-//                carritos.set(i, carrito);
-//                break;
-//            }
-//        }
+        for (int i = 0; i < carritos.size(); i++) {
+            if (carritos.get(i).getCodigo() == carrito.getCodigo()) {
+                carritos.set(i, carrito);
+                break;
+            }
+        }
     }
+
 
     @Override
     public void eliminar(int codigo) {

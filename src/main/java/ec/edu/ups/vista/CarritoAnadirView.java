@@ -18,6 +18,7 @@ public class CarritoAnadirView extends JInternalFrame {
     private JComboBox cbxCantidad;
     private JPanel panelPrincipal;
     private JTextField textUsername;
+    private JButton btnEliminar;
 
     public CarritoAnadirView(){
         super("Carrito de Compras", true, true, false, true);
@@ -95,6 +96,8 @@ public class CarritoAnadirView extends JInternalFrame {
     }
 
     public JTextField getTextUsername() { return textUsername; }
+
+    public JButton getBtnEliminar() {return btnEliminar;}
 
     public void limpiarCampos() {
         txtCodigo.setText("");
