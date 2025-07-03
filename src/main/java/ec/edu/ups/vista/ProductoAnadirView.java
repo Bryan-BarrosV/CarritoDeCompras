@@ -1,6 +1,7 @@
 package ec.edu.ups.vista;
 
 import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,8 @@ public class ProductoAnadirView extends JInternalFrame {
     private JTextField txtCodigo;
     private JButton btnAceptar;
     private JButton btnLimpiar;
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+
 
     public ProductoAnadirView() {
 
@@ -25,6 +28,9 @@ public class ProductoAnadirView extends JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
+        mensajeInternacionalizacionHandler = MensajeInternacionalizacionHandler.getInstance();
+        actualizarTextos();
+
         //setResizable(false);
         setVisible(false);
         //pack();
@@ -100,4 +106,10 @@ public class ProductoAnadirView extends JInternalFrame {
             System.out.println(producto);
         }
     }
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("producto.anadir.titulo"));
+        btnAceptar.setText(mensajeInternacionalizacionHandler.get("boton.aceptar"));
+        btnLimpiar.setText(mensajeInternacionalizacionHandler.get("boton.limpiar"));
+    }
+
 }
