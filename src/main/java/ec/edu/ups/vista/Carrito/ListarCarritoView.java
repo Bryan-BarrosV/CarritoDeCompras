@@ -1,6 +1,8 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Carrito;
 
 import ec.edu.ups.modelo.Carrito;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
@@ -12,11 +14,14 @@ public class ListarCarritoView extends JInternalFrame {
     private JTable tblCarrito;
     private JPanel panelPrincipal;
     private JButton btnListar;
+    private JLabel lblCodigo;
     private DefaultTableModel modelo;
 
-    public ListarCarritoView() {
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+
+    public ListarCarritoView(MensajeInternacionalizacionHandler handler) {
+        this.mensajeInternacionalizacionHandler = handler;
         setContentPane(panelPrincipal);
-        setTitle("Listado de Carritos");
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(800, 500);
         setClosable(true);
@@ -28,6 +33,8 @@ public class ListarCarritoView extends JInternalFrame {
         modelo.setColumnIdentifiers(columnas);
 
         tblCarrito.setModel(modelo);
+
+        actualizarTextos();
     }
 
     public JTextField getTxtBuscar() {
@@ -87,5 +94,20 @@ public class ListarCarritoView extends JInternalFrame {
         if (txtBuscar != null) {
             txtBuscar.setText("");
         }
+    }
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("carrito.listar.titulo"));
+        lblCodigo.setText(mensajeInternacionalizacionHandler.get("carrito.label.codigo"));
+        btnBuscar.setText(mensajeInternacionalizacionHandler.get("boton.buscar"));
+        btnListar.setText(mensajeInternacionalizacionHandler.get("boton.listar"));
+
+        modelo.setColumnIdentifiers(new Object[]{
+                mensajeInternacionalizacionHandler.get("carrito.label.codigo"),
+                mensajeInternacionalizacionHandler.get("carrito.label.fecha"),
+                mensajeInternacionalizacionHandler.get("carrito.label.items"),
+                mensajeInternacionalizacionHandler.get("carrito.label.subtotal"),
+                mensajeInternacionalizacionHandler.get("carrito.label.iva"),
+                mensajeInternacionalizacionHandler.get("carrito.label.total")
+        });
     }
 }

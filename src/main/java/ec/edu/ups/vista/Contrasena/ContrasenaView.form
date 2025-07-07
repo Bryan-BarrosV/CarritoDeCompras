@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.ups.vista.ContrasenaView">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.ups.vista.Contrasena.ContrasenaView">
   <grid id="27dc6" layout-manager="GridBagLayout">
     <constraints>
       <xy x="20" y="20" width="569" height="665"/>
@@ -17,7 +17,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="4742f" class="javax.swing.JLabel">
+          <component id="4742f" class="javax.swing.JLabel" binding="lblUsuario">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="1.0"/>
@@ -131,7 +131,7 @@
         </properties>
         <border type="empty"/>
         <children>
-          <component id="d3616" class="javax.swing.JLabel">
+          <component id="d3616" class="javax.swing.JLabel" binding="lblContrasenaNueva">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="10" left="0" bottom="0" right="10" weightx="1.0" weighty="1.0"/>
@@ -140,7 +140,7 @@
               <text value="Contraseña nueva"/>
             </properties>
           </component>
-          <component id="dab6" class="javax.swing.JLabel">
+          <component id="dab6" class="javax.swing.JLabel" binding="lblConfirmarContraseba">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="10" left="0" bottom="0" right="10" weightx="1.0" weighty="1.0"/>

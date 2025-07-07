@@ -1,4 +1,6 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Producto;
+
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 
@@ -11,8 +13,14 @@ public class ModificarProductoView extends JInternalFrame {
     private JTextField textPrecio;
     private JButton btnBuscar;
     private JButton btnGuardar;
+    private JLabel lblCodigo;
+    private JLabel lblProducto;
+    private JLabel lblPrecio;
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
-    public ModificarProductoView() {
+    public ModificarProductoView(MensajeInternacionalizacionHandler handler) {
+        this.mensajeInternacionalizacionHandler = handler;
+
         setTitle("Modificar Producto");
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
@@ -57,4 +65,13 @@ public class ModificarProductoView extends JInternalFrame {
         textProducto.setText("");
         textPrecio.setText("");
     }
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("producto.modificar.titulo"));
+        lblCodigo.setText(mensajeInternacionalizacionHandler.get("producto.label.codigo"));
+        lblProducto.setText(mensajeInternacionalizacionHandler.get("producto.label.nombre"));
+        lblPrecio.setText(mensajeInternacionalizacionHandler.get("producto.label.precio"));
+        btnBuscar.setText(mensajeInternacionalizacionHandler.get("boton.buscar"));
+        btnGuardar.setText(mensajeInternacionalizacionHandler.get("boton.guardar"));
+    }
+
 }

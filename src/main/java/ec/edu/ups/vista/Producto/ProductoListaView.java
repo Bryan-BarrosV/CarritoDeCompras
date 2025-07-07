@@ -1,6 +1,7 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Producto;
 
 import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,9 +14,13 @@ public class ProductoListaView extends JInternalFrame {
     private JTable tblProductos;
     private JPanel panelPrincipal;
     private JButton btnListar;
+    private JLabel lblNombre;
     private DefaultTableModel modelo;
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
-    public ProductoListaView() {
+
+    public ProductoListaView(MensajeInternacionalizacionHandler handler) {
+        this.mensajeInternacionalizacionHandler = handler;
 
         setContentPane(panelPrincipal);
         setTitle("Listado de Productos");
@@ -30,6 +35,7 @@ public class ProductoListaView extends JInternalFrame {
         Object[] columnas = {"Codigo", "Nombre", "Precio"};
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
+        actualizarTextos();
     }
 
     public JTextField getTxtBuscar() {
@@ -94,4 +100,17 @@ public class ProductoListaView extends JInternalFrame {
 
 
     }
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("producto.listar.titulo"));
+        lblNombre.setText(mensajeInternacionalizacionHandler.get("producto.label.nombre"));
+        btnBuscar.setText(mensajeInternacionalizacionHandler.get("boton.buscar"));
+        btnListar.setText(mensajeInternacionalizacionHandler.get("boton.listar"));
+
+        modelo.setColumnIdentifiers(new Object[]{
+                mensajeInternacionalizacionHandler.get("producto.label.codigo"),
+                mensajeInternacionalizacionHandler.get("producto.label.nombre"),
+                mensajeInternacionalizacionHandler.get("producto.label.precio")
+        });
+    }
+
 }

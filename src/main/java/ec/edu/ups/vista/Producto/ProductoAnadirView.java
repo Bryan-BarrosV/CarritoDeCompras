@@ -1,4 +1,4 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Producto;
 
 import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
@@ -16,24 +16,24 @@ public class ProductoAnadirView extends JInternalFrame {
     private JTextField txtCodigo;
     private JButton btnAceptar;
     private JButton btnLimpiar;
+    private JLabel lblCodigo;
+    private JLabel lblNombre;
+    private JLabel lblPrecio;
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
-
-    public ProductoAnadirView() {
+    public ProductoAnadirView(MensajeInternacionalizacionHandler handler) {
+        this.mensajeInternacionalizacionHandler = handler;
 
         setContentPane(panelPrincipal);
-        setTitle("Datos del Producto");
+        setTitle(mensajeInternacionalizacionHandler.get("producto.anadir.titulo"));
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        mensajeInternacionalizacionHandler = MensajeInternacionalizacionHandler.getInstance();
+        setVisible(false);
         actualizarTextos();
 
-        //setResizable(false);
-        setVisible(false);
-        //pack();
 
         btnLimpiar.addActionListener(new ActionListener() {
             @Override
@@ -108,8 +108,10 @@ public class ProductoAnadirView extends JInternalFrame {
     }
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("producto.anadir.titulo"));
+        lblCodigo.setText(mensajeInternacionalizacionHandler.get("producto.label.codigo"));
+        lblNombre.setText(mensajeInternacionalizacionHandler.get("producto.label.nombre"));
+        lblPrecio.setText(mensajeInternacionalizacionHandler.get("producto.label.precio"));
         btnAceptar.setText(mensajeInternacionalizacionHandler.get("boton.aceptar"));
         btnLimpiar.setText(mensajeInternacionalizacionHandler.get("boton.limpiar"));
     }
-
 }

@@ -42,21 +42,20 @@ public class MenuPrincipalView extends JFrame {
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
-    public MenuPrincipalView() {
-        mensajeInternacionalizacionHandler = MensajeInternacionalizacionHandler.getInstance();
+    public MenuPrincipalView(MensajeInternacionalizacionHandler handler) {
+        this.mensajeInternacionalizacionHandler = handler;
+
 
 
         jDesktopPane = new JDesktopPane();
         menuBar = new JMenuBar();
 
-        // Menús
         menuProducto = new JMenu();
         menuCarrito = new JMenu();
         menuUsuario = new JMenu();
         menuSesion = new JMenu();
         menuIdioma = new JMenu();
 
-        // Ítems de menú
         menuItemCrearProducto = new JMenuItem();
         menuItemEliminarProducto = new JMenuItem();
         menuItemActualizarProducto = new JMenuItem();
@@ -232,6 +231,21 @@ public class MenuPrincipalView extends JFrame {
     public JMenuItem getMenuItemModificarCarrito() {
         return menuItemModificarCarrito;
     }
+
+
+    public JMenuItem getItemIdiomaES() {
+        return itemIdiomaES;
+    }
+
+    public JMenuItem getItemIdiomaEN() {
+        return itemIdiomaEN;
+    }
+
+    public JMenuItem getItemIdiomaFR() {
+        return itemIdiomaFR;
+    }
+
+
 
 
     public JMenuItem getMenuItemCerrarSesion() { return menuItemCerrarSesion; }

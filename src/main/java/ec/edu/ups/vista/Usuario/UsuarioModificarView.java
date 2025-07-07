@@ -1,4 +1,6 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Usuario;
+
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 
@@ -10,16 +12,25 @@ public class UsuarioModificarView extends JInternalFrame {
     private JComboBox<String> cmbRol;
     private JButton btnBuscar;
     private JButton btnModificar;
+    private JLabel lblNombre;
+    private JLabel lblContrasena;
+    private JLabel lblRol;
 
-    public UsuarioModificarView() {
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+
+    public UsuarioModificarView(MensajeInternacionalizacionHandler handler) {
+        this.mensajeInternacionalizacionHandler = handler;
+
         setContentPane(panelPrincipal);
-        setTitle("Modificar Usuario");
+        setTitle(handler.get("usuario.modificar.titulo"));
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(600, 400);
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
         setVisible(false);
+
+        actualizarTextos();
     }
 
     public JPanel getPanelPrincipal() {
@@ -55,5 +66,14 @@ public class UsuarioModificarView extends JInternalFrame {
         txtNombre.setText("");
         txtContrasenia.setText("");
         cmbRol.setSelectedIndex(0);
+    }
+
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("usuario.modificar.titulo"));
+        lblNombre.setText(mensajeInternacionalizacionHandler.get("usuario.label.nombre"));
+        lblContrasena.setText(mensajeInternacionalizacionHandler.get("usuario.label.contrasena"));
+        lblRol.setText(mensajeInternacionalizacionHandler.get("usuario.label.rol"));
+        btnBuscar.setText(mensajeInternacionalizacionHandler.get("boton.buscar"));
+        btnModificar.setText(mensajeInternacionalizacionHandler.get("boton.modificar"));
     }
 }

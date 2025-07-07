@@ -3,6 +3,8 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame {
 
@@ -17,47 +19,66 @@ public class LoginView extends JFrame {
     private JPanel panelSecundario;
     private JLabel nombreLabel;
     private JLabel contraseñaLabel;
-    private JComboBox comboIdioma;
-    private JLabel lblIdioma;
+
+    private JMenuBar menuBar;
+    private JMenu menuIdioma;
+    private JMenuItem itemEspañol, itemIngles, itemFrances;
+
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
-    public LoginView() {
-        mensajeInternacionalizacionHandler = MensajeInternacionalizacionHandler.getInstance();
-        setTitle("Iniciar Sesión");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public LoginView(MensajeInternacionalizacionHandler mensajeI) {
+        this.mensajeInternacionalizacionHandler = mensajeI;
 
         setContentPane(panelPrincipal);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        pack();
+        menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
 
-        setLocationRelativeTo(null);
-        comboIdioma.addItem("Español");
-        comboIdioma.addItem("English");
-        comboIdioma.addItem("Français");
-        comboIdioma.setSelectedItem("Español");
+        menuIdioma = new JMenu();
+        menuBar.add(menuIdioma);
 
-        comboIdioma.addActionListener(e -> {
-            String seleccion = (String) comboIdioma.getSelectedItem();
-            switch (seleccion) {
-                case "Español":
-                    mensajeInternacionalizacionHandler.setLenguaje("es", "EC");
-                    break;
-                case "English":
-                    mensajeInternacionalizacionHandler.setLenguaje("en", "US");
-                    break;
-                case "Français":
-                    mensajeInternacionalizacionHandler.setLenguaje("fr", "FR");
-                    break;
+        itemEspañol = new JMenuItem("Español");
+        itemIngles = new JMenuItem("English");
+        itemFrances = new JMenuItem("Français");
+
+        menuIdioma.add(itemEspañol);
+        menuIdioma.add(itemIngles);
+        menuIdioma.add(itemFrances);
+
+        itemEspañol.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mensajeInternacionalizacionHandler.setLenguaje("es", "EC");
+                actualizarTextosLogin();
             }
-            actualizarTextosLogin();
+        });
+
+        itemIngles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mensajeInternacionalizacionHandler.setLenguaje("en", "US");
+                actualizarTextosLogin();
+            }
+        });
+
+        itemFrances.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mensajeInternacionalizacionHandler.setLenguaje("fr", "FR");
+                actualizarTextosLogin();
+            }
+        });
+
+        btnIniciarSesion.addActionListener(e -> {
+            dispose();
         });
 
         actualizarTextosLogin();
-
-
-        setVisible(false);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
-
 
     public JTextField getTxtUsername() {
         return txtUsername;
@@ -79,17 +100,26 @@ public class LoginView extends JFrame {
         return btnOlvidoContrasena;
     }
 
-    public JComboBox getComboIdioma() { return comboIdioma;}
+    public JMenuItem getItemIdiomaES() {
+        return itemEspañol;
+    }
 
-    public JLabel getLblIdioma() { return lblIdioma;}
+    public JMenuItem getItemIdiomaEN() {
+        return itemIngles;
+    }
+
+    public JMenuItem getItemIdiomaFR() {
+        return itemFrances;
+    }
+
 
     public void actualizarTextosLogin() {
+        menuIdioma.setText(mensajeInternacionalizacionHandler.get("menu.idiomas"));
         nombreLabel.setText(mensajeInternacionalizacionHandler.get("login.usuario"));
         contraseñaLabel.setText(mensajeInternacionalizacionHandler.get("login.contrasena"));
         btnIniciarSesion.setText(mensajeInternacionalizacionHandler.get("login.boton.iniciar"));
         btnRegistrarse.setText(mensajeInternacionalizacionHandler.get("login.boton.registrarse"));
         btnOlvidoContrasena.setText(mensajeInternacionalizacionHandler.get("login.boton.olvido"));
-        lblIdioma.setText(mensajeInternacionalizacionHandler.get("login.idioma"));
         setTitle(mensajeInternacionalizacionHandler.get("login.titulo"));
     }
 
@@ -101,4 +131,5 @@ public class LoginView extends JFrame {
         txtUsername.setText("");
         txtContrasenia.setText("");
     }
+
 }

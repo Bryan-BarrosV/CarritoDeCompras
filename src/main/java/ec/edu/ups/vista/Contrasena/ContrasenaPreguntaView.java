@@ -1,4 +1,6 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Contrasena;
+
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +30,11 @@ public class ContrasenaPreguntaView extends JInternalFrame {
     private JLabel lblPregunta10;
     private String username;
 
-    public ContrasenaPreguntaView() {
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+
+    public ContrasenaPreguntaView(MensajeInternacionalizacionHandler handler) {
         super("Preguntas de Seguridad", true, true, false, true);
+        this.mensajeInternacionalizacionHandler=handler;
         setSize(400, 300);
         setLayout(new GridLayout(11, 2));
 
@@ -78,6 +83,8 @@ public class ContrasenaPreguntaView extends JInternalFrame {
         add(txtRespuesta10);
         add(new JLabel());
         add(btnGuardar);
+
+        actualizarTextos();
     }
 
     public JLabel getLblPregunta1() {
@@ -174,5 +181,20 @@ public class ContrasenaPreguntaView extends JInternalFrame {
 
     public JLabel getLblPregunta10() {
         return lblPregunta10;
+    }
+
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("contrasena.pregunta.titulo"));
+        lblPregunta1.setText(mensajeInternacionalizacionHandler.get("pregunta.1"));
+        lblPregunta2.setText(mensajeInternacionalizacionHandler.get("pregunta.2"));
+        lblPregunta3.setText(mensajeInternacionalizacionHandler.get("pregunta.3"));
+        lblPregunta4.setText(mensajeInternacionalizacionHandler.get("pregunta.4"));
+        lblPregunta5.setText(mensajeInternacionalizacionHandler.get("pregunta.5"));
+        lblPregunta6.setText(mensajeInternacionalizacionHandler.get("pregunta.6"));
+        lblPregunta7.setText(mensajeInternacionalizacionHandler.get("pregunta.7"));
+        lblPregunta8.setText(mensajeInternacionalizacionHandler.get("pregunta.8"));
+        lblPregunta9.setText(mensajeInternacionalizacionHandler.get("pregunta.9"));
+        lblPregunta10.setText(mensajeInternacionalizacionHandler.get("pregunta.10"));
+        btnGuardar.setText(mensajeInternacionalizacionHandler.get("boton.guardar"));
     }
 }

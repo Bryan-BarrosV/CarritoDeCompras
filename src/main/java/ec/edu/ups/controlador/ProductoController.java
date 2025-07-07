@@ -2,9 +2,12 @@ package ec.edu.ups.controlador;
 
 import ec.edu.ups.dao.ProductoDAO;
 import ec.edu.ups.modelo.Producto;
-import ec.edu.ups.vista.*;
+import ec.edu.ups.vista.Carrito.CarritoAnadirView;
+import ec.edu.ups.vista.Producto.EliminarProductoView;
+import ec.edu.ups.vista.Producto.ModificarProductoView;
+import ec.edu.ups.vista.Producto.ProductoAnadirView;
+import ec.edu.ups.vista.Producto.ProductoListaView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;

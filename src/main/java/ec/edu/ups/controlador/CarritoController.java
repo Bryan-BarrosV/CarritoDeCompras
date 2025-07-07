@@ -6,14 +6,13 @@ import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.ItemCarrito;
 import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.modelo.Usuario;
-import ec.edu.ups.vista.CarritoAnadirView;
-import ec.edu.ups.vista.CarritoModificarView;
-import ec.edu.ups.vista.EliminarCarritoView;
-import ec.edu.ups.vista.ListarCarritoView;
+import ec.edu.ups.vista.Carrito.CarritoAnadirView;
+import ec.edu.ups.vista.Carrito.CarritoModificarView;
+import ec.edu.ups.vista.Carrito.EliminarCarritoView;
+import ec.edu.ups.vista.Carrito.ListarCarritoView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class CarritoController {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.ups.vista.CarritoAnadirView">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.ups.vista.Carrito.CarritoAnadirView">
   <grid id="27dc6" binding="panelPrincipal" layout-manager="GridLayoutManager" row-count="9" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="d5bd" class="javax.swing.JLabel">
+      <component id="d5bd" class="javax.swing.JLabel" binding="lblCodigo">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -47,7 +47,7 @@
           </component>
         </children>
       </scrollpane>
-      <component id="ecc4f" class="javax.swing.JLabel">
+      <component id="ecc4f" class="javax.swing.JLabel" binding="lblNombre">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -55,7 +55,7 @@
           <text value="Nombre"/>
         </properties>
       </component>
-      <component id="42327" class="javax.swing.JLabel">
+      <component id="42327" class="javax.swing.JLabel" binding="lblPrecio">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -63,7 +63,7 @@
           <text value="Precio"/>
         </properties>
       </component>
-      <component id="a0bab" class="javax.swing.JLabel">
+      <component id="a0bab" class="javax.swing.JLabel" binding="lblCantidad">
         <constraints>
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -193,7 +193,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="a6746" class="javax.swing.JLabel">
+          <component id="a6746" class="javax.swing.JLabel" binding="lblUsuario">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>

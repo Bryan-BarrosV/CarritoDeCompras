@@ -1,4 +1,6 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Carrito;
+
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,21 +21,34 @@ public class CarritoAnadirView extends JInternalFrame {
     private JPanel panelPrincipal;
     private JTextField textUsername;
     private JButton btnEliminar;
+    private JLabel lblCodigo;
+    private JLabel lblNombre;
+    private JLabel lblPrecio;
+    private JLabel lblCantidad;
+    private JLabel lblUsuario;
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
-    public CarritoAnadirView(){
+    public CarritoAnadirView(MensajeInternacionalizacionHandler handler){
         super("Carrito de Compras", true, true, false, true);
+        this.mensajeInternacionalizacionHandler = handler;
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
 
         DefaultTableModel modelo = new DefaultTableModel();
-        Object[] columnas = {"Codigo", "Nombre", "Precio", "Cantidad", "Subtotal"};
+        Object[] columnas = {
+                handler.get("producto.label.codigo"),
+                handler.get("producto.label.nombre"),
+                handler.get("producto.label.precio"),
+                handler.get("producto.label.cantidad"),
+                handler.get("carrito.label.subtotal")
+        };
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
 
         cargarDatos();
         setVisible(false);
-
+        actualizarTextos();
     }
 
     private void cargarDatos(){
@@ -123,5 +138,29 @@ public class CarritoAnadirView extends JInternalFrame {
         this.textUsername.setText(username);
         this.textUsername.setEditable(false);
     }
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("carrito.titulo"));
+        lblCodigo.setText(mensajeInternacionalizacionHandler.get("producto.label.codigo"));
+        lblNombre.setText(mensajeInternacionalizacionHandler.get("producto.label.nombre"));
+        lblPrecio.setText(mensajeInternacionalizacionHandler.get("producto.label.precio"));
+        lblCantidad.setText(mensajeInternacionalizacionHandler.get("producto.label.cantidad"));
+        lblUsuario.setText(mensajeInternacionalizacionHandler.get("carrito.label.usuario"));
+
+        btnBuscar.setText(mensajeInternacionalizacionHandler.get("boton.buscar"));
+        btnAnadir.setText(mensajeInternacionalizacionHandler.get("carrito.boton.anadir"));
+        btnGuardar.setText(mensajeInternacionalizacionHandler.get("boton.guardar"));
+        btnLimpiar.setText(mensajeInternacionalizacionHandler.get("boton.limpiar"));
+        btnEliminar.setText(mensajeInternacionalizacionHandler.get("boton.eliminar"));
+
+        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+        modelo.setColumnIdentifiers(new Object[]{
+                mensajeInternacionalizacionHandler.get("producto.label.codigo"),
+                mensajeInternacionalizacionHandler.get("producto.label.nombre"),
+                mensajeInternacionalizacionHandler.get("producto.label.precio"),
+                mensajeInternacionalizacionHandler.get("producto.label.cantidad"),
+                mensajeInternacionalizacionHandler.get("carrito.label.subtotal")
+        });
+    }
+
 
 }

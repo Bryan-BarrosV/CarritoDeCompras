@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.ups.vista.ProductoAnadirView">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.ups.vista.Producto.ProductoAnadirView">
   <grid id="27dc6" binding="panelPrincipal" layout-manager="GridBagLayout">
     <constraints>
       <xy x="199" y="50" width="591" height="446"/>
@@ -24,7 +24,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="d83ac" class="javax.swing.JLabel">
+          <component id="d83ac" class="javax.swing.JLabel" binding="lblCodigo">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="0" left="0" bottom="0" right="10" weightx="0.0" weighty="1.0"/>
@@ -35,7 +35,7 @@
               <text value="Codigo:"/>
             </properties>
           </component>
-          <component id="9663b" class="javax.swing.JLabel">
+          <component id="9663b" class="javax.swing.JLabel" binding="lblNombre">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="10" left="0" bottom="0" right="10" weightx="0.0" weighty="1.0"/>
@@ -46,7 +46,7 @@
               <text value="Nombre:"/>
             </properties>
           </component>
-          <component id="f347c" class="javax.swing.JLabel">
+          <component id="f347c" class="javax.swing.JLabel" binding="lblPrecio">
             <constraints>
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <gridbag top="10" left="0" bottom="0" right="10" weightx="0.0" weighty="1.0"/>
@@ -72,20 +72,6 @@
               <toolTipText value="Ingresa el codigo (ej. 1001)"/>
             </properties>
           </component>
-          <component id="bcc93" class="javax.swing.JTextField" binding="txtNombre">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <gridbag top="10" left="0" bottom="0" right="0" weightx="1.0" weighty="1.0"/>
-            </constraints>
-            <properties>
-              <background color="-13879742"/>
-              <foreground color="-986896"/>
-              <preferredSize width="250" height="30"/>
-              <toolTipText value="Ingresa el nombre (ej. Producto 1)"/>
-            </properties>
-          </component>
           <component id="c1154" class="javax.swing.JTextField" binding="txtPrecio">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
@@ -98,6 +84,20 @@
               <foreground color="-986896"/>
               <preferredSize width="250" height="30"/>
               <toolTipText value="Ingresa el precio"/>
+            </properties>
+          </component>
+          <component id="bcc93" class="javax.swing.JTextField" binding="txtNombre">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <gridbag top="10" left="0" bottom="0" right="0" weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <background color="-13879742"/>
+              <foreground color="-986896"/>
+              <preferredSize width="250" height="30"/>
+              <toolTipText value="Ingresa el nombre (ej. Producto 1)"/>
             </properties>
           </component>
         </children>

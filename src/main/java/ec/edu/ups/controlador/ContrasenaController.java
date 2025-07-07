@@ -4,7 +4,7 @@ import ec.edu.ups.dao.ContrasenaDAO;
 import ec.edu.ups.dao.UsuarioDAO;
 import ec.edu.ups.modelo.Contrasena;
 import ec.edu.ups.modelo.Usuario;
-import ec.edu.ups.vista.ContrasenaView;
+import ec.edu.ups.vista.Contrasena.ContrasenaView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

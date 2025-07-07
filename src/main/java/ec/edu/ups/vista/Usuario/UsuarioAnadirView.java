@@ -1,4 +1,6 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Usuario;
+
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 
@@ -12,13 +14,22 @@ public class UsuarioAnadirView extends JInternalFrame {
     private JTextField txtNombreCompleto;
     private JTextField txtCorreo;
     private JTextField txtTelefono;
+    private JLabel lblNombreCompleto;
+    private JLabel lblNombre;
+    private JLabel lblCorreo;
+    private JLabel lblTelefono;
+    private JLabel lblContrasena;
 
-    public UsuarioAnadirView() {
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+
+    public UsuarioAnadirView(MensajeInternacionalizacionHandler handler) {
         super("Registrar Usuario", true, true, false, true);
+        this.mensajeInternacionalizacionHandler = handler;
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(400, 400);
         setVisible(false);
+        actualizarTextos();
     }
 
     public JTextField getTxtUsername() {
@@ -55,4 +66,15 @@ public class UsuarioAnadirView extends JInternalFrame {
         txtUsername.setText("");
         txtContrasenia.setText("");
     }
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("usuario.anadir.titulo"));
+        lblNombre.setText(mensajeInternacionalizacionHandler.get("usuario.label.username"));
+        lblContrasena.setText(mensajeInternacionalizacionHandler.get("usuario.label.contrasena"));
+        lblNombreCompleto.setText(mensajeInternacionalizacionHandler.get("usuario.label.nombreCompleto"));
+        lblCorreo.setText(mensajeInternacionalizacionHandler.get("usuario.label.correo"));
+        lblTelefono.setText(mensajeInternacionalizacionHandler.get("usuario.label.telefono"));
+        btnRegistrar.setText(mensajeInternacionalizacionHandler.get("boton.registrar"));
+        btnLimpiar.setText(mensajeInternacionalizacionHandler.get("boton.limpiar"));
+    }
+
 }

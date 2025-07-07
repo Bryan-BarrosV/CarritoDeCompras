@@ -1,7 +1,7 @@
-package ec.edu.ups.vista;
+package ec.edu.ups.vista.Carrito;
 
 import ec.edu.ups.modelo.Carrito;
-import ec.edu.ups.modelo.Producto;
+import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,9 +13,14 @@ public class EliminarCarritoView extends  JInternalFrame {
     private JButton buscarButton;
     private JTable tblProductos;
     private JButton eliminarButton;
+    private JLabel lblCodigo;
 
-    public EliminarCarritoView() {
+    private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+
+    public EliminarCarritoView(MensajeInternacionalizacionHandler handler) {
         super("Eliminar Carrito", true, true, false, true);
+        this.mensajeInternacionalizacionHandler = handler;
+
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(800, 600);
@@ -23,6 +28,8 @@ public class EliminarCarritoView extends  JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setVisible(false);
+
+        actualizarTextos();
     }
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
@@ -55,7 +62,15 @@ public class EliminarCarritoView extends  JInternalFrame {
     }
 
     public void cargarDatosTabla(List<Carrito> carritosEncontrados) {
-        Object[] columnas = {"Código", "Fecha", "Items", "Subtotal", "IVA", "Total"};
+        Object[] columnas = {
+                mensajeInternacionalizacionHandler.get("producto.label.codigo"),
+                mensajeInternacionalizacionHandler.get("carrito.label.fecha"),
+                mensajeInternacionalizacionHandler.get("carrito.label.items"),
+                mensajeInternacionalizacionHandler.get("carrito.label.subtotal"),
+                mensajeInternacionalizacionHandler.get("carrito.label.iva"),
+                mensajeInternacionalizacionHandler.get("carrito.label.total")
+        };
+
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
         for (Carrito carrito : carritosEncontrados) {
@@ -75,7 +90,25 @@ public class EliminarCarritoView extends  JInternalFrame {
         if (modelo.getRowCount() > 0) {
             tblProductos.setRowSelectionInterval(0, 0);
         } else {
-            mostrarMensaje("No hay carritos disponibles.");
+            mostrarMensaje(mensajeInternacionalizacionHandler.get("carrito.vacio"));
+        }
+    }
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("carrito.eliminar.titulo"));
+        lblCodigo.setText(mensajeInternacionalizacionHandler.get("carrito.label.codigo"));
+        buscarButton.setText(mensajeInternacionalizacionHandler.get("boton.buscar"));
+        eliminarButton.setText(mensajeInternacionalizacionHandler.get("boton.eliminar"));
+
+
+        if (tblProductos.getModel() instanceof DefaultTableModel) {
+            ((DefaultTableModel) tblProductos.getModel()).setColumnIdentifiers(new Object[]{
+                    mensajeInternacionalizacionHandler.get("producto.label.codigo"),
+                    mensajeInternacionalizacionHandler.get("carrito.label.fecha"),
+                    mensajeInternacionalizacionHandler.get("carrito.label.items"),
+                    mensajeInternacionalizacionHandler.get("carrito.label.subtotal"),
+                    mensajeInternacionalizacionHandler.get("carrito.label.iva"),
+                    mensajeInternacionalizacionHandler.get("carrito.label.total")
+            });
         }
     }
 
