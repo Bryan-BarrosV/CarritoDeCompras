@@ -3,8 +3,10 @@ package ec.edu.ups.vista;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class LoginView extends JFrame {
 
@@ -73,6 +75,60 @@ public class LoginView extends JFrame {
         btnIniciarSesion.addActionListener(e -> {
             dispose();
         });
+
+        URL usuarioURL = LoginView.class.getClassLoader().getResource("imagenes/usuario.png");
+        if (usuarioURL != null) {
+            ImageIcon iconoUsuario = new ImageIcon(usuarioURL);
+            Image imagenEscalada = iconoUsuario.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            nombreLabel.setIcon(new ImageIcon(imagenEscalada));
+            nombreLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
+            nombreLabel.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró la imagen usuario.png");
+        }
+
+        URL contrasenaURL = LoginView.class.getClassLoader().getResource("imagenes/contraseña.png");
+        if (contrasenaURL != null) {
+            ImageIcon iconoContrasena = new ImageIcon(contrasenaURL);
+            Image imagenEscalada = iconoContrasena.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            contraseñaLabel.setIcon(new ImageIcon(imagenEscalada));
+            contraseñaLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
+            contraseñaLabel.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró la imagen contraseña.png");
+        }
+
+        URL loginURL = LoginView.class.getClassLoader().getResource("imagenes/acceso.png");
+        if (loginURL != null) {
+            ImageIcon iconoLogin = new ImageIcon(loginURL);
+            Image imagenEscalada = iconoLogin.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            btnIniciarSesion.setIcon(new ImageIcon(imagenEscalada));
+            btnIniciarSesion.setHorizontalTextPosition(SwingConstants.RIGHT);
+            btnIniciarSesion.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró la imagen login.png");
+        }
+
+        URL accesoURL = LoginView.class.getClassLoader().getResource("imagenes/login.png");
+        if (accesoURL != null) {
+            ImageIcon iconoAcceso = new ImageIcon(accesoURL);
+            Image imagenEscalada = iconoAcceso.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            btnRegistrarse.setIcon(new ImageIcon(imagenEscalada));
+            btnRegistrarse.setHorizontalTextPosition(SwingConstants.RIGHT);
+            btnRegistrarse.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró la imagen acceso.png");
+        }
+        URL OlvidoContrasenaURL = LoginView.class.getClassLoader().getResource("imagenes/olvidosucontraseña.png");
+        if (OlvidoContrasenaURL != null) {
+            ImageIcon iconoAcceso = new ImageIcon(OlvidoContrasenaURL);
+            Image imagenEscalada = iconoAcceso.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            btnOlvidoContrasena.setIcon(new ImageIcon(imagenEscalada));
+            btnOlvidoContrasena.setHorizontalTextPosition(SwingConstants.RIGHT);
+            btnOlvidoContrasena.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró la imagen acceso.png");
+        }
 
         actualizarTextosLogin();
         pack();

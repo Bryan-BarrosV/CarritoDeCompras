@@ -6,6 +6,7 @@ import ec.edu.ups.modelo.Carrito;
 import ec.edu.ups.modelo.ItemCarrito;
 import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.modelo.Usuario;
+import ec.edu.ups.util.FormateadorUtils;
 import ec.edu.ups.vista.Carrito.CarritoAnadirView;
 import ec.edu.ups.vista.Carrito.CarritoModificarView;
 import ec.edu.ups.vista.Carrito.EliminarCarritoView;
@@ -14,6 +15,7 @@ import ec.edu.ups.vista.Carrito.ListarCarritoView;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Locale;
 
 public class CarritoController {
 
@@ -65,7 +67,18 @@ public class CarritoController {
 
             DefaultTableModel modelo = (DefaultTableModel) carritoAnadirView.getTblProductos().getModel();
             double subtotal = producto.getPrecio() * cantidad;
-            modelo.addRow(new Object[]{producto.getCodigo(), producto.getNombre(), producto.getPrecio(), cantidad, subtotal});
+
+            Locale locale = carritoAnadirView.getMensajeInternacionalizacion().getLocale();
+            String subtotalFormateado = FormateadorUtils.formatearMoneda(subtotal, locale);
+
+            modelo.addRow(new Object[]{
+                    producto.getCodigo(),
+                    producto.getNombre(),
+                    producto.getPrecio(),
+                    cantidad,
+                    subtotalFormateado
+            });
+
 
             recalcularTotales(modelo, carritoAnadirView.getTxtSubtotal(), carritoAnadirView.getTxtIva(), carritoAnadirView.getTxtTotal());
         });
@@ -196,8 +209,7 @@ public class CarritoController {
 
     }
 
-
-        private void recalcularTotales(DefaultTableModel modelo, JTextField txtSubtotal, JTextField txtIVA, JTextField txtTotal) {
+    private void recalcularTotales(DefaultTableModel modelo, JTextField txtSubtotal, JTextField txtIVA, JTextField txtTotal) {
         double subtotal = 0;
         for (int i = 0; i < modelo.getRowCount(); i++) {
             double precio = (double) modelo.getValueAt(i, 2);
@@ -208,26 +220,31 @@ public class CarritoController {
         double iva = subtotal * 0.12;
         double total = subtotal + iva;
 
-        txtSubtotal.setText(String.format("%.2f", subtotal));
-        txtIVA.setText(String.format("%.2f", iva));
-        txtTotal.setText(String.format("%.2f", total));
+        Locale locale = carritoAnadirView.getMensajeInternacionalizacion().getLocale();
+        txtSubtotal.setText(FormateadorUtils.formatearMoneda(subtotal, locale));
+        txtIVA.setText(FormateadorUtils.formatearMoneda(iva, locale));
+        txtTotal.setText(FormateadorUtils.formatearMoneda(total, locale));
     }
+
 
     private void actualizarTotales() {
         DefaultTableModel modelo = (DefaultTableModel) carritoAnadirView.getTblProductos().getModel();
         double subtotal = 0.0;
 
         for (int i = 0; i < modelo.getRowCount(); i++) {
-            subtotal += Double.parseDouble(modelo.getValueAt(i, 4).toString());
+            String valor = modelo.getValueAt(i, 4).toString().replaceAll("[^\\d.,]", "").replace(",", ".");
+            subtotal += Double.parseDouble(valor);
         }
 
         double iva = subtotal * 0.12;
         double total = subtotal + iva;
 
-        carritoAnadirView.getTxtSubtotal().setText(String.format("%.2f", subtotal));
-        carritoAnadirView.getTxtIva().setText(String.format("%.2f", iva));
-        carritoAnadirView.getTxtTotal().setText(String.format("%.2f", total));
+        Locale locale = carritoAnadirView.getMensajeInternacionalizacion().getLocale();
+        carritoAnadirView.getTxtSubtotal().setText(FormateadorUtils.formatearMoneda(subtotal, locale));
+        carritoAnadirView.getTxtIva().setText(FormateadorUtils.formatearMoneda(iva, locale));
+        carritoAnadirView.getTxtTotal().setText(FormateadorUtils.formatearMoneda(total, locale));
     }
+
 
 
     public void setUsuarioAutenticado(Usuario usuarioAutenticado) {

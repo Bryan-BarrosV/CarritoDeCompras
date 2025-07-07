@@ -8,6 +8,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.net.URL;
 
 public class CarritoModificarView extends JInternalFrame {
 
@@ -91,6 +92,33 @@ public class CarritoModificarView extends JInternalFrame {
         panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
 
         actualizarTextos();
+
+        URL codigoURL = CarritoModificarView.class.getClassLoader().getResource("imagenes/codigo.png");
+        if (codigoURL != null) {
+            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
+            lblCodigo.setIcon(new ImageIcon(iconoCodigo.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        }
+
+        URL fechaURL = CarritoModificarView.class.getClassLoader().getResource("imagenes/fecha.png");
+        if (fechaURL != null) {
+            ImageIcon iconoFecha = new ImageIcon(fechaURL);
+            lblFecha.setIcon(new ImageIcon(iconoFecha.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        }
+
+        URL buscarURL = CarritoModificarView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
+            btnBuscar.setIcon(new ImageIcon(iconoBuscar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
+        URL modificarURL = CarritoModificarView.class.getClassLoader().getResource("imagenes/modificar.png");
+        if (modificarURL != null) {
+            ImageIcon iconoModificar = new ImageIcon(modificarURL);
+            btnModificar.setIcon(new ImageIcon(iconoModificar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+            btnModificar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
     }
 
 

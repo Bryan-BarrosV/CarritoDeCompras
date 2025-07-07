@@ -22,7 +22,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <background color="-14803426"/>
+              <background color="-4464901"/>
               <enabled value="false"/>
               <foreground color="-986896"/>
             </properties>
@@ -34,7 +34,7 @@
                 </constraints>
                 <properties>
                   <background color="-986896"/>
-                  <foreground color="-986896"/>
+                  <foreground color="-15918294"/>
                   <text value="Codigo"/>
                 </properties>
               </component>
@@ -51,6 +51,7 @@
                 </constraints>
                 <properties>
                   <background color="-986896"/>
+                  <foreground color="-14803426"/>
                 </properties>
               </component>
               <component id="aa131" class="javax.swing.JButton" binding="buscarButton" default-binding="true">
@@ -58,7 +59,7 @@
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-11698945"/>
+                  <background color="-15374912"/>
                   <foreground color="-986896"/>
                   <text value="Buscar"/>
                 </properties>
@@ -87,7 +88,7 @@
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <background color="-14009524"/>
+                  <background color="-15374912"/>
                   <foreground color="-986896"/>
                   <text value="Eliminar"/>
                 </properties>

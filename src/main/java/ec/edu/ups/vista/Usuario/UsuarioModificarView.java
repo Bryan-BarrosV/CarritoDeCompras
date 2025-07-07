@@ -3,6 +3,7 @@ package ec.edu.ups.vista.Usuario;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class UsuarioModificarView extends JInternalFrame {
 
@@ -31,6 +32,44 @@ public class UsuarioModificarView extends JInternalFrame {
         setVisible(false);
 
         actualizarTextos();
+
+        URL nombreURL = UsuarioModificarView.class.getClassLoader().getResource("imagenes/nombre.png");
+        if (nombreURL != null) {
+            lblNombre.setIcon(new ImageIcon(new ImageIcon(nombreURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró nombre.png");
+        }
+
+        URL contrasenaURL = UsuarioModificarView.class.getClassLoader().getResource("imagenes/contraseña.png");
+        if (contrasenaURL != null) {
+            lblContrasena.setIcon(new ImageIcon(new ImageIcon(contrasenaURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró contraseña.png");
+        }
+
+        URL rolURL = UsuarioModificarView.class.getClassLoader().getResource("imagenes/rol.png");
+        if (rolURL != null) {
+            lblRol.setIcon(new ImageIcon(new ImageIcon(rolURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró rol.png");
+        }
+
+        URL buscarURL = UsuarioModificarView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            btnBuscar.setIcon(new ImageIcon(new ImageIcon(buscarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró buscar.png");
+        }
+
+        URL modificarURL = UsuarioModificarView.class.getClassLoader().getResource("imagenes/modificar.png");
+        if (modificarURL != null) {
+            btnModificar.setIcon(new ImageIcon(new ImageIcon(modificarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnModificar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró modificar.png");
+        }
+
     }
 
     public JPanel getPanelPrincipal() {

@@ -4,6 +4,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class ContrasenaView extends JInternalFrame {
 
@@ -74,6 +75,82 @@ public class ContrasenaView extends JInternalFrame {
         add(new JLabel());
 
         actualizarTextos();
+        URL iconoUsuarioURL = ContrasenaView.class.getClassLoader().getResource("imagenes/usuariovalidar.png");
+        if (iconoUsuarioURL != null) {
+            ImageIcon icono = new ImageIcon(iconoUsuarioURL);
+            Image img = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblUsuario.setIcon(new ImageIcon(img));
+            lblUsuario.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono usuariovalidar.png");
+        }
+
+        URL preguntaIconURL = ContrasenaView.class.getClassLoader().getResource("imagenes/preguntarecuperar.png");
+        if (preguntaIconURL != null) {
+            ImageIcon icono = new ImageIcon(preguntaIconURL);
+            Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            Icon iconoPregunta = new ImageIcon(imagenEscalada);
+
+            lblPregunta1.setIcon(iconoPregunta);
+            lblPregunta2.setIcon(iconoPregunta);
+            lblPregunta3.setIcon(iconoPregunta);
+
+            lblPregunta1.setHorizontalTextPosition(SwingConstants.RIGHT);
+            lblPregunta2.setHorizontalTextPosition(SwingConstants.RIGHT);
+            lblPregunta3.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono preguntarecuperar.png");
+        }
+
+        URL nuevaContraURL = ContrasenaView.class.getClassLoader().getResource("imagenes/nuevacontra.png");
+        if (nuevaContraURL != null) {
+            ImageIcon icono = new ImageIcon(nuevaContraURL);
+            Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            Icon iconoNuevaContra = new ImageIcon(imagenEscalada);
+
+            lblContrasenaNueva.setIcon(iconoNuevaContra);
+            lblContrasenaNueva.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono nuevacontra.png");
+        }
+
+
+        URL confirmarContraURL = ContrasenaView.class.getClassLoader().getResource("imagenes/confirmarcontra.png");
+        if (confirmarContraURL != null) {
+            ImageIcon icono = new ImageIcon(confirmarContraURL);
+            Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            Icon iconoConfirmarContra = new ImageIcon(imagenEscalada);
+
+            lblConfirmarContraseba.setIcon(iconoConfirmarContra);
+            lblConfirmarContraseba.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono confirmarcontra.png");
+        }
+
+
+        URL validarURL = ContrasenaView.class.getClassLoader().getResource("imagenes/validar.png");
+        if (validarURL != null) {
+            ImageIcon icono = new ImageIcon(validarURL);
+            Image img = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnValidarUsuario.setIcon(new ImageIcon(img));
+            btnValidarUsuario.setHorizontalTextPosition(SwingConstants.RIGHT);
+            btnValidarUsuario.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró el icono validar.png");
+        }
+
+        URL guardarURL = ContrasenaView.class.getClassLoader().getResource("imagenes/guardar.png");
+        if (guardarURL != null) {
+            ImageIcon icono = new ImageIcon(guardarURL);
+            Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            Icon iconoGuardar = new ImageIcon(imagenEscalada);
+
+            btnGuardar.setIcon(iconoGuardar);
+            btnGuardar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono guardar.png");
+        }
+
     }
 
 

@@ -5,7 +5,7 @@
       <xy x="199" y="50" width="591" height="446"/>
     </constraints>
     <properties>
-      <background color="-14803426"/>
+      <background color="-1838339"/>
       <foreground color="-986896"/>
     </properties>
     <border type="empty" title="" title-justification="2">
@@ -20,7 +20,7 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <background color="-14803426"/>
+          <background color="-4464901"/>
         </properties>
         <border type="none"/>
         <children>
@@ -31,7 +31,7 @@
             </constraints>
             <properties>
               <font name="Courier New" size="14" style="1"/>
-              <foreground color="-986896"/>
+              <foreground color="-15918294"/>
               <text value="Codigo:"/>
             </properties>
           </component>
@@ -42,7 +42,7 @@
             </constraints>
             <properties>
               <font name="Courier New" size="14" style="1"/>
-              <foreground color="-986896"/>
+              <foreground color="-15918294"/>
               <text value="Nombre:"/>
             </properties>
           </component>
@@ -53,7 +53,7 @@
             </constraints>
             <properties>
               <font name="Courier New" size="14" style="1"/>
-              <foreground color="-986896"/>
+              <foreground color="-15918294"/>
               <text value="Precio:"/>
             </properties>
           </component>
@@ -65,9 +65,9 @@
               <gridbag weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties>
-              <background color="-13879742"/>
+              <background color="-657931"/>
               <columns value="0"/>
-              <foreground color="-986896"/>
+              <foreground color="-14803426"/>
               <preferredSize width="250" height="30"/>
               <toolTipText value="Ingresa el codigo (ej. 1001)"/>
             </properties>
@@ -80,8 +80,8 @@
               <gridbag top="10" left="0" bottom="0" right="0" weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties>
-              <background color="-13879742"/>
-              <foreground color="-986896"/>
+              <background color="-657931"/>
+              <foreground color="-14803426"/>
               <preferredSize width="250" height="30"/>
               <toolTipText value="Ingresa el precio"/>
             </properties>
@@ -94,8 +94,8 @@
               <gridbag top="10" left="0" bottom="0" right="0" weightx="1.0" weighty="1.0"/>
             </constraints>
             <properties>
-              <background color="-13879742"/>
-              <foreground color="-986896"/>
+              <background color="-657931"/>
+              <foreground color="-14803426"/>
               <preferredSize width="250" height="30"/>
               <toolTipText value="Ingresa el nombre (ej. Producto 1)"/>
             </properties>
@@ -108,14 +108,14 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <background color="-14803426"/>
+          <background color="-4464901"/>
         </properties>
         <border type="none"/>
         <children>
           <component id="925c8" class="javax.swing.JButton" binding="btnAceptar">
             <constraints/>
             <properties>
-              <background color="-11698945"/>
+              <background color="-15108398"/>
               <font name="Courier New" size="14"/>
               <foreground color="-986896"/>
               <preferredSize width="120" height="35"/>
@@ -125,7 +125,7 @@
           <component id="22ef4" class="javax.swing.JButton" binding="btnLimpiar">
             <constraints/>
             <properties>
-              <background color="-14009524"/>
+              <background color="-15374912"/>
               <font name="Courier New" size="14"/>
               <foreground color="-986896"/>
               <preferredSize width="120" height="35"/>

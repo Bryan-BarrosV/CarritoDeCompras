@@ -4,6 +4,8 @@ import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
 
 public class EliminarProductoView extends JInternalFrame {
     private JPanel panelPrincipal;
@@ -27,6 +29,52 @@ public class EliminarProductoView extends JInternalFrame {
         setResizable(true);
         setVisible(false);
         actualizarTextos();
+
+        URL codigoURL = EliminarProductoView.class.getClassLoader().getResource("imagenes/codigo.png");
+        if (codigoURL != null) {
+            ImageIcon icono = new ImageIcon(codigoURL);
+            Image img = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblCodigo.setIcon(new ImageIcon(img));
+            lblCodigo.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono codigo.png");
+        }
+
+        URL productoURL = EliminarProductoView.class.getClassLoader().getResource("imagenes/productoeli.png");
+        if (productoURL != null) {
+            ImageIcon icono = new ImageIcon(productoURL);
+            Image img = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblProducto.setIcon(new ImageIcon(img));
+            lblProducto.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono productoeli.png");
+        }
+
+
+        URL eliminarURL = EliminarProductoView.class.getClassLoader().getResource("imagenes/basura.png");
+        if (eliminarURL != null) {
+            ImageIcon icono = new ImageIcon(eliminarURL);
+            Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            Icon iconoEliminar = new ImageIcon(imagenEscalada);
+
+            btnEliminar.setIcon(iconoEliminar);
+            btnEliminar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono borrar.png");
+        }
+        URL buscarURL = EliminarProductoView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon icono = new ImageIcon(buscarURL);
+            Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            Icon iconoBuscar = new ImageIcon(imagenEscalada);
+
+            btnBuscar.setIcon(iconoBuscar);
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el icono buscar.png");
+        }
+
+
     }
 
     public JPanel getPanelPrincipal() {

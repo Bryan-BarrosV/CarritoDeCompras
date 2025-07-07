@@ -4,8 +4,10 @@ import ec.edu.ups.modelo.Producto;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.List;
 
 public class ProductoAnadirView extends JInternalFrame {
@@ -33,6 +35,44 @@ public class ProductoAnadirView extends JInternalFrame {
         setResizable(true);
         setVisible(false);
         actualizarTextos();
+
+        URL codigoURL = ProductoAnadirView.class.getClassLoader().getResource("imagenes/codigo.png");
+        if (codigoURL != null) {
+            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
+            Image imgCodigo = iconoCodigo.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblCodigo.setIcon(new ImageIcon(imgCodigo));
+        }
+
+        URL nombreURL = ProductoAnadirView.class.getClassLoader().getResource("imagenes/productonombre.png");
+        if (nombreURL != null) {
+            ImageIcon iconoNombre = new ImageIcon(nombreURL);
+            Image imgNombre = iconoNombre.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblNombre.setIcon(new ImageIcon(imgNombre));
+        }
+
+        URL precioURL = ProductoAnadirView.class.getClassLoader().getResource("imagenes/precio.png");
+        if (precioURL != null) {
+            ImageIcon iconoPrecio = new ImageIcon(precioURL);
+            Image imgPrecio = iconoPrecio.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblPrecio.setIcon(new ImageIcon(imgPrecio));
+        }
+
+        URL aceptarURL = ProductoAnadirView.class.getClassLoader().getResource("imagenes/aceptar.png");
+        if (aceptarURL != null) {
+            ImageIcon iconoAceptar = new ImageIcon(aceptarURL);
+            Image imgAceptar = iconoAceptar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnAceptar.setIcon(new ImageIcon(imgAceptar));
+            btnAceptar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
+        URL limpiarURL = ProductoAnadirView.class.getClassLoader().getResource("imagenes/limpiar.png");
+        if (limpiarURL != null) {
+            ImageIcon iconoLimpiar = new ImageIcon(limpiarURL);
+            Image imgLimpiar = iconoLimpiar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnLimpiar.setIcon(new ImageIcon(imgLimpiar));
+            btnLimpiar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
 
 
         btnLimpiar.addActionListener(new ActionListener() {

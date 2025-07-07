@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 public class MenuPrincipalView extends JFrame {
 
@@ -38,16 +39,17 @@ public class MenuPrincipalView extends JFrame {
     private JMenuItem itemIdiomaEN;
     private JMenuItem itemIdiomaFR;
 
-    private JDesktopPane jDesktopPane;
+    private MiJDesktopPane jDesktopPane;
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
     public MenuPrincipalView(MensajeInternacionalizacionHandler handler) {
         this.mensajeInternacionalizacionHandler = handler;
+        MiJDesktopPane desktopPane = new MiJDesktopPane();
+        setContentPane(desktopPane);
+        jDesktopPane = new MiJDesktopPane();
+        setContentPane(jDesktopPane);
 
-
-
-        jDesktopPane = new JDesktopPane();
         menuBar = new JMenuBar();
 
         menuProducto = new JMenu();
@@ -112,6 +114,64 @@ public class MenuPrincipalView extends JFrame {
 
         actualizarTexto();
 
+        URL productoURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/productomenu.png");
+        if (productoURL != null) {
+            menuProducto.setIcon(new ImageIcon(new ImageIcon(productoURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró productomenu.png");
+        }
+
+        URL carritoURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/carritomenu.png");
+        if (carritoURL != null) {
+            menuCarrito.setIcon(new ImageIcon(new ImageIcon(carritoURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró carritomenu.png");
+        }
+
+        URL usuarioURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/usuariomenu.png");
+        if (usuarioURL != null) {
+            menuUsuario.setIcon(new ImageIcon(new ImageIcon(usuarioURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró usuario.png");
+        }
+
+        URL cerrarSesionURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/cerrarsesionmenu.png");
+        if (cerrarSesionURL != null) {
+            menuSesion.setIcon(new ImageIcon(new ImageIcon(cerrarSesionURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró cerrarsesionmenu.png");
+        }
+
+        URL idiomaURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/idiomas.png");
+        if (idiomaURL != null) {
+            menuIdioma.setIcon(new ImageIcon(new ImageIcon(idiomaURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró idiomas.png");
+        }
+
+        URL espanolURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/ecuador.png");
+        if (espanolURL != null) {
+            itemIdiomaES.setIcon(new ImageIcon(new ImageIcon(espanolURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró ecuador.png");
+        }
+
+        URL inglesURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/england.png");
+        if (inglesURL != null) {
+            itemIdiomaEN.setIcon(new ImageIcon(new ImageIcon(inglesURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró england.png");
+        }
+
+        URL francesURL = MenuPrincipalView.class.getClassLoader().getResource("imagenes/francia.png");
+        if (francesURL != null) {
+            itemIdiomaFR.setIcon(new ImageIcon(new ImageIcon(francesURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró francia.png");
+        }
+
+
+
         itemIdiomaES.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -158,6 +218,7 @@ public class MenuPrincipalView extends JFrame {
         menuItemModificarUsuario.setText(mensajeInternacionalizacionHandler.get("menu.usuario.modificar"));
         menuItemEliminarUsuario.setText(mensajeInternacionalizacionHandler.get("menu.usuario.eliminar"));
 
+        menuSesion.setText(mensajeInternacionalizacionHandler.get("menu.sesion"));
         menuItemCerrarSesion.setText(mensajeInternacionalizacionHandler.get("menu.salir.cerrar"));
 
         menuIdioma.setText(mensajeInternacionalizacionHandler.get("menu.idiomas"));
@@ -244,9 +305,6 @@ public class MenuPrincipalView extends JFrame {
     public JMenuItem getItemIdiomaFR() {
         return itemIdiomaFR;
     }
-
-
-
 
     public JMenuItem getMenuItemCerrarSesion() { return menuItemCerrarSesion; }
 

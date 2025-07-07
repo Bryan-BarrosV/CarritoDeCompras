@@ -3,6 +3,7 @@ package ec.edu.ups.vista.Usuario;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class UsuarioAnadirView extends JInternalFrame {
 
@@ -30,6 +31,58 @@ public class UsuarioAnadirView extends JInternalFrame {
         setSize(400, 400);
         setVisible(false);
         actualizarTextos();
+
+        URL nombreURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/nombre.png");
+        if (nombreURL != null) {
+            lblNombre.setIcon(new ImageIcon(new ImageIcon(nombreURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró el ícono nombre.png");
+        }
+
+        URL contrasenaURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/contraseña.png");
+        if (contrasenaURL != null) {
+            lblContrasena.setIcon(new ImageIcon(new ImageIcon(contrasenaURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró el ícono contraseña.png");
+        }
+
+        URL nombreCompletoURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/nombrecompleto.png");
+        if (nombreCompletoURL != null) {
+            lblNombreCompleto.setIcon(new ImageIcon(new ImageIcon(nombreCompletoURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró el ícono nombrecompleto.png");
+        }
+
+        URL correoURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/correo.png");
+        if (correoURL != null) {
+            lblCorreo.setIcon(new ImageIcon(new ImageIcon(correoURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró el ícono correo.png");
+        }
+
+        URL telefonoURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/telefono.png");
+        if (telefonoURL != null) {
+            lblTelefono.setIcon(new ImageIcon(new ImageIcon(telefonoURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró el ícono telefono.png");
+        }
+
+        URL registrarURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/registrar.png");
+        if (registrarURL != null) {
+            btnRegistrar.setIcon(new ImageIcon(new ImageIcon(registrarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnRegistrar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el ícono registrar.png");
+        }
+
+        URL limpiarURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/limpiar.png");
+        if (limpiarURL != null) {
+            btnLimpiar.setIcon(new ImageIcon(new ImageIcon(limpiarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnLimpiar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el ícono limpiar.png");
+        }
+
     }
 
     public JTextField getTxtUsername() {

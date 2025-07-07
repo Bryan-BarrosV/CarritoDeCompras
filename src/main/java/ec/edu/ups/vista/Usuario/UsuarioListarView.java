@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 import java.util.List;
 
 public class UsuarioListarView extends JInternalFrame {
@@ -42,6 +43,30 @@ public class UsuarioListarView extends JInternalFrame {
         tblUsuarios.setModel(modelo);
 
         actualizarTextos();
+
+        URL idURL = UsuarioListarView.class.getClassLoader().getResource("imagenes/id.png");
+        if (idURL != null) {
+            lblId.setIcon(new ImageIcon(new ImageIcon(idURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró id.png");
+        }
+
+        URL buscarURL = UsuarioListarView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            btnBuscar.setIcon(new ImageIcon(new ImageIcon(buscarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró buscar.png");
+        }
+
+        URL listarURL = UsuarioListarView.class.getClassLoader().getResource("imagenes/listar.png");
+        if (listarURL != null) {
+            btnListar.setIcon(new ImageIcon(new ImageIcon(listarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnListar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró listar.png");
+        }
+
     }
 
     public void cargarDatosTabla(List<Usuario> listaUsuarios) {

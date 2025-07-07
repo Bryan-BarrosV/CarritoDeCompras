@@ -4,6 +4,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class ContrasenaPreguntaView extends JInternalFrame {
 
@@ -85,6 +86,27 @@ public class ContrasenaPreguntaView extends JInternalFrame {
         add(btnGuardar);
 
         actualizarTextos();
+
+        URL iconoURL = ContrasenaPreguntaView.class.getClassLoader().getResource("imagenes/preguntamensajes.png");
+        if (iconoURL != null) {
+            ImageIcon iconoPregunta = new ImageIcon(iconoURL);
+            Image img = iconoPregunta.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            Icon icono = new ImageIcon(img);
+
+            JLabel[] etiquetas = {
+                    lblPregunta1, lblPregunta2, lblPregunta3, lblPregunta4, lblPregunta5,
+                    lblPregunta6, lblPregunta7, lblPregunta8, lblPregunta9, lblPregunta10
+            };
+
+            for (JLabel label : etiquetas) {
+                label.setIcon(icono);
+                label.setHorizontalTextPosition(SwingConstants.RIGHT);
+                label.setVerticalTextPosition(SwingConstants.CENTER);
+            }
+        } else {
+            System.err.println("No se encontró el icono preguntamensajes.png");
+        }
+
     }
 
     public JLabel getLblPregunta1() {

@@ -4,6 +4,7 @@ import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
+import java.net.URL;
 
 public class UsuarioEliminarView extends JInternalFrame {
 
@@ -30,6 +31,37 @@ public class UsuarioEliminarView extends JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setVisible(false);
+
+        URL usuarioURL = UsuarioEliminarView.class.getClassLoader().getResource("imagenes/usuario.png");
+        if (usuarioURL != null) {
+            lblUsuario.setIcon(new ImageIcon(new ImageIcon(usuarioURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró usuario.png");
+        }
+
+        URL contrasenaURL = UsuarioEliminarView.class.getClassLoader().getResource("imagenes/contraseña.png");
+        if (contrasenaURL != null) {
+            lblContrasena.setIcon(new ImageIcon(new ImageIcon(contrasenaURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró contraseña.png");
+        }
+
+        URL buscarURL = UsuarioEliminarView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            btnBuscar.setIcon(new ImageIcon(new ImageIcon(buscarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró buscar.png");
+        }
+
+        URL eliminarURL = UsuarioEliminarView.class.getClassLoader().getResource("imagenes/basura.png");
+        if (eliminarURL != null) {
+            btnEliminar.setIcon(new ImageIcon(new ImageIcon(eliminarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnEliminar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró basura.png");
+        }
+
     }
 
     public JPanel getPanelPrincipal() {

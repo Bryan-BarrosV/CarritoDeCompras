@@ -5,6 +5,8 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.net.URL;
 import java.util.List;
 
 public class ProductoListaView extends JInternalFrame {
@@ -36,6 +38,35 @@ public class ProductoListaView extends JInternalFrame {
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
         actualizarTextos();
+
+        URL listarURL = ProductoListaView.class.getClassLoader().getResource("imagenes/listar.png");
+        if (listarURL != null) {
+            ImageIcon iconoListar = new ImageIcon(listarURL);
+            Image imgListar = iconoListar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnListar.setIcon(new ImageIcon(imgListar));
+            btnListar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró listar.png");
+        }
+
+        URL buscarURL = ProductoListaView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
+            Image imgBuscar = iconoBuscar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnBuscar.setIcon(new ImageIcon(imgBuscar));
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró buscar.png");
+        }
+
+        URL nombreURL = ProductoListaView.class.getClassLoader().getResource("imagenes/productonombre.png");
+        if (nombreURL != null) {
+            ImageIcon iconoNombre = new ImageIcon(nombreURL);
+            Image imgNombre = iconoNombre.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblNombre.setIcon(new ImageIcon(imgNombre));
+        } else {
+            System.err.println("No se encontró productonombre.png");
+        }
     }
 
     public JTextField getTxtBuscar() {
@@ -97,7 +128,6 @@ public class ProductoListaView extends JInternalFrame {
             };
             modelo.addRow(fila);
         }
-
 
     }
     public void actualizarTextos() {

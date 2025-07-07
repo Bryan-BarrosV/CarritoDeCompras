@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 import java.util.List;
 
 public class EliminarCarritoView extends  JInternalFrame {
@@ -30,6 +31,27 @@ public class EliminarCarritoView extends  JInternalFrame {
         setVisible(false);
 
         actualizarTextos();
+
+        URL codigoURL = EliminarCarritoView.class.getClassLoader().getResource("imagenes/codigo.png");
+        if (codigoURL != null) {
+            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
+            lblCodigo.setIcon(new ImageIcon(iconoCodigo.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        }
+
+        URL buscarURL = EliminarCarritoView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
+            buscarButton.setIcon(new ImageIcon(iconoBuscar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            buscarButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
+        URL eliminarURL = EliminarCarritoView.class.getClassLoader().getResource("imagenes/basura.png");
+        if (eliminarURL != null) {
+            ImageIcon iconoEliminar = new ImageIcon(eliminarURL);
+            eliminarButton.setIcon(new ImageIcon(iconoEliminar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            eliminarButton.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
     }
     public JPanel getPanelPrincipal() {
         return panelPrincipal;

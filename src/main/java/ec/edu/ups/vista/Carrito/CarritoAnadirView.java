@@ -4,6 +4,10 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class CarritoAnadirView extends JInternalFrame {
     private JButton btnBuscar;
@@ -27,6 +31,7 @@ public class CarritoAnadirView extends JInternalFrame {
     private JLabel lblCantidad;
     private JLabel lblUsuario;
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
+    private Locale locale;
 
     public CarritoAnadirView(MensajeInternacionalizacionHandler handler){
         super("Carrito de Compras", true, true, false, true);
@@ -49,6 +54,75 @@ public class CarritoAnadirView extends JInternalFrame {
         cargarDatos();
         setVisible(false);
         actualizarTextos();
+
+        URL limpiarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/limpiar.png");
+        if (limpiarURL != null) {
+            ImageIcon iconoLimpiar = new ImageIcon(limpiarURL);
+            Image imgLimpiar = iconoLimpiar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnLimpiar.setIcon(new ImageIcon(imgLimpiar));
+            btnLimpiar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
+        URL anadirCarrURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/añadircarr.png");
+        if (anadirCarrURL != null) {
+            ImageIcon iconoAnadir = new ImageIcon(anadirCarrURL);
+            Image imgAnadir = iconoAnadir.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnAnadir.setIcon(new ImageIcon(imgAnadir));
+            btnAnadir.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
+        URL usuarioURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/usuariocarr.png");
+        if (usuarioURL != null) {
+            ImageIcon iconoUsuario = new ImageIcon(usuarioURL);
+            Image imgUsuario = iconoUsuario.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblUsuario.setIcon(new ImageIcon(imgUsuario));
+        }
+
+        URL codigoURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/codigo.png");
+        if (codigoURL != null) {
+            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
+            Image imgCodigo = iconoCodigo.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblCodigo.setIcon(new ImageIcon(imgCodigo));
+        }
+
+        URL nombreURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/productonombre.png");
+        if (nombreURL != null) {
+            ImageIcon iconoNombre = new ImageIcon(nombreURL);
+            Image imgNombre = iconoNombre.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblNombre.setIcon(new ImageIcon(imgNombre));
+        }
+
+        URL precioURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/precio.png");
+        if (precioURL != null) {
+            ImageIcon iconoPrecio = new ImageIcon(precioURL);
+            Image imgPrecio = iconoPrecio.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            lblPrecio.setIcon(new ImageIcon(imgPrecio));
+        }
+
+        URL buscarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
+            Image imgBuscar = iconoBuscar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnBuscar.setIcon(new ImageIcon(imgBuscar));
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
+        URL eliminarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/basura.png");
+        if (eliminarURL != null) {
+            ImageIcon iconoEliminar = new ImageIcon(eliminarURL);
+            Image imgEliminar = iconoEliminar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnEliminar.setIcon(new ImageIcon(imgEliminar));
+            btnEliminar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
+        URL guardarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/guardar.png");
+        if (guardarURL != null) {
+            ImageIcon iconoGuardar = new ImageIcon(guardarURL);
+            Image imgGuardar = iconoGuardar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            btnGuardar.setIcon(new ImageIcon(imgGuardar));
+            btnGuardar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        }
+
     }
 
     private void cargarDatos(){
@@ -162,5 +236,7 @@ public class CarritoAnadirView extends JInternalFrame {
         });
     }
 
-
+    public MensajeInternacionalizacionHandler getMensajeInternacionalizacion() {
+        return mensajeInternacionalizacionHandler;
+    }
 }

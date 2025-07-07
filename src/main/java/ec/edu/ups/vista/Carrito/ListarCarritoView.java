@@ -5,6 +5,7 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.net.URL;
 import java.util.List;
 
 public class ListarCarritoView extends JInternalFrame {
@@ -35,6 +36,33 @@ public class ListarCarritoView extends JInternalFrame {
         tblCarrito.setModel(modelo);
 
         actualizarTextos();
+
+        URL codigoURL = ListarCarritoView.class.getClassLoader().getResource("imagenes/codigo.png");
+        if (codigoURL != null) {
+            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
+            lblCodigo.setIcon(new ImageIcon(iconoCodigo.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+        } else {
+            System.err.println("No se encontró el ícono codigo.png");
+        }
+
+        URL buscarURL = ListarCarritoView.class.getClassLoader().getResource("imagenes/buscar.png");
+        if (buscarURL != null) {
+            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
+            btnBuscar.setIcon(new ImageIcon(iconoBuscar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el ícono buscar.png");
+        }
+
+        URL listarURL = ListarCarritoView.class.getClassLoader().getResource("imagenes/listar.png");
+        if (listarURL != null) {
+            ImageIcon iconoListar = new ImageIcon(listarURL);
+            btnListar.setIcon(new ImageIcon(iconoListar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+            btnListar.setHorizontalTextPosition(SwingConstants.RIGHT);
+        } else {
+            System.err.println("No se encontró el ícono listar.png");
+        }
+
     }
 
     public JTextField getTxtBuscar() {
