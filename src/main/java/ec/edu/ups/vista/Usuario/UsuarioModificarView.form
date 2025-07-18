@@ -28,7 +28,7 @@
             </constraints>
             <properties>
               <foreground color="-15918294"/>
-              <text value="Nombre"/>
+              <text value="Cedula"/>
             </properties>
           </component>
           <component id="60d76" class="javax.swing.JLabel" binding="lblContrasena">

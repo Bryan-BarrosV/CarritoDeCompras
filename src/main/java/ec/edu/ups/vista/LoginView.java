@@ -24,6 +24,11 @@ public class LoginView extends JFrame {
 
     private JMenuBar menuBar;
     private JMenu menuIdioma;
+    private JMenu menuConfiguracion;
+    private JMenuItem itemMemoria;
+    private JMenuItem itemTexto;
+    private JMenuItem itemBinario;
+
     private JMenuItem itemEspañol, itemIngles, itemFrances;
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
@@ -33,6 +38,7 @@ public class LoginView extends JFrame {
 
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(900,900);
 
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -48,33 +54,17 @@ public class LoginView extends JFrame {
         menuIdioma.add(itemIngles);
         menuIdioma.add(itemFrances);
 
-        itemEspañol.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mensajeInternacionalizacionHandler.setLenguaje("es", "EC");
-                actualizarTextosLogin();
-            }
-        });
+        menuConfiguracion = new JMenu("Configuración");
+        menuBar.add(menuConfiguracion);
 
-        itemIngles.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mensajeInternacionalizacionHandler.setLenguaje("en", "US");
-                actualizarTextosLogin();
-            }
-        });
+        itemMemoria = new JMenuItem("Memoria");
+        itemTexto = new JMenuItem("Archivo de Texto");
+        itemBinario = new JMenuItem("Archivo Binario");
 
-        itemFrances.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mensajeInternacionalizacionHandler.setLenguaje("fr", "FR");
-                actualizarTextosLogin();
-            }
-        });
+        menuConfiguracion.add(itemMemoria);
+        menuConfiguracion.add(itemTexto);
+        menuConfiguracion.add(itemBinario);
 
-        btnIniciarSesion.addActionListener(e -> {
-            dispose();
-        });
 
         URL usuarioURL = LoginView.class.getClassLoader().getResource("imagenes/usuario.png");
         if (usuarioURL != null) {
@@ -186,6 +176,18 @@ public class LoginView extends JFrame {
     public void limpiarCampos() {
         txtUsername.setText("");
         txtContrasenia.setText("");
+    }
+
+    public JMenuItem getItemMemoria() {
+        return itemMemoria;
+    }
+
+    public JMenuItem getItemTexto() {
+        return itemTexto;
+    }
+
+    public JMenuItem getItemBinario() {
+        return itemBinario;
     }
 
 }

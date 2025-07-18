@@ -100,7 +100,7 @@
             </constraints>
             <properties>
               <foreground color="-15918294"/>
-              <text value="Nombre"/>
+              <text value="Cedula"/>
             </properties>
           </component>
           <component id="cc674" class="javax.swing.JLabel" binding="lblCorreo">

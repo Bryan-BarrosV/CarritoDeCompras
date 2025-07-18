@@ -1,102 +1,61 @@
 package ec.edu.ups.vista.Contrasena;
 
+import ec.edu.ups.dao.PreguntaDAO;
+import ec.edu.ups.dao.impl.Memoria.PreguntaDAOMemoria;
+import ec.edu.ups.modelo.Pregunta;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContrasenaPreguntaView extends JInternalFrame {
 
-    private JLabel lblPregunta1;
-    private JLabel lblPregunta2;
-    private JTextField txtRespuesta1;
-    private JTextField txtRespuesta2;
+    private List<JLabel> etiquetas;
+    private List<JTextField> respuestas;
     private JButton btnGuardar;
-    private JTextField txtRespuesta3;
-    private JTextField txtRespuesta4;
-    private JTextField txtRespuesta5;
-    private JTextField txtRespuesta6;
-    private JTextField txtRespuesta7;
-    private JTextField txtRespuesta8;
-    private JTextField txtRespuesta9;
-    private JTextField txtRespuesta10;
-    private JLabel lblPregunta3;
-    private JLabel lblPregunta4;
-    private JLabel lblPregunta5;
-    private JLabel lblPregunta6;
-    private JLabel lblPregunta7;
-    private JLabel lblPregunta8;
-    private JLabel lblPregunta9;
-    private JLabel lblPregunta10;
     private String username;
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
     public ContrasenaPreguntaView(MensajeInternacionalizacionHandler handler) {
         super("Preguntas de Seguridad", true, true, false, true);
-        this.mensajeInternacionalizacionHandler=handler;
-        setSize(400, 300);
-        setLayout(new GridLayout(11, 2));
+        this.mensajeInternacionalizacionHandler = handler;
 
-        lblPregunta1 = new JLabel("¿Cuál es el nombre de tu madre?");
-        lblPregunta2 = new JLabel("¿Cuál es tu equipo favorito de fútbol?");
-        lblPregunta3=new JLabel("¿Cuál es su color favorito?");
-        lblPregunta4=new JLabel("¿Cuál es el segundo nombre de tu padre?");
-        lblPregunta5=new JLabel("¿Cómo se llama tu mascota?");
-        lblPregunta6=new JLabel("¿En qué ciudad naciste?");
-        lblPregunta7=new JLabel("¿Cuál es tu película favorita?");
-        lblPregunta8=new JLabel("¿Cuál es tu comida favorita?");
-        lblPregunta9=new JLabel("¿Cuál es tu canción favorita?");
-        lblPregunta10=new JLabel("¿Cómo se llama tu abuela?");
+        this.etiquetas = new ArrayList<>();
+        this.respuestas = new ArrayList<>();
 
-        txtRespuesta1 = new JTextField();
-        txtRespuesta2 = new JTextField();
-        txtRespuesta3 = new JTextField();
-        txtRespuesta4 = new JTextField();
-        txtRespuesta5 = new JTextField();
-        txtRespuesta6 = new JTextField();
-        txtRespuesta7 = new JTextField();
-        txtRespuesta8 = new JTextField();
-        txtRespuesta9 = new JTextField();
-        txtRespuesta10 = new JTextField();
-        btnGuardar = new JButton("Guardar");
+        PreguntaDAO preguntaDAO = new PreguntaDAOMemoria(mensajeInternacionalizacionHandler);
+        List<Pregunta> preguntas = preguntaDAO.obtenerTodas();
 
-        add(lblPregunta1);
-        add(txtRespuesta1);
-        add(lblPregunta2);
-        add(txtRespuesta2);
-        add(lblPregunta3);
-        add(txtRespuesta3);
-        add(lblPregunta4);
-        add(txtRespuesta4);
-        add(lblPregunta5);
-        add(txtRespuesta5);
-        add(lblPregunta6);
-        add(txtRespuesta6);
-        add(lblPregunta7);
-        add(txtRespuesta7);
-        add(lblPregunta8);
-        add(txtRespuesta8);
-        add(lblPregunta9);
-        add(txtRespuesta9);
-        add(lblPregunta10);
-        add(txtRespuesta10);
+        setLayout(new GridLayout(preguntas.size() + 1, 2));
+        setSize(450, 350);
+
+        for (Pregunta pregunta : preguntas) {
+            JLabel lbl = new JLabel();
+            JTextField txt = new JTextField();
+            etiquetas.add(lbl);
+            respuestas.add(txt);
+            add(lbl);
+            add(txt);
+        }
+
+        btnGuardar = new JButton();
         add(new JLabel());
         add(btnGuardar);
 
+        aplicarIcono();
         actualizarTextos();
+    }
 
+    private void aplicarIcono() {
         URL iconoURL = ContrasenaPreguntaView.class.getClassLoader().getResource("imagenes/preguntamensajes.png");
         if (iconoURL != null) {
             ImageIcon iconoPregunta = new ImageIcon(iconoURL);
             Image img = iconoPregunta.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             Icon icono = new ImageIcon(img);
-
-            JLabel[] etiquetas = {
-                    lblPregunta1, lblPregunta2, lblPregunta3, lblPregunta4, lblPregunta5,
-                    lblPregunta6, lblPregunta7, lblPregunta8, lblPregunta9, lblPregunta10
-            };
 
             for (JLabel label : etiquetas) {
                 label.setIcon(icono);
@@ -106,23 +65,15 @@ public class ContrasenaPreguntaView extends JInternalFrame {
         } else {
             System.err.println("No se encontró el icono preguntamensajes.png");
         }
-
     }
 
-    public JLabel getLblPregunta1() {
-        return lblPregunta1;
-    }
-
-    public JLabel getLblPregunta2() {
-        return lblPregunta2;
-    }
-
-    public JTextField getTxtRespuesta1() {
-        return txtRespuesta1;
-    }
-
-    public JTextField getTxtRespuesta2() {
-        return txtRespuesta2;
+    public void actualizarTextos() {
+        setTitle(mensajeInternacionalizacionHandler.get("contrasena.pregunta.titulo"));
+        for (int i = 0; i < etiquetas.size(); i++) {
+            String clave = "pregunta." + (i + 1); // clave tipo: pregunta.1
+            etiquetas.get(i).setText(mensajeInternacionalizacionHandler.get(clave));
+        }
+        btnGuardar.setText(mensajeInternacionalizacionHandler.get("boton.guardar"));
     }
 
     public JButton getBtnGuardar() {
@@ -138,85 +89,20 @@ public class ContrasenaPreguntaView extends JInternalFrame {
     }
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
-    public JTextField getTxtRespuesta3() {
-        return txtRespuesta3;
+    public List<String> getRespuestas() {
+        List<String> respuestasTexto = new ArrayList<>();
+        for (JTextField campo : respuestas) {
+            respuestasTexto.add(campo.getText().trim());
+        }
+        return respuestasTexto;
     }
 
-    public JTextField getTxtRespuesta4() {
-        return txtRespuesta4;
+
+    public void limpiarCampos() {
+        respuestas.forEach(t -> t.setText(""));
     }
 
-    public JTextField getTxtRespuesta5() {
-        return txtRespuesta5;
-    }
-
-    public JTextField getTxtRespuesta6() {
-        return txtRespuesta6;
-    }
-
-    public JTextField getTxtRespuesta7() {
-        return txtRespuesta7;
-    }
-
-    public JTextField getTxtRespuesta8() {
-        return txtRespuesta8;
-    }
-
-    public JTextField getTxtRespuesta9() {
-        return txtRespuesta9;
-    }
-
-    public JTextField getTxtRespuesta10() {
-        return txtRespuesta10;
-    }
-
-    public JLabel getLblPregunta3() {
-        return lblPregunta3;
-    }
-
-    public JLabel getLblPregunta4() {
-        return lblPregunta4;
-    }
-
-    public JLabel getLblPregunta5() {
-        return lblPregunta5;
-    }
-
-    public JLabel getLblPregunta6() {
-        return lblPregunta6;
-    }
-
-    public JLabel getLblPregunta7() {
-        return lblPregunta7;
-    }
-
-    public JLabel getLblPregunta8() {
-        return lblPregunta8;
-    }
-
-    public JLabel getLblPregunta9() {
-        return lblPregunta9;
-    }
-
-    public JLabel getLblPregunta10() {
-        return lblPregunta10;
-    }
-
-    public void actualizarTextos() {
-        setTitle(mensajeInternacionalizacionHandler.get("contrasena.pregunta.titulo"));
-        lblPregunta1.setText(mensajeInternacionalizacionHandler.get("pregunta.1"));
-        lblPregunta2.setText(mensajeInternacionalizacionHandler.get("pregunta.2"));
-        lblPregunta3.setText(mensajeInternacionalizacionHandler.get("pregunta.3"));
-        lblPregunta4.setText(mensajeInternacionalizacionHandler.get("pregunta.4"));
-        lblPregunta5.setText(mensajeInternacionalizacionHandler.get("pregunta.5"));
-        lblPregunta6.setText(mensajeInternacionalizacionHandler.get("pregunta.6"));
-        lblPregunta7.setText(mensajeInternacionalizacionHandler.get("pregunta.7"));
-        lblPregunta8.setText(mensajeInternacionalizacionHandler.get("pregunta.8"));
-        lblPregunta9.setText(mensajeInternacionalizacionHandler.get("pregunta.9"));
-        lblPregunta10.setText(mensajeInternacionalizacionHandler.get("pregunta.10"));
-        btnGuardar.setText(mensajeInternacionalizacionHandler.get("boton.guardar"));
-    }
 }
