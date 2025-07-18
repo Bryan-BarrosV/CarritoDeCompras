@@ -8,16 +8,28 @@ import javax.swing.table.DefaultTableModel;
 import java.net.URL;
 import java.util.List;
 
-public class EliminarCarritoView extends  JInternalFrame {
+/**
+ * Vista interna que permite eliminar carritos de compras.
+ * <p>
+ * Esta clase proporciona una interfaz para buscar carritos existentes por su código y eliminarlos.
+ * Muestra los resultados en una tabla y ofrece opciones para limpiar campos y actualizar textos
+ * mediante internacionalización.
+ */
+public class EliminarCarritoView extends JInternalFrame {
+
     private JPanel panelPrincipal;
     private JTextField textField1;
     private JButton buscarButton;
     private JTable tblProductos;
     private JButton eliminarButton;
     private JLabel lblCodigo;
-
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
+    /**
+     * Constructor que inicializa la vista para eliminar carritos.
+     *
+     * @param handler Manejador de internacionalización para cargar los textos en el idioma seleccionado.
+     */
     public EliminarCarritoView(MensajeInternacionalizacionHandler handler) {
         super("Eliminar Carrito", true, true, false, true);
         this.mensajeInternacionalizacionHandler = handler;
@@ -31,58 +43,96 @@ public class EliminarCarritoView extends  JInternalFrame {
         setVisible(false);
 
         actualizarTextos();
-
-        URL codigoURL = EliminarCarritoView.class.getClassLoader().getResource("imagenes/codigo.png");
-        if (codigoURL != null) {
-            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
-            lblCodigo.setIcon(new ImageIcon(iconoCodigo.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
-        }
-
-        URL buscarURL = EliminarCarritoView.class.getClassLoader().getResource("imagenes/buscar.png");
-        if (buscarURL != null) {
-            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
-            buscarButton.setIcon(new ImageIcon(iconoBuscar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
-            buscarButton.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
-        URL eliminarURL = EliminarCarritoView.class.getClassLoader().getResource("imagenes/basura.png");
-        if (eliminarURL != null) {
-            ImageIcon iconoEliminar = new ImageIcon(eliminarURL);
-            eliminarButton.setIcon(new ImageIcon(iconoEliminar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
-            eliminarButton.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
+        configurarIconos();
     }
+
+    /**
+     * Carga íconos personalizados en botones y etiquetas.
+     */
+    private void configurarIconos() {
+        asignarIcono("imagenes/codigo.png", lblCodigo);
+        asignarIcono("imagenes/buscar.png", buscarButton);
+        asignarIcono("imagenes/basura.png", eliminarButton);
+    }
+
+    /**
+     * Asocia un ícono a un componente de Swing.
+     *
+     * @param ruta     Ruta del recurso de imagen.
+     * @param destino  Componente al cual se le asignará el ícono.
+     */
+    private void asignarIcono(String ruta, JComponent destino) {
+        URL url = EliminarCarritoView.class.getClassLoader().getResource(ruta);
+        if (url != null) {
+            ImageIcon icono = new ImageIcon(url);
+            ImageIcon iconoEscalado = new ImageIcon(icono.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH));
+            if (destino instanceof JLabel) {
+                ((JLabel) destino).setIcon(iconoEscalado);
+            } else if (destino instanceof AbstractButton) {
+                ((AbstractButton) destino).setIcon(iconoEscalado);
+                ((AbstractButton) destino).setHorizontalTextPosition(SwingConstants.RIGHT);
+            }
+        }
+    }
+
+    // ------------------------ Getters ------------------------
+
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
+
     public void setPanelPrincipal(JPanel panelPrincipal) {
         this.panelPrincipal = panelPrincipal;
     }
+
     public JTextField getTextField1() {
         return textField1;
     }
+
     public JButton getBuscarButton() {
         return buscarButton;
     }
+
     public JTable getTblProductos() {
         return tblProductos;
     }
+
     public JButton getEliminarButton() {
         return eliminarButton;
     }
+
+    /**
+     * Muestra un mensaje emergente al usuario.
+     *
+     * @param mensaje Texto a mostrar.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
+    /**
+     * Limpia el campo de texto utilizado para la búsqueda por código.
+     */
     public void limpiarCampos() {
         textField1.setText("");
     }
+
+    /**
+     * Muestra una lista de productos en consola (no en la interfaz gráfica).
+     *
+     * @param productos Arreglo de nombres de productos.
+     */
     public void mostrarProductos(String[] productos) {
         for (String producto : productos) {
             System.out.println(producto);
         }
     }
 
+    /**
+     * Carga una lista de carritos encontrados en la tabla.
+     *
+     * @param carritosEncontrados Lista de carritos a mostrar.
+     */
     public void cargarDatosTabla(List<Carrito> carritosEncontrados) {
         Object[] columnas = {
                 mensajeInternacionalizacionHandler.get("producto.label.codigo"),
@@ -115,12 +165,15 @@ public class EliminarCarritoView extends  JInternalFrame {
             mostrarMensaje(mensajeInternacionalizacionHandler.get("carrito.vacio"));
         }
     }
+
+    /**
+     * Actualiza todos los textos de la interfaz con base en el idioma actual.
+     */
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("carrito.eliminar.titulo"));
         lblCodigo.setText(mensajeInternacionalizacionHandler.get("carrito.label.codigo"));
         buscarButton.setText(mensajeInternacionalizacionHandler.get("boton.buscar"));
         eliminarButton.setText(mensajeInternacionalizacionHandler.get("boton.eliminar"));
-
 
         if (tblProductos.getModel() instanceof DefaultTableModel) {
             ((DefaultTableModel) tblProductos.getModel()).setColumnIdentifiers(new Object[]{
@@ -133,5 +186,4 @@ public class EliminarCarritoView extends  JInternalFrame {
             });
         }
     }
-
 }

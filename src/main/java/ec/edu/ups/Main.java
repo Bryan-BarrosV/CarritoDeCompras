@@ -4,14 +4,8 @@ import ec.edu.ups.controlador.CarritoController;
 import ec.edu.ups.controlador.ContrasenaController;
 import ec.edu.ups.controlador.ProductoController;
 import ec.edu.ups.controlador.UsuarioController;
-import ec.edu.ups.dao.CarritoDAO;
-import ec.edu.ups.dao.ContrasenaDAO;
-import ec.edu.ups.dao.ProductoDAO;
-import ec.edu.ups.dao.UsuarioDAO;
-import ec.edu.ups.dao.impl.CarritoDAOMemoria;
-import ec.edu.ups.dao.impl.ContrasenaDAOMemoria;
-import ec.edu.ups.dao.impl.ProductoDAOMemoria;
-import ec.edu.ups.dao.impl.UsuarioDAOMemoria;
+import ec.edu.ups.dao.*;
+import ec.edu.ups.dao.impl.*;
 import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import ec.edu.ups.vista.Carrito.CarritoAnadirView;
@@ -37,17 +31,42 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+// --------Modififcado Pregunta si se hace commit
+//-----------------------------------------------
 
 public class Main {
-
-    public static void main(String[] args) {
+    private static String modoAlmacenamiento = "MEMORIA";
+    @SuppressWarnings("all")
+    public static void main(String[] args)throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         EventQueue.invokeLater(() -> {
-            ProductoDAO productoDAO = new ProductoDAOMemoria();
-            CarritoDAO carritoDAO = new CarritoDAOMemoria();
-            UsuarioDAO usuarioDAO = new UsuarioDAOMemoria();
-            ContrasenaDAO contrasenaDAO = new ContrasenaDAOMemoria();
-
             final MensajeInternacionalizacionHandler handler = new MensajeInternacionalizacionHandler("es", "EC");
+            DAOFactory daoFactory;
+            try {
+                daoFactory = new DAOFactory(modoAlmacenamiento);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+            ProductoDAO productoDAO = daoFactory.getProductoDAO();
+            CarritoDAO carritoDAO = null;
+            UsuarioDAO usuarioDAO = null;
+            ContrasenaDAO contrasenaDAO = null;
+            PreguntaDAO preguntaDAO = null;
+            RespuestaDAO respuestaDAO = null;
+
+            try {
+                carritoDAO = daoFactory.getCarritoDAO();
+                usuarioDAO = daoFactory.getUsuarioDAO();
+                contrasenaDAO = daoFactory.getContrasenaDAO();
+                preguntaDAO = daoFactory.getPreguntaDAO(handler);
+                respuestaDAO = daoFactory.getRespuestaDAO();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+
             MenuPrincipalView ventanaPrincipal = new MenuPrincipalView(handler);
 
             LoginView loginView = new LoginView(handler);
@@ -240,7 +259,9 @@ public class Main {
                     usuarioEliminarView,
                     loginView,
                     contrasenaView,
-                    contrasenaPreguntaView
+                    contrasenaPreguntaView,
+                    preguntaDAO,
+                    handler
             );
 
             ProductoController productoController = new ProductoController(
@@ -267,9 +288,12 @@ public class Main {
                     contrasenaView
             );
 
-            principalView.getMenuItemCerrarSesion().addActionListener(e -> {
-                principalView.dispose();
-                loginView.setVisible(true);
+            principalView.getMenuItemCerrarSesion().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    principalView.dispose();
+                    loginView.setVisible(true);
+                }
             });
 
             loginView.setVisible(true);
@@ -281,7 +305,7 @@ public class Main {
                     if (usuarioAutenticado != null) {
                         carritoController.setUsuarioAutenticado(usuarioAutenticado);
                         principalView.actualizarTexto();
-                        String bienvenida = handler.get("mensaje.bienvenida") + ": " + usuarioAutenticado.getUsername();
+                        String bienvenida = handler.get("mensaje.bienvenida")  + ": " + usuarioAutenticado.getUsername();
                         principalView.mostrarMensaje(bienvenida);
                         principalView.configurarOpcionesPorRol(usuarioAutenticado.getRol().name());
                         principalView.setVisible(true);
@@ -290,36 +314,119 @@ public class Main {
             });
 
 
-            loginView.getBtnRegistrarse().addActionListener(e -> {
-                loginView.getLayeredPane().add(usuarioAnadirView);
-                usuarioAnadirView.setVisible(true);
-                usuarioAnadirView.toFront();
+            loginView.getBtnRegistrarse().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loginView.getLayeredPane().add(usuarioAnadirView);
+                    usuarioAnadirView.setVisible(true);
+                    usuarioAnadirView.toFront();
+                }
             });
 
-            loginView.getBtnOlvidoContrasena().addActionListener(e -> {
-                loginView.getLayeredPane().add(contrasenaView);
-                contrasenaView.setVisible(true);
-                contrasenaView.toFront();
+
+            loginView.getBtnOlvidoContrasena().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    loginView.getLayeredPane().add(contrasenaView);
+                    contrasenaView.setVisible(true);
+                    contrasenaView.toFront();
+                }
             });
 
-            principalView.getMenuItemCrearProducto().addActionListener(e -> mostrarVentana(principalView, productoAnadirView));
-            principalView.getMenuItemActualizarProducto().addActionListener(e -> mostrarVentana(principalView, modificarProductoView));
-            principalView.getMenuItemBuscarProducto().addActionListener(e -> mostrarVentana(principalView, productoListaView));
-            principalView.getMenuItemEliminarProducto().addActionListener(e -> mostrarVentana(principalView, eliminarProductoView));
 
-            principalView.getMenuItemListarCarrito().addActionListener(e -> mostrarVentana(principalView, listarCarritoView));
-            principalView.getMenuItemEliminarCarrito().addActionListener(e -> mostrarVentana(principalView, eliminarCarritoView));
-            principalView.getMenuItemModificarCarrito().addActionListener(e -> mostrarVentana(principalView, carritoModificarView));
-            principalView.getMenuItemCrearCarrito().addActionListener(e -> {
-                carritoController.mostrarVentanaCarrito();
-                mostrarVentana(principalView, carritoAnadirView);
+            principalView.getMenuItemCrearProducto().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, productoAnadirView);
+                }
             });
 
-            principalView.getMenuItemCrearUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioAnadirView));
-            principalView.getMenuItemListarUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioListarView));
-            principalView.getMenuItemModificarUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioModificarView));
-            principalView.getMenuItemEliminarUsuario().addActionListener(e -> mostrarVentana(principalView, usuarioEliminarView));
-            principalView.getMenuItemModificarCarrito().addActionListener(e -> mostrarVentana(principalView, carritoModificarView));
+            principalView.getMenuItemActualizarProducto().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, modificarProductoView);
+                }
+            });
+
+            principalView.getMenuItemBuscarProducto().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, productoListaView);
+                }
+            });
+
+            principalView.getMenuItemEliminarProducto().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, eliminarProductoView);
+                }
+            });
+
+
+            principalView.getMenuItemListarCarrito().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, listarCarritoView);
+                }
+            });
+
+            principalView.getMenuItemEliminarCarrito().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, eliminarCarritoView);
+                }
+            });
+
+            principalView.getMenuItemModificarCarrito().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, carritoModificarView);
+                }
+            });
+
+            principalView.getMenuItemCrearCarrito().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    carritoController.mostrarVentanaCarrito();
+                    mostrarVentana(principalView, carritoAnadirView);
+                }
+            });
+
+
+            principalView.getMenuItemCrearUsuario().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, usuarioAnadirView);
+                }
+            });
+
+            principalView.getMenuItemListarUsuario().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, usuarioListarView);
+                }
+            });
+
+            principalView.getMenuItemModificarUsuario().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, usuarioModificarView);
+                }
+            });
+
+            principalView.getMenuItemEliminarUsuario().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, usuarioEliminarView);
+                }
+            });
+
+            principalView.getMenuItemModificarCarrito().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mostrarVentana(principalView, carritoModificarView);
+                }
+            });
 
         });
     }

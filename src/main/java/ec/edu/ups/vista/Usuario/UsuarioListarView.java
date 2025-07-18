@@ -117,4 +117,12 @@ public class UsuarioListarView extends JInternalFrame {
                 mensajeInternacionalizacionHandler.get("usuario.label.rol")
         });
     }
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    public void limpiarTabla() {
+        modelo.setRowCount(0);
+    }
+
 }

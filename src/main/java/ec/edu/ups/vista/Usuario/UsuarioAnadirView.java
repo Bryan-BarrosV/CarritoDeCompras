@@ -118,7 +118,11 @@ public class UsuarioAnadirView extends JInternalFrame {
     public void limpiarCampos() {
         txtUsername.setText("");
         txtContrasenia.setText("");
+        txtNombreCompleto.setText("");
+        txtCorreo.setText("");
+        txtTelefono.setText("");
     }
+
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("usuario.anadir.titulo"));
         lblNombre.setText(mensajeInternacionalizacionHandler.get("usuario.label.username"));

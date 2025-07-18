@@ -1,5 +1,6 @@
 package ec.edu.ups.vista.Carrito;
 
+import ec.edu.ups.modelo.Usuario;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
@@ -7,9 +8,16 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.net.URL;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
+/**
+ * Vista interna que permite al usuario añadir productos a un carrito de compras.
+ * <p>
+ * Esta clase proporciona una interfaz gráfica construida con Swing para gestionar el ingreso
+ * de productos al carrito, calcular subtotales, IVA y total, y persistir la información.
+ * Además, soporta la internacionalización de los textos mediante {@link MensajeInternacionalizacionHandler}.
+ */
 public class CarritoAnadirView extends JInternalFrame {
+
     private JButton btnBuscar;
     private JTextField txtCodigo;
     private JTextField txtNombre;
@@ -33,161 +41,107 @@ public class CarritoAnadirView extends JInternalFrame {
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
     private Locale locale;
 
-    public CarritoAnadirView(MensajeInternacionalizacionHandler handler){
+    /**
+     * Constructor que inicializa y configura los componentes de la vista.
+     *
+     * @param handler manejador de internacionalización que proporciona los textos traducidos.
+     */
+    public CarritoAnadirView(MensajeInternacionalizacionHandler handler) {
         super("Carrito de Compras", true, true, false, true);
         this.mensajeInternacionalizacionHandler = handler;
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
         setSize(500, 500);
 
+        textUsername.setEditable(false);
+        cargarDatos();
+        configurarTabla();
+        configurarIconos();
+        actualizarTextos();
+        setVisible(false);
+    }
+
+    /**
+     * Carga la lista de cantidades disponibles en el combo.
+     */
+    private void cargarDatos() {
+        cbxCantidad.removeAllItems();
+        for (int i = 1; i <= 20; i++) {
+            cbxCantidad.addItem(String.valueOf(i));
+        }
+    }
+
+    /**
+     * Configura las columnas de la tabla de productos.
+     */
+    private void configurarTabla() {
         DefaultTableModel modelo = new DefaultTableModel();
         Object[] columnas = {
-                handler.get("producto.label.codigo"),
-                handler.get("producto.label.nombre"),
-                handler.get("producto.label.precio"),
-                handler.get("producto.label.cantidad"),
-                handler.get("carrito.label.subtotal")
+                mensajeInternacionalizacionHandler.get("producto.label.codigo"),
+                mensajeInternacionalizacionHandler.get("producto.label.nombre"),
+                mensajeInternacionalizacionHandler.get("producto.label.precio"),
+                mensajeInternacionalizacionHandler.get("producto.label.cantidad"),
+                mensajeInternacionalizacionHandler.get("carrito.label.subtotal")
         };
         modelo.setColumnIdentifiers(columnas);
         tblProductos.setModel(modelo);
-
-        cargarDatos();
-        setVisible(false);
-        actualizarTextos();
-
-        URL limpiarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/limpiar.png");
-        if (limpiarURL != null) {
-            ImageIcon iconoLimpiar = new ImageIcon(limpiarURL);
-            Image imgLimpiar = iconoLimpiar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            btnLimpiar.setIcon(new ImageIcon(imgLimpiar));
-            btnLimpiar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
-        URL anadirCarrURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/añadircarr.png");
-        if (anadirCarrURL != null) {
-            ImageIcon iconoAnadir = new ImageIcon(anadirCarrURL);
-            Image imgAnadir = iconoAnadir.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            btnAnadir.setIcon(new ImageIcon(imgAnadir));
-            btnAnadir.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
-        URL usuarioURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/usuariocarr.png");
-        if (usuarioURL != null) {
-            ImageIcon iconoUsuario = new ImageIcon(usuarioURL);
-            Image imgUsuario = iconoUsuario.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            lblUsuario.setIcon(new ImageIcon(imgUsuario));
-        }
-
-        URL codigoURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/codigo.png");
-        if (codigoURL != null) {
-            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
-            Image imgCodigo = iconoCodigo.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            lblCodigo.setIcon(new ImageIcon(imgCodigo));
-        }
-
-        URL nombreURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/productonombre.png");
-        if (nombreURL != null) {
-            ImageIcon iconoNombre = new ImageIcon(nombreURL);
-            Image imgNombre = iconoNombre.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            lblNombre.setIcon(new ImageIcon(imgNombre));
-        }
-
-        URL precioURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/precio.png");
-        if (precioURL != null) {
-            ImageIcon iconoPrecio = new ImageIcon(precioURL);
-            Image imgPrecio = iconoPrecio.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            lblPrecio.setIcon(new ImageIcon(imgPrecio));
-        }
-
-        URL buscarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/buscar.png");
-        if (buscarURL != null) {
-            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
-            Image imgBuscar = iconoBuscar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            btnBuscar.setIcon(new ImageIcon(imgBuscar));
-            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
-        URL eliminarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/basura.png");
-        if (eliminarURL != null) {
-            ImageIcon iconoEliminar = new ImageIcon(eliminarURL);
-            Image imgEliminar = iconoEliminar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            btnEliminar.setIcon(new ImageIcon(imgEliminar));
-            btnEliminar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
-        URL guardarURL = CarritoAnadirView.class.getClassLoader().getResource("imagenes/guardar.png");
-        if (guardarURL != null) {
-            ImageIcon iconoGuardar = new ImageIcon(guardarURL);
-            Image imgGuardar = iconoGuardar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            btnGuardar.setIcon(new ImageIcon(imgGuardar));
-            btnGuardar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        }
-
     }
 
-    private void cargarDatos(){
-        cbxCantidad.removeAllItems();
-        for(int i = 0; i < 20; i++){
-            cbxCantidad.addItem(String.valueOf(i + 1));
+    /**
+     * Asocia íconos personalizados a los botones y etiquetas principales de la vista.
+     */
+    private void configurarIconos() {
+        asociarIcono("imagenes/limpiar.png", btnLimpiar);
+        asociarIcono("imagenes/añadircarr.png", btnAnadir);
+        asociarIcono("imagenes/usuariocarr.png", lblUsuario);
+        asociarIcono("imagenes/codigo.png", lblCodigo);
+        asociarIcono("imagenes/productonombre.png", lblNombre);
+        asociarIcono("imagenes/precio.png", lblPrecio);
+        asociarIcono("imagenes/buscar.png", btnBuscar);
+        asociarIcono("imagenes/basura.png", btnEliminar);
+        asociarIcono("imagenes/guardar.png", btnGuardar);
+    }
+
+    /**
+     * Asocia un icono a un componente Swing.
+     *
+     * @param ruta     la ruta del recurso dentro del proyecto.
+     * @param destino  el componente que recibirá el icono.
+     */
+    private void asociarIcono(String ruta, JComponent destino) {
+        URL url = CarritoAnadirView.class.getClassLoader().getResource(ruta);
+        if (url != null) {
+            ImageIcon icono = new ImageIcon(url);
+            Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            if (destino instanceof AbstractButton) {
+                ((AbstractButton) destino).setIcon(new ImageIcon(imagenEscalada));
+                ((AbstractButton) destino).setHorizontalTextPosition(SwingConstants.RIGHT);
+            } else if (destino instanceof JLabel) {
+                ((JLabel) destino).setIcon(new ImageIcon(imagenEscalada));
+            }
         }
     }
 
-    public JButton getBtnBuscar() {
-        return btnBuscar;
-    }
-
-    public JTextField getTxtCodigo() {
-        return txtCodigo;
-    }
-
-    public JTextField getTxtNombre() {
-        return txtNombre;
-    }
-
-    public JTextField getTxtPrecio() {
-        return txtPrecio;
-    }
-
-    public JButton getBtnAnadir() {
-        return btnAnadir;
-    }
-
-    public JTable getTblProductos() {
-        return tblProductos;
-    }
-
-    public JTextField getTxtSubtotal() {
-        return txtSubtotal;
-    }
-
-    public JTextField getTxtIva() {
-        return txtIva;
-    }
-
-    public JTextField getTxtTotal() {
-        return txtTotal;
-    }
-
-    public JButton getBtnGuardar() {
-        return btnGuardar;
-    }
-
-    public JButton getBtnLimpiar() {
-        return btnLimpiar;
-    }
-
-    public JComboBox getCbxCantidad() {
-        return cbxCantidad;
-    }
-
-    public JPanel getPanelPrincipal() {
-        return panelPrincipal;
-    }
-
+    public JButton getBtnBuscar() { return btnBuscar; }
+    public JTextField getTxtCodigo() { return txtCodigo; }
+    public JTextField getTxtNombre() { return txtNombre; }
+    public JTextField getTxtPrecio() { return txtPrecio; }
+    public JButton getBtnAnadir() { return btnAnadir; }
+    public JTable getTblProductos() { return tblProductos; }
+    public JTextField getTxtSubtotal() { return txtSubtotal; }
+    public JTextField getTxtIva() { return txtIva; }
+    public JTextField getTxtTotal() { return txtTotal; }
+    public JButton getBtnGuardar() { return btnGuardar; }
+    public JButton getBtnLimpiar() { return btnLimpiar; }
+    public JComboBox getCbxCantidad() { return cbxCantidad; }
+    public JPanel getPanelPrincipal() { return panelPrincipal; }
     public JTextField getTextUsername() { return textUsername; }
+    public JButton getBtnEliminar() { return btnEliminar; }
+    public MensajeInternacionalizacionHandler getMensajeInternacionalizacion() { return mensajeInternacionalizacionHandler; }
 
-    public JButton getBtnEliminar() {return btnEliminar;}
-
+    /**
+     * Limpia todos los campos del formulario y la tabla.
+     */
     public void limpiarCampos() {
         txtCodigo.setText("");
         txtNombre.setText("");
@@ -197,21 +151,40 @@ public class CarritoAnadirView extends JInternalFrame {
         txtIva.setText("");
         txtTotal.setText("");
         textUsername.setText("");
-        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
-        modelo.setRowCount(0);
+        ((DefaultTableModel) tblProductos.getModel()).setRowCount(0);
     }
 
+    /**
+     * Muestra un cuadro de diálogo emergente con un mensaje.
+     *
+     * @param mensaje texto a mostrar.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
+
+    /**
+     * Establece el nombre de usuario en el campo correspondiente.
+     *
+     * @param username nombre del usuario autenticado.
+     */
     public void setNombreUsuario(String username) {
         this.textUsername.setText(username);
         this.textUsername.setEditable(false);
     }
+
+    /**
+     * Alias para {@link #setNombreUsuario(String)}.
+     *
+     * @param username nombre de usuario.
+     */
     public void setUsu(String username) {
-        this.textUsername.setText(username);
-        this.textUsername.setEditable(false);
+        setNombreUsuario(username);
     }
+
+    /**
+     * Actualiza todos los textos visibles de la vista, utilizando el archivo de internacionalización actual.
+     */
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("carrito.titulo"));
         lblCodigo.setText(mensajeInternacionalizacionHandler.get("producto.label.codigo"));
@@ -226,17 +199,15 @@ public class CarritoAnadirView extends JInternalFrame {
         btnLimpiar.setText(mensajeInternacionalizacionHandler.get("boton.limpiar"));
         btnEliminar.setText(mensajeInternacionalizacionHandler.get("boton.eliminar"));
 
-        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
-        modelo.setColumnIdentifiers(new Object[]{
-                mensajeInternacionalizacionHandler.get("producto.label.codigo"),
-                mensajeInternacionalizacionHandler.get("producto.label.nombre"),
-                mensajeInternacionalizacionHandler.get("producto.label.precio"),
-                mensajeInternacionalizacionHandler.get("producto.label.cantidad"),
-                mensajeInternacionalizacionHandler.get("carrito.label.subtotal")
-        });
+        configurarTabla();
     }
 
-    public MensajeInternacionalizacionHandler getMensajeInternacionalizacion() {
-        return mensajeInternacionalizacionHandler;
+    /**
+     * Establece el nombre del usuario autenticado en la vista.
+     *
+     * @param usuario el objeto usuario autenticado.
+     */
+    public void setUsuarioAutenticado(Usuario usuario) {
+        textUsername.setText(usuario.getUsername());
     }
 }
