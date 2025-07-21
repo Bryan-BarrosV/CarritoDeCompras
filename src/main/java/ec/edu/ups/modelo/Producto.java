@@ -1,10 +1,13 @@
 package ec.edu.ups.modelo;
 
+import java.io.Serializable;
+
 /**
  * Clase que representa un producto disponible en la tienda.
  * Cada producto tiene un código único, un nombre y un precio asociado.
  */
-public class Producto {
+public class Producto implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /** Código único del producto. */
     private int codigo;

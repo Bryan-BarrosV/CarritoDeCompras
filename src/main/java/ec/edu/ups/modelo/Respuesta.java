@@ -1,9 +1,12 @@
 package ec.edu.ups.modelo;
 
+import java.io.Serializable;
+
 /**
  * Representa una respuesta de seguridad asociada a una pregunta específica.
  */
-public class Respuesta {
+public class Respuesta implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /** Pregunta de seguridad relacionada a esta respuesta. */
     private Pregunta pregunta;

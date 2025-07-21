@@ -10,32 +10,38 @@ import java.util.List;
 
 public class CarritoDAOBinario implements CarritoDAO {
 
-    private static final String RUTA_ARCHIVO = "C:\\Users\\Bryan\\carritos.bin";
-    private final File archivo;
+    private List<Carrito> lista;
+    private File archivo;
 
-    public CarritoDAOBinario(String s) {
-        this.archivo = new File(RUTA_ARCHIVO);
-        try {
-            if (!archivo.exists()) {
+    public CarritoDAOBinario(String ruta) {
+        archivo = new File(ruta);
+        if (!archivo.exists()) {
+            try {
                 archivo.getParentFile().mkdirs();
                 archivo.createNewFile();
-                guardarCarritos(new ArrayList<>());
+                lista = new ArrayList<>();
+                guardarEnArchivo();
+            } catch (IOException e) {
+                System.err.println("Error al crear archivo de carritos: " + e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println("Error al crear archivo binario: " + e.getMessage());
+        } else {
+            lista = cargarDesdeArchivo();
         }
     }
 
     @Override
     public void crear(Carrito carrito) {
-        List<Carrito> carritos = listarTodos();
-        carritos.add(carrito);
-        guardarCarritos(carritos);
+        Carrito existente = buscarPorCodigo(carrito.getCodigo());
+        if (existente != null) {
+            lista.remove(existente);
+        }
+        lista.add(carrito);
+        guardarEnArchivo();
     }
 
     @Override
     public Carrito buscarPorCodigo(int codigo) {
-        for (Carrito c : listarTodos()) {
+        for (Carrito c : lista) {
             if (c.getCodigo() == codigo) {
                 return c;
             }
@@ -45,51 +51,62 @@ public class CarritoDAOBinario implements CarritoDAO {
 
     @Override
     public void actualizar(Carrito carrito) {
-        List<Carrito> carritos = listarTodos();
-        for (int i = 0; i < carritos.size(); i++) {
-            if (carritos.get(i).getCodigo() == carrito.getCodigo()) {
-                carritos.set(i, carrito);
-                break;
-            }
+        Carrito existente = buscarPorCodigo(carrito.getCodigo());
+        if (existente != null) {
+            lista.remove(existente);
+            lista.add(carrito);
+            guardarEnArchivo();
         }
-        guardarCarritos(carritos);
     }
 
     @Override
     public void eliminar(int codigo) {
-        List<Carrito> carritos = listarTodos();
-        carritos.removeIf(c -> c.getCodigo() == codigo);
-        guardarCarritos(carritos);
+        Carrito existente = buscarPorCodigo(codigo);
+        if (existente != null) {
+            lista.remove(existente);
+            guardarEnArchivo();
+        }
     }
 
     @Override
     public List<Carrito> listarTodos() {
-        if (!archivo.exists() || archivo.length() == 0) return new ArrayList<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-            return (List<Carrito>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error al leer archivo binario: " + e.getMessage());
-            return new ArrayList<>();
-        }
+        return lista;
     }
 
     @Override
     public List<Carrito> buscarPorUsuario(Usuario usuario) {
         List<Carrito> resultado = new ArrayList<>();
-        for (Carrito carrito : listarTodos()) {
-            if (carrito.getUsuario() != null &&
-                    carrito.getUsuario().getUsername().equals(usuario.getUsername())) {
-                resultado.add(carrito);
+        for (Carrito c : lista) {
+            if (c.getUsuario() != null && c.getUsuario().getUsername().equals(usuario.getUsername())) {
+                resultado.add(c);
             }
         }
         return resultado;
     }
 
-    private void guardarCarritos(List<Carrito> carritos) {
+    private void guardarEnArchivo() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
-            oos.writeObject(carritos);
+            oos.writeObject(lista);
         } catch (IOException e) {
-            System.err.println("Error al guardar archivo binario: " + e.getMessage());
+            System.err.println("Error al guardar carritos: " + e.getMessage());
         }
+    }
+
+    private List<Carrito> cargarDesdeArchivo() {
+        List<Carrito> lista = new ArrayList<>();
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+            Object obj = ois.readObject();
+            if (obj != null && obj instanceof List) {
+                List aux = (List) obj;
+                for (Object elemento : aux) {
+                    if (elemento instanceof Carrito) {
+                        lista.add((Carrito) elemento);
+                    }
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error al cargar carritos: " + e.getMessage());
+        }
+        return lista;
     }
 }

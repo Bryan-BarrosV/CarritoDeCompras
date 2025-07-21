@@ -24,11 +24,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Controlador encargado de gestionar toda la lógica relacionada con la entidad Usuario,
+ * incluyendo registro, autenticación, modificación, eliminación, validaciones y manejo de contraseñas.
+ */
 public class UsuarioController {
 
-    private final UsuarioDAO usuarioDAO;
+    private UsuarioDAO usuarioDAO;
     private final ContrasenaDAO contrasenaDAO;
-
     private final MenuPrincipalView principalView;
     private final UsuarioAnadirView usuarioAnadirView;
     private final UsuarioListarView usuarioListarView;
@@ -45,6 +48,9 @@ public class UsuarioController {
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
     private String modoAlmacenamiento = "Memoria";
 
+    /**
+     * Constructor del controlador de usuarios que inicializa DAOs, vistas y eventos.
+     */
     public UsuarioController(
             UsuarioDAO usuarioDAO,
             ContrasenaDAO contrasenaDAO,
@@ -55,7 +61,8 @@ public class UsuarioController {
             UsuarioEliminarView usuarioEliminarView,
             LoginView loginView,
             ContrasenaView contrasenaView,
-            ContrasenaPreguntaView contrasenaPreguntaView, PreguntaDAO preguntaDAO,
+            ContrasenaPreguntaView contrasenaPreguntaView,
+            PreguntaDAO preguntaDAO,
             MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler
     ) {
         this.usuarioDAO = usuarioDAO;
@@ -74,160 +81,91 @@ public class UsuarioController {
         configurarEventos();
     }
 
+    /**
+     * Configura los eventos de todas las vistas relacionadas al usuario.
+     */
     private void configurarEventos() {
-        usuarioAnadirView.getBtnRegistrar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                iniciarFlujoRegistro();
+        // Registro
+        usuarioAnadirView.getBtnRegistrar().addActionListener(e -> iniciarFlujoRegistro());
+        usuarioAnadirView.getBtnLimpiar().addActionListener(e -> {
+            try {
+                usuarioAnadirView.limpiarCampos();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(usuarioAnadirView,
+                        "Error al limpiar los campos: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        usuarioAnadirView.getBtnLimpiar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    usuarioAnadirView.limpiarCampos();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(usuarioAnadirView,
-                            "Error al limpiar los campos: " + ex.getMessage(),
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+        // Eliminación
+        usuarioEliminarView.getBtnEliminar().addActionListener(e -> eliminarUsuario());
+        usuarioEliminarView.getBtnBuscar().addActionListener(e -> buscarUsuarioParaEliminar());
+
+        // Listado
+        usuarioListarView.getBtnBuscar().addActionListener(e -> buscarUsuarioPorUsername());
+        usuarioListarView.getBtnListar().addActionListener(e -> {
+            List<Usuario> listaUsuarios = usuarioDAO.listarTodos();
+            usuarioListarView.cargarDatosTabla(listaUsuarios);
         });
 
-        usuarioEliminarView.getBtnEliminar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                eliminarUsuario();
+        // Modificación
+        usuarioModificarView.getBtnModificar().addActionListener(e -> modificarUsuario());
+        usuarioModificarView.getBtnBuscar().addActionListener(e -> buscarUsuarioParaModificar());
+
+        // Guardar preguntas de seguridad
+        contrasenaPreguntaView.getBtnGuardar().addActionListener(e -> guardarPreguntasYFinalizarRegistro());
+
+        // Autenticación
+        loginView.getBtnIniciarSesion().addActionListener(e -> {
+            String username = loginView.getTxtUsername().getText().trim();
+            String contrasenia = new String(loginView.getTxtContrasenia().getPassword()).trim();
+
+            if (username.isEmpty() || contrasenia.isEmpty()) {
+                loginView.mostrarMensaje("Debe completar todos los campos.");
+                return;
             }
-        });
 
-        usuarioEliminarView.getBtnBuscar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarUsuarioParaEliminar();
-            }
-        });
-
-        usuarioListarView.getBtnBuscar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarUsuarioPorUsername();
-            }
-        });
-
-        usuarioListarView.getBtnListar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<Usuario> listaUsuarios = usuarioDAO.listarTodos();
-                usuarioListarView.cargarDatosTabla(listaUsuarios);
-            }
-        });
-
-        usuarioModificarView.getBtnModificar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                modificarUsuario();
-            }
-        });
-
-        usuarioModificarView.getBtnBuscar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                buscarUsuarioParaModificar();
-            }
-        });
-
-        usuarioModificarView.getCmbRol().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        contrasenaPreguntaView.getBtnGuardar().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                guardarPreguntasYFinalizarRegistro();
-            }
-        });
-
-        loginView.getBtnIniciarSesion().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = loginView.getTxtUsername().getText().trim();
-                String contrasenia = new String(loginView.getTxtContrasenia().getPassword()).trim();
-
-                if (username.isEmpty() || contrasenia.isEmpty()) {
-                    loginView.mostrarMensaje("Debe completar todos los campos.");
-                    return;
-                }
-
-                Usuario usuario = usuarioDAO.autenticar(username, contrasenia);
-                if (usuario != null) {
-                    usuarioAutenticado = usuario;
-                    loginView.dispose();
-                } else {
-                    loginView.mostrarMensaje("Usuario o contraseña incorrectos.");
-                }
-            }
-        });
-        loginView.getItemIdiomaES().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mensajeInternacionalizacionHandler.setLenguaje("es", "EC");
-                loginView.actualizarTextosLogin();
-            }
-        });
-
-        loginView.getItemIdiomaEN().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mensajeInternacionalizacionHandler.setLenguaje("en", "US");
-                loginView.actualizarTextosLogin();
-            }
-        });
-
-        loginView.getItemIdiomaFR().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mensajeInternacionalizacionHandler.setLenguaje("fr", "FR");
-                loginView.actualizarTextosLogin();
-            }
-        });
-        loginView.getBtnIniciarSesion().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            Usuario usuario = usuarioDAO.autenticar(username, contrasenia);
+            if (usuario != null) {
+                usuarioAutenticado = usuario;
                 loginView.dispose();
-            }
-        });
-        loginView.getItemMemoria().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                modoAlmacenamiento = "Memoria";
-                loginView.mostrarMensaje("Modo almacenamiento: Memoria");
+            } else {
+                loginView.mostrarMensaje("Usuario o contraseña incorrectos.");
             }
         });
 
-        loginView.getItemTexto().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                modoAlmacenamiento = "Archivo de Texto";
-                loginView.mostrarMensaje("Modo almacenamiento: Archivo de Texto");
-            }
+        // Cambio de idioma
+        loginView.getItemIdiomaES().addActionListener(e -> {
+            mensajeInternacionalizacionHandler.setLenguaje("es", "EC");
+            loginView.actualizarTextosLogin();
+        });
+        loginView.getItemIdiomaEN().addActionListener(e -> {
+            mensajeInternacionalizacionHandler.setLenguaje("en", "US");
+            loginView.actualizarTextosLogin();
+        });
+        loginView.getItemIdiomaFR().addActionListener(e -> {
+            mensajeInternacionalizacionHandler.setLenguaje("fr", "FR");
+            loginView.actualizarTextosLogin();
         });
 
-        loginView.getItemBinario().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                modoAlmacenamiento = "Archivo Binario";
-                loginView.mostrarMensaje("Modo almacenamiento: Archivo Binario");
-            }
+        // Cambio de almacenamiento
+        loginView.getItemMemoria().addActionListener(e -> {
+            modoAlmacenamiento = "Memoria";
+            loginView.mostrarMensaje("Modo almacenamiento: Memoria");
+        });
+        loginView.getItemTexto().addActionListener(e -> {
+            modoAlmacenamiento = "Archivo de Texto";
+            loginView.mostrarMensaje("Modo almacenamiento: Archivo de Texto");
+        });
+        loginView.getItemBinario().addActionListener(e -> {
+            modoAlmacenamiento = "Archivo Binario";
+            loginView.mostrarMensaje("Modo almacenamiento: Archivo Binario");
         });
     }
 
+    /**
+     * Inicia el flujo de registro de usuario validando datos y mostrando vista de preguntas.
+     */
     private void iniciarFlujoRegistro() {
         try {
             String username = usuarioAnadirView.getTxtUsername().getText().trim();
@@ -236,15 +174,12 @@ public class UsuarioController {
             if (username.isEmpty() || contrasenia.isEmpty()) {
                 throw new UsuarioException("Complete todos los campos");
             }
-
             if (!validarCedulaEcuatoriana(username)) {
                 throw new CedulaValidationException("La cédula ingresada no es válida");
             }
-
             if (!validarPassword(contrasenia)) {
                 throw new PasswordValidationException("La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y uno de los caracteres @, _, -");
             }
-
             if (usuarioDAO.buscarPorUsername(username) != null) {
                 throw new UsuarioException("El nombre de usuario ya está en uso");
             }
@@ -278,9 +213,9 @@ public class UsuarioController {
         }
     }
 
-
-
-
+    /**
+     * Guarda las preguntas de seguridad y finaliza el registro del usuario.
+     */
     private void guardarPreguntasYFinalizarRegistro() {
         if (usuarioTemporal == null || !esperandoPreguntas) {
             contrasenaPreguntaView.mostrarMensaje("Error interno. Intente registrar nuevamente.");
@@ -297,29 +232,22 @@ public class UsuarioController {
         }
 
         usuarioDAO.crear(usuarioTemporal);
-
-
-
-        Contrasena contrasena = new Contrasena(
-                usuarioTemporal.getUsername(),
-                preguntas,
-                respuestas
-        );
+        Contrasena contrasena = new Contrasena(usuarioTemporal.getUsername(), preguntas, respuestas);
         contrasenaDAO.guardar(contrasena);
-
 
         contrasenaPreguntaView.setVisible(false);
         usuarioAnadirView.setVisible(false);
         usuarioAnadirView.limpiarCampos();
-
         contrasenaPreguntaView.limpiarCampos();
-
 
         loginView.mostrarMensaje("Usuario registrado correctamente");
         esperandoPreguntas = false;
         usuarioTemporal = null;
     }
 
+    /**
+     * Elimina un usuario si el nombre de usuario y contraseña coinciden.
+     */
     private void eliminarUsuario() {
         String username = usuarioEliminarView.getTextCodigo().getText().trim();
         String contrasenia = new String(usuarioEliminarView.getTextContrasenia().getPassword()).trim();
@@ -343,6 +271,9 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Busca un usuario para eliminarlo y muestra sus datos.
+     */
     private void buscarUsuarioParaEliminar() {
         String username = usuarioEliminarView.getTextCodigo().getText().trim();
 
@@ -359,6 +290,9 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Busca un usuario por su nombre de usuario y lo muestra en la tabla de la vista.
+     */
     private void buscarUsuarioPorUsername() {
         String username = usuarioListarView.getTxtBuscar().getText().trim();
 
@@ -376,6 +310,9 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Modifica el rol de un usuario existente.
+     */
     private void modificarUsuario() {
         String username = usuarioModificarView.getTxtNombre().getText().trim();
         Usuario usuario = usuarioDAO.buscarPorUsername(username);
@@ -383,7 +320,6 @@ public class UsuarioController {
         if (usuario != null) {
             Rol rolSeleccionado = (Rol) usuarioModificarView.getCmbRol().getSelectedItem();
             usuario.setRol(rolSeleccionado);
-
             usuarioDAO.actualizar(usuario);
             usuarioModificarView.mostrarMensaje("Usuario actualizado correctamente.");
         } else {
@@ -391,7 +327,9 @@ public class UsuarioController {
         }
     }
 
-
+    /**
+     * Busca un usuario para modificarlo y muestra su información en la vista.
+     */
     private void buscarUsuarioParaModificar() {
         String username = usuarioModificarView.getTxtNombre().getText().trim();
 
@@ -410,6 +348,9 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Valida si una cédula ecuatoriana es válida según su algoritmo de verificador.
+     */
     private boolean validarCedulaEcuatoriana(String cedula) {
         if (cedula == null || cedula.length() != 10) return false;
         int suma = 0;
@@ -428,6 +369,9 @@ public class UsuarioController {
         return resultado == digitoVerificador;
     }
 
+    /**
+     * Valida si una contraseña cumple con los requisitos de seguridad.
+     */
     private boolean validarPassword(String password) {
         return password.length() >= 6 &&
                 password.matches(".*[A-Z].*") &&
@@ -435,7 +379,17 @@ public class UsuarioController {
                 password.matches(".*[@_-].*");
     }
 
+    /**
+     * Retorna el usuario que ha iniciado sesión correctamente.
+     */
     public Usuario getUsuarioAutenticado() {
         return usuarioAutenticado;
+    }
+
+    /**
+     * Establece una nueva instancia del DAO de usuarios.
+     */
+    public void setUsuarioDAO(UsuarioDAO usuarioDAO) {
+        this.usuarioDAO = usuarioDAO;
     }
 }

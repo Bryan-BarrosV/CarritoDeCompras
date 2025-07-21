@@ -35,7 +35,6 @@ public class Contrasena implements Serializable {
      */
     public Contrasena(String username, List<Pregunta> preguntas, List<String> respuestas) {
         this.username = username;
-        // Convertir lista de Pregunta a lista de textos
         this.preguntas = preguntas.stream()
                 .map(Pregunta::getTexto)
                 .toList();

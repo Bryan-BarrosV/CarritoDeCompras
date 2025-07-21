@@ -4,10 +4,18 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
+/**
+ * Clase que representa la ventana de inicio de sesión del sistema.
+ * Incluye campos para usuario, contraseña, botones de acción, y menús
+ * de configuración e idioma. Integra internacionalización dinámica mediante
+ * {@link MensajeInternacionalizacionHandler}.
+ *
+ * <p>Permite cambiar el idioma y el modo de almacenamiento desde el menú.</p>
+ *
+ * @author Bryan
+ */
 public class LoginView extends JFrame {
 
     private JPanel panelPrincipal;
@@ -33,12 +41,18 @@ public class LoginView extends JFrame {
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
+    /**
+     * Constructor principal de la ventana de Login.
+     * Inicializa los componentes, iconos y textos internacionales.
+     *
+     * @param mensajeI el handler de internacionalización para cargar los textos según el idioma actual.
+     */
     public LoginView(MensajeInternacionalizacionHandler mensajeI) {
         this.mensajeInternacionalizacionHandler = mensajeI;
 
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900,900);
+        setSize(900, 900);
 
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -65,60 +79,11 @@ public class LoginView extends JFrame {
         menuConfiguracion.add(itemTexto);
         menuConfiguracion.add(itemBinario);
 
-
-        URL usuarioURL = LoginView.class.getClassLoader().getResource("imagenes/usuario.png");
-        if (usuarioURL != null) {
-            ImageIcon iconoUsuario = new ImageIcon(usuarioURL);
-            Image imagenEscalada = iconoUsuario.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-            nombreLabel.setIcon(new ImageIcon(imagenEscalada));
-            nombreLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
-            nombreLabel.setVerticalTextPosition(SwingConstants.CENTER);
-        } else {
-            System.err.println("No se encontró la imagen usuario.png");
-        }
-
-        URL contrasenaURL = LoginView.class.getClassLoader().getResource("imagenes/contraseña.png");
-        if (contrasenaURL != null) {
-            ImageIcon iconoContrasena = new ImageIcon(contrasenaURL);
-            Image imagenEscalada = iconoContrasena.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-            contraseñaLabel.setIcon(new ImageIcon(imagenEscalada));
-            contraseñaLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
-            contraseñaLabel.setVerticalTextPosition(SwingConstants.CENTER);
-        } else {
-            System.err.println("No se encontró la imagen contraseña.png");
-        }
-
-        URL loginURL = LoginView.class.getClassLoader().getResource("imagenes/acceso.png");
-        if (loginURL != null) {
-            ImageIcon iconoLogin = new ImageIcon(loginURL);
-            Image imagenEscalada = iconoLogin.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-            btnIniciarSesion.setIcon(new ImageIcon(imagenEscalada));
-            btnIniciarSesion.setHorizontalTextPosition(SwingConstants.RIGHT);
-            btnIniciarSesion.setVerticalTextPosition(SwingConstants.CENTER);
-        } else {
-            System.err.println("No se encontró la imagen login.png");
-        }
-
-        URL accesoURL = LoginView.class.getClassLoader().getResource("imagenes/login.png");
-        if (accesoURL != null) {
-            ImageIcon iconoAcceso = new ImageIcon(accesoURL);
-            Image imagenEscalada = iconoAcceso.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-            btnRegistrarse.setIcon(new ImageIcon(imagenEscalada));
-            btnRegistrarse.setHorizontalTextPosition(SwingConstants.RIGHT);
-            btnRegistrarse.setVerticalTextPosition(SwingConstants.CENTER);
-        } else {
-            System.err.println("No se encontró la imagen acceso.png");
-        }
-        URL OlvidoContrasenaURL = LoginView.class.getClassLoader().getResource("imagenes/olvidosucontraseña.png");
-        if (OlvidoContrasenaURL != null) {
-            ImageIcon iconoAcceso = new ImageIcon(OlvidoContrasenaURL);
-            Image imagenEscalada = iconoAcceso.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-            btnOlvidoContrasena.setIcon(new ImageIcon(imagenEscalada));
-            btnOlvidoContrasena.setHorizontalTextPosition(SwingConstants.RIGHT);
-            btnOlvidoContrasena.setVerticalTextPosition(SwingConstants.CENTER);
-        } else {
-            System.err.println("No se encontró la imagen acceso.png");
-        }
+        cargarIcono("imagenes/usuario.png", nombreLabel);
+        cargarIcono("imagenes/contraseña.png", contraseñaLabel);
+        cargarIcono("imagenes/acceso.png", btnIniciarSesion);
+        cargarIcono("imagenes/login.png", btnRegistrarse);
+        cargarIcono("imagenes/olvidosucontraseña.png", btnOlvidoContrasena);
 
         actualizarTextosLogin();
         pack();
@@ -126,39 +91,41 @@ public class LoginView extends JFrame {
         setVisible(true);
     }
 
-    public JTextField getTxtUsername() {
-        return txtUsername;
+    /**
+     * Carga un icono desde la ruta especificada y lo asigna al componente.
+     *
+     * @param ruta ruta del recurso de imagen.
+     * @param componente JLabel o JButton que recibirá el icono.
+     */
+    private void cargarIcono(String ruta, AbstractButton componente) {
+        URL url = LoginView.class.getClassLoader().getResource(ruta);
+        if (url != null) {
+            ImageIcon icono = new ImageIcon(url);
+            Image imagen = icono.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            componente.setIcon(new ImageIcon(imagen));
+            componente.setHorizontalTextPosition(SwingConstants.RIGHT);
+            componente.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró la imagen " + ruta);
+        }
     }
 
-    public JPasswordField getTxtContrasenia() {
-        return txtContrasenia;
+    private void cargarIcono(String ruta, JLabel componente) {
+        URL url = LoginView.class.getClassLoader().getResource(ruta);
+        if (url != null) {
+            ImageIcon icono = new ImageIcon(url);
+            Image imagen = icono.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+            componente.setIcon(new ImageIcon(imagen));
+            componente.setHorizontalTextPosition(SwingConstants.RIGHT);
+            componente.setVerticalTextPosition(SwingConstants.CENTER);
+        } else {
+            System.err.println("No se encontró la imagen " + ruta);
+        }
     }
 
-    public JButton getBtnIniciarSesion() {
-        return btnIniciarSesion;
-    }
-
-    public JButton getBtnRegistrarse() {
-        return btnRegistrarse;
-    }
-
-    public JButton getBtnOlvidoContrasena() {
-        return btnOlvidoContrasena;
-    }
-
-    public JMenuItem getItemIdiomaES() {
-        return itemEspañol;
-    }
-
-    public JMenuItem getItemIdiomaEN() {
-        return itemIngles;
-    }
-
-    public JMenuItem getItemIdiomaFR() {
-        return itemFrances;
-    }
-
-
+    /**
+     * Actualiza los textos de todos los componentes visibles usando el handler de internacionalización.
+     */
     public void actualizarTextosLogin() {
         menuIdioma.setText(mensajeInternacionalizacionHandler.get("menu.idiomas"));
         nombreLabel.setText(mensajeInternacionalizacionHandler.get("login.usuario"));
@@ -169,23 +136,118 @@ public class LoginView extends JFrame {
         setTitle(mensajeInternacionalizacionHandler.get("login.titulo"));
     }
 
+    /**
+     * Muestra un mensaje emergente.
+     * @param mensaje El mensaje a mostrar.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
+    /**
+     * Limpia los campos de texto del formulario.
+     */
     public void limpiarCampos() {
         txtUsername.setText("");
         txtContrasenia.setText("");
     }
 
+
+    /**
+     * Devuelve el campo de texto para ingresar el nombre de usuario.
+     *
+     * @return JTextField del nombre de usuario.
+     */
+    public JTextField getTxtUsername() {
+        return txtUsername;
+    }
+
+    /**
+     * Devuelve el campo de contraseña.
+     *
+     * @return JPasswordField de la contraseña.
+     */
+    public JPasswordField getTxtContrasenia() {
+        return txtContrasenia;
+    }
+
+    /**
+     * Devuelve el botón para iniciar sesión.
+     *
+     * @return JButton de inicio de sesión.
+     */
+    public JButton getBtnIniciarSesion() {
+        return btnIniciarSesion;
+    }
+
+    /**
+     * Devuelve el botón para registrarse.
+     *
+     * @return JButton para registrarse.
+     */
+    public JButton getBtnRegistrarse() {
+        return btnRegistrarse;
+    }
+
+    /**
+     * Devuelve el botón para recuperar la contraseña.
+     *
+     * @return JButton para recuperar contraseña.
+     */
+    public JButton getBtnOlvidoContrasena() {
+        return btnOlvidoContrasena;
+    }
+
+    /**
+     * Devuelve el ítem de menú para cambiar el idioma a español.
+     *
+     * @return JMenuItem para idioma español.
+     */
+    public JMenuItem getItemIdiomaES() {
+        return itemEspañol;
+    }
+
+    /**
+     * Devuelve el ítem de menú para cambiar el idioma a inglés.
+     *
+     * @return JMenuItem para idioma inglés.
+     */
+    public JMenuItem getItemIdiomaEN() {
+        return itemIngles;
+    }
+
+    /**
+     * Devuelve el ítem de menú para cambiar el idioma a francés.
+     *
+     * @return JMenuItem para idioma francés.
+     */
+    public JMenuItem getItemIdiomaFR() {
+        return itemFrances;
+    }
+
+    /**
+     * Devuelve el ítem de menú para seleccionar almacenamiento en memoria.
+     *
+     * @return JMenuItem para almacenamiento en memoria.
+     */
     public JMenuItem getItemMemoria() {
         return itemMemoria;
     }
 
+    /**
+     * Devuelve el ítem de menú para seleccionar almacenamiento en archivo de texto.
+     *
+     * @return JMenuItem para almacenamiento en archivo de texto.
+     */
     public JMenuItem getItemTexto() {
         return itemTexto;
     }
 
+    /**
+     * Devuelve el ítem de menú para seleccionar almacenamiento en archivo binario.
+     *
+     * @return JMenuItem para almacenamiento en archivo binario.
+     */
     public JMenuItem getItemBinario() {
         return itemBinario;
     }

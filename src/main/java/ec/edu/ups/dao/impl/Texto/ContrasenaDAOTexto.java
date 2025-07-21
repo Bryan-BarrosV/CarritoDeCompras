@@ -6,48 +6,47 @@ import ec.edu.ups.modelo.Pregunta;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ContrasenaDAOTexto implements ContrasenaDAO {
 
-    private final File archivo;
+    private List<Contrasena> lista;
+    private File archivo;
 
-    public ContrasenaDAOTexto(String ruta) throws IOException {
-        this.archivo = new File("C:\\Users\\Bryan\\contrasenas.txt");
-        try {
-            if (!archivo.exists()) {
+    public ContrasenaDAOTexto(String ruta) {
+        archivo = new File(ruta);
+        if (!archivo.exists()) {
+            try {
                 archivo.getParentFile().mkdirs();
                 archivo.createNewFile();
+                lista = new ArrayList<>();
+                guardarTodoEnArchivo();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            lista = cargarDesdeArchivo();
         }
     }
 
     @Override
     public void guardar(Contrasena contrasena) {
-        List<Contrasena> contrasenas = cargarTodas();
-        boolean actualizado = false;
-
-        for (int i = 0; i < contrasenas.size(); i++) {
-            if (contrasenas.get(i).getUsername().equals(contrasena.getUsername())) {
-                contrasenas.set(i, contrasena);
-                actualizado = true;
+        // Eliminar si ya existe
+        for (int i = 0; i < lista.size(); i++) {
+            Contrasena existente = lista.get(i);
+            if (existente.getUsername().equals(contrasena.getUsername())) {
+                lista.remove(i);
                 break;
             }
         }
-
-        if (!actualizado) {
-            contrasenas.add(contrasena);
-        }
-
-        guardarTodas(contrasenas);
+        lista.add(contrasena);
+        guardarTodoEnArchivo();
     }
 
     @Override
     public Contrasena buscarPorUsername(String username) {
-        List<Contrasena> contrasenas = cargarTodas();
-        for (Contrasena c : contrasenas) {
+        for (Contrasena c : lista) {
             if (c.getUsername().equals(username)) {
                 return c;
             }
@@ -55,63 +54,46 @@ public class ContrasenaDAOTexto implements ContrasenaDAO {
         return null;
     }
 
-    private List<Contrasena> cargarTodas() {
-        List<Contrasena> lista = new ArrayList<>();
-        if (!archivo.exists()) {
-            return lista;
+    private void guardarTodoEnArchivo() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+            for (Contrasena c : lista) {
+                String linea = c.getUsername() + "|"
+                        + String.join(",", c.getPreguntas()) + "|"
+                        + String.join(",", c.getRespuestas());
+                bw.write(linea);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+    private List<Contrasena> cargarDesdeArchivo() {
+        List<Contrasena> tempLista = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
-            while ((linea = reader.readLine()) != null) {
-                String[] partes = linea.split(";");
-                if (partes.length != 3) continue;
 
-                String username = partes[0];
-
-                List<Pregunta> preguntas = new ArrayList<>();
-                String[] preguntasSeparadas = partes[1].split("\\|");
-                for (String preguntaStr : preguntasSeparadas) {
-                    String[] campos = preguntaStr.split(":");
-                    if (campos.length == 2) {
-                        int id = Integer.parseInt(campos[0]);
-                        String texto = campos[1];
-                        preguntas.add(new Pregunta(id, texto));
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length == 3) {
+                    String username = partes[0];
+                    String[] preguntasTexto = partes[1].split(",");
+                    List<Pregunta> listaPreguntas = new ArrayList<>();
+                    for (String texto : preguntasTexto) {
+                        listaPreguntas.add(new Pregunta(0, texto));
                     }
+                    List<String> respuestas = Arrays.asList(partes[2].split(","));
+                    Contrasena contrasena = new Contrasena(username, listaPreguntas, respuestas);
+                    tempLista.add(contrasena);
                 }
-
-                List<String> respuestas = List.of(partes[2].split("\\|"));
-
-                lista.add(new Contrasena(username, preguntas, respuestas));
             }
         } catch (IOException e) {
-            System.err.println("Error al cargar contraseñas: " + e.getMessage());
+            System.err.println("Error al leer el archivo: " + e.getMessage());
         }
 
-        return lista;
+        return tempLista;
     }
 
-    private void guardarTodas(List<Contrasena> contrasenas) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
-            for (Contrasena c : contrasenas) {
-                StringBuilder preguntasStr = new StringBuilder();
-                List<String> preguntas = c.getPreguntas();
-                for (int i = 0; i < preguntas.size(); i++) {
-                    preguntasStr.append(i).append(":").append(preguntas.get(i));
-                    if (i < preguntas.size() - 1) {
-                        preguntasStr.append("|");
-                    }
-                }
 
-                List<String> respuestas = c.getRespuestas();
-                String respuestasStr = String.join("|", respuestas);
-
-                String linea = c.getUsername() + ";" + preguntasStr + ";" + respuestasStr;
-                writer.write(linea);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.err.println("Error al guardar contraseñas: " + e.getMessage());
-        }
-    }
 }

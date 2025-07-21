@@ -9,45 +9,41 @@ import java.util.List;
 
 public class ContrasenaDAOBinario implements ContrasenaDAO {
 
-    private static final String RUTA_ARCHIVO = "C:\\Users\\Bryan\\contrasenas.bin";
-    private final File archivo;
+    private List<Contrasena> lista;
+    private File archivo;
 
-    public ContrasenaDAOBinario() {
-        this.archivo = new File(RUTA_ARCHIVO);
+    public ContrasenaDAOBinario(String rutaArchivo) {
+        archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
             try {
                 archivo.getParentFile().mkdirs();
                 archivo.createNewFile();
+                lista = new ArrayList<>();
+                guardarEnArchivo();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            lista = cargarDesdeArchivo();
         }
     }
 
     @Override
     public void guardar(Contrasena contrasena) {
-        List<Contrasena> contrasenas = listarTodas();
-        boolean actualizado = false;
-
-        for (int i = 0; i < contrasenas.size(); i++) {
-            if (contrasenas.get(i).getUsername().equals(contrasena.getUsername())) {
-                contrasenas.set(i, contrasena);
-                actualizado = true;
+        for (int i = 0; i < lista.size(); i++) {
+            Contrasena c = lista.get(i);
+            if (c.getUsername().equals(contrasena.getUsername())) {
+                lista.remove(i);
                 break;
             }
         }
-
-        if (!actualizado) {
-            contrasenas.add(contrasena);
-        }
-
-        guardarTodas(contrasenas);
+        lista.add(contrasena);
+        guardarEnArchivo();
     }
 
     @Override
     public Contrasena buscarPorUsername(String username) {
-        List<Contrasena> contrasenas = listarTodas();
-        for (Contrasena c : contrasenas) {
+        for (Contrasena c : lista) {
             if (c.getUsername().equals(username)) {
                 return c;
             }
@@ -55,24 +51,22 @@ public class ContrasenaDAOBinario implements ContrasenaDAO {
         return null;
     }
 
-    private List<Contrasena> listarTodas() {
-        if (!archivo.exists() || archivo.length() == 0) {
-            return new ArrayList<>();
-        }
-
+    private List<Contrasena> cargarDesdeArchivo() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
             return (List<Contrasena>) ois.readObject();
+        } catch (EOFException eof) {
+            return new ArrayList<>();
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error al leer archivo binario de contraseñas: " + e.getMessage());
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
 
-    private void guardarTodas(List<Contrasena> contrasenas) {
+    private void guardarEnArchivo() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
-            oos.writeObject(contrasenas);
+            oos.writeObject(lista);
         } catch (IOException e) {
-            System.err.println("Error al guardar archivo binario de contraseñas: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

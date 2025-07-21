@@ -1,5 +1,6 @@
 package ec.edu.ups.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -9,7 +10,8 @@ import java.util.List;
  * Representa un carrito de compras que contiene productos seleccionados por un usuario.
  * Cada carrito tiene una fecha de creación, un código único, y una lista de ítems (productos con cantidades).
  */
-public class Carrito {
+public class Carrito implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /** Porcentaje de IVA aplicado a las compras. */
     private final double IVA = 0.12;

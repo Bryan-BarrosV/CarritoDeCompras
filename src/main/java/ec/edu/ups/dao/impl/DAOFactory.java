@@ -1,95 +1,150 @@
 package ec.edu.ups.dao.impl;
 
 import ec.edu.ups.dao.*;
-import ec.edu.ups.dao.impl.Binario.CarritoDAOBinario;
-import ec.edu.ups.dao.impl.Binario.ProductoDAOBinario;
-import ec.edu.ups.dao.impl.Binario.UsuarioDAOBinario;
+import ec.edu.ups.dao.impl.Binario.*;
 import ec.edu.ups.dao.impl.Memoria.*;
-import ec.edu.ups.dao.impl.Texto.CarritoDAOTexto;
-import ec.edu.ups.dao.impl.Texto.ContrasenaDAOTexto;
-import ec.edu.ups.dao.impl.Texto.ProductoDAOTexto;
-import ec.edu.ups.dao.impl.Texto.UsuarioDAOTexto;
+import ec.edu.ups.dao.impl.Texto.*;
 import ec.edu.ups.util.MensajeInternacionalizacionHandler;
-import ec.edu.ups.dao.impl.Binario.ContrasenaDAOBinario;
-
-
-import java.io.IOException;
 
 
 public class DAOFactory {
 
-    private String tipoAlmacenamiento;
+    private String modo;
 
-    private static final String RUTA_BINARIO = "C:\\Users\\Bryan\\data\\";
-    private static final String RUTA_TEXTO = "C:\\Users\\Bryan\\data\\";
+    public DAOFactory(String modo) {
+        this.modo = modo;
+    }
 
-    public DAOFactory(String tipoAlmacenamiento) {
-        this.tipoAlmacenamiento = tipoAlmacenamiento;
+    public void setModo(String nuevoModo) {
+        this.modo = nuevoModo;
+    }
+    public String getModo() {
+        return modo;
+    }
+
+    public UsuarioDAO getUsuarioDAO() {
+        if (modo.equalsIgnoreCase("MEMORIA")) {
+            return new UsuarioDAOMemoria();
+        } else if (modo.equalsIgnoreCase("TEXTO")) {
+            try {
+                return new UsuarioDAOTexto("datos/usuarios.txt");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (modo.equalsIgnoreCase("BINARIO")) {
+            try {
+                return new UsuarioDAOBinario("datos/usuarios.dat");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
     }
 
     public ProductoDAO getProductoDAO() {
-        if ("BINARIO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new ProductoDAOBinario(RUTA_BINARIO + "productos.dat");
-        } else if ("TEXTO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new ProductoDAOTexto(RUTA_TEXTO + "productos.txt");
-        } else if ("MEMORIA".equalsIgnoreCase(tipoAlmacenamiento)) {
+        if (modo.equalsIgnoreCase("MEMORIA")) {
             return new ProductoDAOMemoria();
-        } else {
-            throw new IllegalArgumentException("Tipo de almacenamiento no soportado: " + tipoAlmacenamiento);
+        } else if (modo.equalsIgnoreCase("TEXTO")) {
+            try {
+                return new ProductoDAOTexto("datos/productos.txt");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (modo.equalsIgnoreCase("BINARIO")) {
+            try {
+                return new ProductoDAOBinario("datos/productos.dat");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 
-    public CarritoDAO getCarritoDAO() throws IOException {
-        if ("BINARIO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new CarritoDAOBinario(RUTA_BINARIO + "carritos.dat");
-        } else if ("TEXTO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new CarritoDAOTexto(RUTA_TEXTO + "carritos.txt");
-        } else if ("MEMORIA".equalsIgnoreCase(tipoAlmacenamiento)) {
+    public CarritoDAO getCarritoDAO() {
+        if (modo.equalsIgnoreCase("MEMORIA")) {
             return new CarritoDAOMemoria();
-        } else {
-            throw new IllegalArgumentException("Tipo de almacenamiento no soportado: " + tipoAlmacenamiento);
+        } else if (modo.equalsIgnoreCase("TEXTO")) {
+            try {
+                return new CarritoDAOTexto("datos/carritos.txt");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (modo.equalsIgnoreCase("BINARIO")) {
+            try {
+                return new CarritoDAOBinario("datos/carritos.dat");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 
-    public UsuarioDAO getUsuarioDAO() throws IOException {
-        if ("BINARIO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new UsuarioDAOBinario(RUTA_BINARIO + "usuarios.dat");
-        } else if ("TEXTO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new UsuarioDAOTexto(RUTA_TEXTO + "usuarios.txt");
-        } else if ("MEMORIA".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new UsuarioDAOMemoria();
-        } else {
-            throw new IllegalArgumentException("Tipo de almacenamiento no soportado: " + tipoAlmacenamiento);
-        }
-    }
-
-    public ContrasenaDAO getContrasenaDAO() throws IOException {
-        if ("BINARIO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new ContrasenaDAOBinario();
-        } else if ("TEXTO".equalsIgnoreCase(tipoAlmacenamiento)) {
-            return new ContrasenaDAOTexto(RUTA_TEXTO + "contrasenas.txt");
-        } else if ("MEMORIA".equalsIgnoreCase(tipoAlmacenamiento)) {
+    public ContrasenaDAO getContrasenaDAO() {
+        if (modo.equalsIgnoreCase("MEMORIA")) {
             return new ContrasenaDAOMemoria();
-        } else {
-            throw new IllegalArgumentException("Tipo de almacenamiento no soportado: " + tipoAlmacenamiento);
+        } else if (modo.equalsIgnoreCase("TEXTO")) {
+            try {
+                return new ContrasenaDAOTexto("datos/contrasenas.txt");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (modo.equalsIgnoreCase("BINARIO")) {
+            try {
+                return new ContrasenaDAOBinario("datos/contrasenas.dat");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
-
-
 
     public PreguntaDAO getPreguntaDAO(MensajeInternacionalizacionHandler handler) {
-        if ("MEMORIA".equalsIgnoreCase(tipoAlmacenamiento)) {
+        if (modo.equalsIgnoreCase("MEMORIA")) {
             return new PreguntaDAOMemoria(handler);
-        } else {
-            throw new IllegalArgumentException("Tipo de almacenamiento no soportado para PreguntaDAO: " + tipoAlmacenamiento);
+        } else if (modo.equalsIgnoreCase("TEXTO")) {
+            try {
+                return new PreguntaDAOTexto("datos/preguntas.txt", handler);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (modo.equalsIgnoreCase("BINARIO")) {
+            try {
+                return new PreguntaDAOBinario("datos/preguntas.dat", handler);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 
     public RespuestaDAO getRespuestaDAO() {
-        if ("MEMORIA".equalsIgnoreCase(tipoAlmacenamiento)) {
+        if (modo.equalsIgnoreCase("MEMORIA")) {
             return new RespuestaDAOMemoria();
-        } else {
-            throw new IllegalArgumentException("Tipo de almacenamiento no soportado para RespuestaDAO: " + tipoAlmacenamiento);
+        } else if (modo.equalsIgnoreCase("TEXTO")) {
+            try {
+                return new RespuestaDAOTexto("datos/respuestas.txt");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (modo.equalsIgnoreCase("BINARIO")) {
+            try {
+                return new RespuestaDAOBinario("datos/respuestas.dat");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 }

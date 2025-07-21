@@ -10,25 +10,45 @@ import java.util.List;
 
 public class UsuarioDAOBinario implements UsuarioDAO {
 
-    private File archivo;
+    private List<Usuario> listaUsuarios;
+    private final File archivo;
 
-    public UsuarioDAOBinario(String rutaArchivo) throws IOException {
-        this.archivo = new File("C:\\Users\\Bryan\\usuarios.dat");
-        try {
-            if (!archivo.exists()) {
-                archivo.getParentFile().mkdirs();
-                archivo.createNewFile();
-                guardarLista(new ArrayList<>());
-            }
+    public UsuarioDAOBinario(String ruta) {
+        archivo = new File(ruta);
+        listaUsuarios = new ArrayList<>();
+
+        File directorio = archivo.getParentFile();
+        if (directorio != null && !directorio.exists()) {
+            directorio.mkdirs();
+        }
+
+        if (archivo.exists()) {
+            cargarDesdeArchivo();
+        } else {
+            guardarEnArchivo();
+        }
+    }
+
+    private void cargarDesdeArchivo() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+            listaUsuarios = (List<Usuario>) ois.readObject();
+        } catch (EOFException e) {
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error al cargar usuarios desde binario: " + e.getMessage());
+        }
+    }
+
+    private void guardarEnArchivo() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            oos.writeObject(listaUsuarios);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al guardar usuarios en binario: " + e.getMessage());
         }
     }
 
     @Override
     public Usuario autenticar(String username, String contrasenia) {
-        List<Usuario> lista = listarTodos();
-        for (Usuario u : lista) {
+        for (Usuario u : listaUsuarios) {
             if (u.getUsername().equals(username) && u.getContrasenia().equals(contrasenia)) {
                 return u;
             }
@@ -38,15 +58,13 @@ public class UsuarioDAOBinario implements UsuarioDAO {
 
     @Override
     public void crear(Usuario usuario) {
-        List<Usuario> lista = listarTodos();
-        lista.add(usuario);
-        guardarLista(lista);
+        listaUsuarios.add(usuario);
+        guardarEnArchivo();
     }
 
     @Override
     public Usuario buscarPorUsername(String username) {
-        List<Usuario> lista = listarTodos();
-        for (Usuario u : lista) {
+        for (Usuario u : listaUsuarios) {
             if (u.getUsername().equals(username)) {
                 return u;
             }
@@ -56,65 +74,43 @@ public class UsuarioDAOBinario implements UsuarioDAO {
 
     @Override
     public void eliminar(String username) {
-        List<Usuario> lista = listarTodos();
-        List<Usuario> nuevaLista = new ArrayList<>();
-
-        for (Usuario u : lista) {
-            if (!u.getUsername().equals(username)) {
-                nuevaLista.add(u);
-            }
-        }
-
-        guardarLista(nuevaLista);
-    }
-
-    @Override
-    public void actualizar(Usuario usuario) {
-        List<Usuario> lista = listarTodos();
-        for (int i = 0; i < lista.size(); i++) {
-            Usuario u = lista.get(i);
-            if (u.getUsername().equals(usuario.getUsername())) {
-                lista.set(i, usuario);
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Usuario usuario = listaUsuarios.get(i);
+            if (usuario.getUsername().equals(username)) {
+                listaUsuarios.remove(i);
                 break;
             }
         }
-        guardarLista(lista);
+        guardarEnArchivo();
+    }
+
+
+    @Override
+    public void actualizar(Usuario usuario) {
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            if (listaUsuarios.get(i).getUsername().equals(usuario.getUsername())) {
+                listaUsuarios.set(i, usuario);
+                guardarEnArchivo();
+                return;
+            }
+        }
     }
 
     @Override
     public List<Usuario> listarTodos() {
-        List<Usuario> lista = new ArrayList<>();
-        if (!archivo.exists()) {
-            return lista;
-        }
-
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-            lista = (List<Usuario>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error al leer archivo binario de usuarios: " + e.getMessage());
-        }
-
-        return lista;
+        return new ArrayList<>(listaUsuarios);
     }
 
     @Override
     public List<Usuario> listarPorRol(Rol rol) {
-        List<Usuario> resultado = new ArrayList<>();
-        List<Usuario> lista = listarTodos();
-        for (int i = 0; i < lista.size(); i++) {
-            Usuario u = lista.get(i);
-            if (u.getRol() == rol) {
-                resultado.add(u);
+        List<Usuario> filtrados = new ArrayList<>();
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Usuario usuario = listaUsuarios.get(i);
+            if (usuario.getRol().equals(rol)) {
+                filtrados.add(usuario);
             }
         }
-        return resultado;
+        return filtrados;
     }
 
-    private void guardarLista(List<Usuario> lista) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
-            oos.writeObject(lista);
-        } catch (IOException e) {
-            System.err.println("Error al guardar usuarios en binario: " + e.getMessage());
-        }
-    }
 }

@@ -1,9 +1,13 @@
 package ec.edu.ups.modelo;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Representa una pregunta de seguridad con un identificador único y su texto asociado.
  */
-public class Pregunta {
+public class Pregunta implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /** Identificador único de la pregunta. */
     private int id;
