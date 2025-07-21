@@ -5,6 +5,11 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import java.net.URL;
 
+/**
+ * Vista interna para modificar la información de un usuario en el sistema.
+ * Permite actualizar el nombre, contraseña y rol de un usuario.
+ * Soporta internacionalización mediante MensajeInternacionalizacionHandler.
+ */
 public class UsuarioModificarView extends JInternalFrame {
 
     private JPanel panelPrincipal;
@@ -19,6 +24,10 @@ public class UsuarioModificarView extends JInternalFrame {
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
+    /**
+     * Constructor que inicializa los componentes gráficos y los íconos de la vista.
+     * @param handler Manejador de mensajes internacionalizados.
+     */
     public UsuarioModificarView(MensajeInternacionalizacionHandler handler) {
         this.mensajeInternacionalizacionHandler = handler;
 
@@ -69,44 +78,58 @@ public class UsuarioModificarView extends JInternalFrame {
         } else {
             System.err.println("No se encontró modificar.png");
         }
-
     }
 
+    /** @return El panel principal de la vista. */
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
 
+    /** @return Campo de texto para ingresar el nombre del usuario. */
     public JTextField getTxtNombre() {
         return txtNombre;
     }
 
+    /** @return Campo de contraseña para ingresar o modificar la clave del usuario. */
     public JPasswordField getTxtContrasenia() {
         return txtContrasenia;
     }
 
+    /** @return ComboBox para seleccionar el rol del usuario. */
     public JComboBox<String> getCmbRol() {
         return cmbRol;
     }
 
+    /** @return Botón para buscar usuario por nombre. */
     public JButton getBtnBuscar() {
         return btnBuscar;
     }
 
+    /** @return Botón para aplicar las modificaciones. */
     public JButton getBtnModificar() {
         return btnModificar;
     }
 
+    /**
+     * Muestra un mensaje emergente en la interfaz.
+     * @param mensaje Texto del mensaje a mostrar.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
+    /**
+     * Limpia los campos del formulario.
+     */
     public void limpiarCampos() {
-
         txtNombre.setText("");
         txtContrasenia.setText("");
         cmbRol.setSelectedIndex(0);
     }
 
+    /**
+     * Actualiza los textos e íconos de la vista con base en el idioma actual.
+     */
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("usuario.modificar.titulo"));
         lblNombre.setText(mensajeInternacionalizacionHandler.get("usuario.label.nombre"));

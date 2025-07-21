@@ -8,6 +8,13 @@ import javax.swing.table.DefaultTableModel;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Vista interna para listar y buscar carritos de compras.
+ * <p>
+ * Esta clase permite al usuario buscar carritos por código, visualizar todos los carritos registrados
+ * y ver detalles como fecha de creación, número de ítems, subtotal, IVA y total.
+ * Se apoya en el manejador de internacionalización para adaptar los textos según el idioma seleccionado.
+ */
 public class ListarCarritoView extends JInternalFrame {
 
     private JTextField txtBuscar;
@@ -17,9 +24,13 @@ public class ListarCarritoView extends JInternalFrame {
     private JButton btnListar;
     private JLabel lblCodigo;
     private DefaultTableModel modelo;
-
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
+    /**
+     * Constructor que inicializa la vista con sus componentes y aplica los textos traducidos.
+     *
+     * @param handler Manejador de internacionalización que permite cambiar los textos del GUI dinámicamente.
+     */
     public ListarCarritoView(MensajeInternacionalizacionHandler handler) {
         this.mensajeInternacionalizacionHandler = handler;
         setContentPane(panelPrincipal);
@@ -32,37 +43,41 @@ public class ListarCarritoView extends JInternalFrame {
         modelo = new DefaultTableModel();
         Object[] columnas = {"Código Carrito", "Fecha Creación", "Número de Items", "Subtotal", "IVA", "Total"};
         modelo.setColumnIdentifiers(columnas);
-
         tblCarrito.setModel(modelo);
 
         actualizarTextos();
+        configurarIconos();
+    }
 
-        URL codigoURL = ListarCarritoView.class.getClassLoader().getResource("imagenes/codigo.png");
-        if (codigoURL != null) {
-            ImageIcon iconoCodigo = new ImageIcon(codigoURL);
-            lblCodigo.setIcon(new ImageIcon(iconoCodigo.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
+    /**
+     * Asigna íconos personalizados a los botones y etiquetas si los recursos existen.
+     */
+    private void configurarIconos() {
+        asignarIcono("imagenes/codigo.png", lblCodigo);
+        asignarIcono("imagenes/buscar.png", btnBuscar);
+        asignarIcono("imagenes/listar.png", btnListar);
+    }
+
+    /**
+     * Asocia un ícono a un componente Swing si se encuentra la ruta del recurso.
+     *
+     * @param ruta     Ruta del archivo de imagen.
+     * @param destino  Componente al que se le aplicará el ícono.
+     */
+    private void asignarIcono(String ruta, JComponent destino) {
+        URL url = ListarCarritoView.class.getClassLoader().getResource(ruta);
+        if (url != null) {
+            ImageIcon icono = new ImageIcon(url);
+            ImageIcon iconoEscalado = new ImageIcon(icono.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH));
+            if (destino instanceof JLabel) {
+                ((JLabel) destino).setIcon(iconoEscalado);
+            } else if (destino instanceof AbstractButton) {
+                ((AbstractButton) destino).setIcon(iconoEscalado);
+                ((AbstractButton) destino).setHorizontalTextPosition(SwingConstants.RIGHT);
+            }
         } else {
-            System.err.println("No se encontró el ícono codigo.png");
+            System.err.println("No se encontró el ícono: " + ruta);
         }
-
-        URL buscarURL = ListarCarritoView.class.getClassLoader().getResource("imagenes/buscar.png");
-        if (buscarURL != null) {
-            ImageIcon iconoBuscar = new ImageIcon(buscarURL);
-            btnBuscar.setIcon(new ImageIcon(iconoBuscar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
-            btnBuscar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        } else {
-            System.err.println("No se encontró el ícono buscar.png");
-        }
-
-        URL listarURL = ListarCarritoView.class.getClassLoader().getResource("imagenes/listar.png");
-        if (listarURL != null) {
-            ImageIcon iconoListar = new ImageIcon(listarURL);
-            btnListar.setIcon(new ImageIcon(iconoListar.getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
-            btnListar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        } else {
-            System.err.println("No se encontró el ícono listar.png");
-        }
-
     }
 
     public JTextField getTxtBuscar() {
@@ -89,6 +104,11 @@ public class ListarCarritoView extends JInternalFrame {
         return modelo;
     }
 
+    /**
+     * Carga una lista de carritos en la tabla principal.
+     *
+     * @param listaCarritos Lista de objetos Carrito a mostrar.
+     */
     public void cargarDatos(List<Carrito> listaCarritos) {
         modelo.setRowCount(0);
 
@@ -114,15 +134,27 @@ public class ListarCarritoView extends JInternalFrame {
         }
     }
 
+    /**
+     * Muestra un mensaje emergente en pantalla.
+     *
+     * @param mensaje Texto del mensaje a mostrar.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
+    /**
+     * Limpia el campo de texto utilizado para la búsqueda de carritos.
+     */
     public void limpiarCampoBusqueda() {
         if (txtBuscar != null) {
             txtBuscar.setText("");
         }
     }
+
+    /**
+     * Actualiza los textos visibles en la interfaz utilizando el idioma actual.
+     */
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("carrito.listar.titulo"));
         lblCodigo.setText(mensajeInternacionalizacionHandler.get("carrito.label.codigo"));

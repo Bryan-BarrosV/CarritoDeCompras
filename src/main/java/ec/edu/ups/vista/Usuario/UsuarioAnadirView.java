@@ -5,6 +5,10 @@ import ec.edu.ups.util.MensajeInternacionalizacionHandler;
 import javax.swing.*;
 import java.net.URL;
 
+/**
+ * Vista interna para registrar nuevos usuarios.
+ * Soporta internacionalización e íconos personalizados.
+ */
 public class UsuarioAnadirView extends JInternalFrame {
 
     private JPanel panelPrincipal;
@@ -23,6 +27,10 @@ public class UsuarioAnadirView extends JInternalFrame {
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
+    /**
+     * Constructor que inicializa los componentes de la vista con soporte para internacionalización.
+     * @param handler Manejador de internacionalización.
+     */
     public UsuarioAnadirView(MensajeInternacionalizacionHandler handler) {
         super("Registrar Usuario", true, true, false, true);
         this.mensajeInternacionalizacionHandler = handler;
@@ -32,6 +40,7 @@ public class UsuarioAnadirView extends JInternalFrame {
         setVisible(false);
         actualizarTextos();
 
+        // Íconos
         URL nombreURL = UsuarioAnadirView.class.getClassLoader().getResource("imagenes/nombre.png");
         if (nombreURL != null) {
             lblNombre.setIcon(new ImageIcon(new ImageIcon(nombreURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
@@ -82,43 +91,70 @@ public class UsuarioAnadirView extends JInternalFrame {
         } else {
             System.err.println("No se encontró el ícono limpiar.png");
         }
-
     }
 
+    /** @return Campo de texto para nombre de usuario */
     public JTextField getTxtUsername() {
         return txtUsername;
     }
 
+    /** @return Campo de texto para contraseña */
     public JPasswordField getTxtContrasenia() {
         return txtContrasenia;
     }
 
+    /** @return Botón para registrar usuario */
     public JButton getBtnRegistrar() {
         return btnRegistrar;
     }
 
+    /** @return Botón para limpiar campos */
     public JButton getBtnLimpiar() {
         return btnLimpiar;
     }
 
+    /** @return Panel principal del formulario */
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
 
-    public JTextField getTxtNombreCompleto() {return txtNombreCompleto;}
+    /** @return Campo de texto para nombre completo */
+    public JTextField getTxtNombreCompleto() {
+        return txtNombreCompleto;
+    }
 
-    public JTextField getTxtCorreo() {return txtCorreo;}
+    /** @return Campo de texto para correo */
+    public JTextField getTxtCorreo() {
+        return txtCorreo;
+    }
 
-    public JTextField getTxtTelefono() {return txtTelefono;}
+    /** @return Campo de texto para teléfono */
+    public JTextField getTxtTelefono() {
+        return txtTelefono;
+    }
 
+    /**
+     * Muestra un mensaje emergente.
+     * @param mensaje Mensaje a mostrar.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
+    /**
+     * Limpia todos los campos del formulario.
+     */
     public void limpiarCampos() {
         txtUsername.setText("");
         txtContrasenia.setText("");
+        txtNombreCompleto.setText("");
+        txtCorreo.setText("");
+        txtTelefono.setText("");
     }
+
+    /**
+     * Actualiza los textos de la interfaz gráfica de acuerdo con el idioma seleccionado.
+     */
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("usuario.anadir.titulo"));
         lblNombre.setText(mensajeInternacionalizacionHandler.get("usuario.label.username"));
@@ -129,5 +165,4 @@ public class UsuarioAnadirView extends JInternalFrame {
         btnRegistrar.setText(mensajeInternacionalizacionHandler.get("boton.registrar"));
         btnLimpiar.setText(mensajeInternacionalizacionHandler.get("boton.limpiar"));
     }
-
 }

@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
+/**
+ * Vista interna que permite al usuario recuperar su contraseña mediante
+ * validación de preguntas de seguridad.
+ */
 public class ContrasenaView extends JInternalFrame {
 
     private JTextField txtUsername;
@@ -29,12 +33,17 @@ public class ContrasenaView extends JInternalFrame {
 
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
+    /**
+     * Constructor que inicializa todos los componentes gráficos y configura los iconos.
+     * @param handler manejador de internacionalización para los textos.
+     */
     public ContrasenaView(MensajeInternacionalizacionHandler handler) {
         super("Recuperar Contraseña", true, true, false, true);
         this.mensajeInternacionalizacionHandler = handler;
         setSize(400, 350);
         setLayout(new GridLayout(8, 2));
 
+        // Inicialización de componentes
         lblUsuario = new JLabel("Usuario:");
         txtUsername = new JTextField();
         btnValidarUsuario = new JButton("Validar Usuario");
@@ -54,6 +63,7 @@ public class ContrasenaView extends JInternalFrame {
 
         btnGuardar = new JButton("Guardar Contraseña");
 
+        // Agregado de componentes
         add(lblUsuario);
         add(txtUsername);
         add(btnValidarUsuario);
@@ -74,15 +84,21 @@ public class ContrasenaView extends JInternalFrame {
         add(btnGuardar);
         add(new JLabel());
 
+        // Configuración de textos e íconos
         actualizarTextos();
+        aplicarIconos();
+    }
+
+    /**
+     * Asocia iconos a los componentes visuales si los recursos están disponibles.
+     */
+    private void aplicarIconos() {
         URL iconoUsuarioURL = ContrasenaView.class.getClassLoader().getResource("imagenes/usuariovalidar.png");
         if (iconoUsuarioURL != null) {
             ImageIcon icono = new ImageIcon(iconoUsuarioURL);
             Image img = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             lblUsuario.setIcon(new ImageIcon(img));
             lblUsuario.setHorizontalTextPosition(SwingConstants.RIGHT);
-        } else {
-            System.err.println("No se encontró el icono usuariovalidar.png");
         }
 
         URL preguntaIconURL = ContrasenaView.class.getClassLoader().getResource("imagenes/preguntarecuperar.png");
@@ -98,35 +114,23 @@ public class ContrasenaView extends JInternalFrame {
             lblPregunta1.setHorizontalTextPosition(SwingConstants.RIGHT);
             lblPregunta2.setHorizontalTextPosition(SwingConstants.RIGHT);
             lblPregunta3.setHorizontalTextPosition(SwingConstants.RIGHT);
-        } else {
-            System.err.println("No se encontró el icono preguntarecuperar.png");
         }
 
         URL nuevaContraURL = ContrasenaView.class.getClassLoader().getResource("imagenes/nuevacontra.png");
         if (nuevaContraURL != null) {
             ImageIcon icono = new ImageIcon(nuevaContraURL);
             Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            Icon iconoNuevaContra = new ImageIcon(imagenEscalada);
-
-            lblContrasenaNueva.setIcon(iconoNuevaContra);
+            lblContrasenaNueva.setIcon(new ImageIcon(imagenEscalada));
             lblContrasenaNueva.setHorizontalTextPosition(SwingConstants.RIGHT);
-        } else {
-            System.err.println("No se encontró el icono nuevacontra.png");
         }
-
 
         URL confirmarContraURL = ContrasenaView.class.getClassLoader().getResource("imagenes/confirmarcontra.png");
         if (confirmarContraURL != null) {
             ImageIcon icono = new ImageIcon(confirmarContraURL);
             Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            Icon iconoConfirmarContra = new ImageIcon(imagenEscalada);
-
-            lblConfirmarContraseba.setIcon(iconoConfirmarContra);
+            lblConfirmarContraseba.setIcon(new ImageIcon(imagenEscalada));
             lblConfirmarContraseba.setHorizontalTextPosition(SwingConstants.RIGHT);
-        } else {
-            System.err.println("No se encontró el icono confirmarcontra.png");
         }
-
 
         URL validarURL = ContrasenaView.class.getClassLoader().getResource("imagenes/validar.png");
         if (validarURL != null) {
@@ -134,84 +138,71 @@ public class ContrasenaView extends JInternalFrame {
             Image img = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             btnValidarUsuario.setIcon(new ImageIcon(img));
             btnValidarUsuario.setHorizontalTextPosition(SwingConstants.RIGHT);
-            btnValidarUsuario.setVerticalTextPosition(SwingConstants.CENTER);
-        } else {
-            System.err.println("No se encontró el icono validar.png");
         }
 
         URL guardarURL = ContrasenaView.class.getClassLoader().getResource("imagenes/guardar.png");
         if (guardarURL != null) {
             ImageIcon icono = new ImageIcon(guardarURL);
             Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            Icon iconoGuardar = new ImageIcon(imagenEscalada);
-
-            btnGuardar.setIcon(iconoGuardar);
+            btnGuardar.setIcon(new ImageIcon(imagenEscalada));
             btnGuardar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        } else {
-            System.err.println("No se encontró el icono guardar.png");
         }
-
     }
 
+    // Getters
+    public JTextField getTxtUsername() { return txtUsername; }
 
+    public JButton getBtnValidarUsuario() { return btnValidarUsuario; }
 
-    public JTextField getTxtUsername() {
-        return txtUsername;
-    }
+    public JLabel getLblPregunta1() { return lblPregunta1; }
 
-    public JButton getBtnValidarUsuario() {
-        return btnValidarUsuario;
-    }
+    public JLabel getLblPregunta2() { return lblPregunta2; }
 
-    public JLabel getLblPregunta1() {
-        return lblPregunta1;
-    }
+    public JLabel getLblPregunta3() { return lblPregunta3; }
 
-    public JLabel getLblPregunta2() {
-        return lblPregunta2;
-    }
+    public JTextField getTxtRespuesta1() { return txtRespuesta1; }
 
-    public JLabel getLblPregunta3() {
-        return lblPregunta3;
-    }
+    public JTextField getTxtRespuesta2() { return txtRespuesta2; }
 
-    public JTextField getTxtRespuesta1() {
-        return txtRespuesta1;
-    }
+    public JTextField getTxtRespuesta3() { return txtRespuesta3; }
 
-    public JTextField getTxtRespuesta2() {
-        return txtRespuesta2;
-    }
+    public JPasswordField getTxtNuevaContrasena() { return txtNuevaContrasena; }
 
-    public JTextField getTxtRespuesta3() {
-        return txtRespuesta3;
-    }
+    public JPasswordField getTxtConfirmarContrasena() { return txtConfirmarContrasena; }
 
-    public JPasswordField getTxtNuevaContrasena() {
-        return txtNuevaContrasena;
-    }
+    public JButton getBtnGuardar() { return btnGuardar; }
 
-    public JPasswordField getTxtConfirmarContrasena() {
-        return txtConfirmarContrasena;
-    }
-
-    public JButton getBtnGuardar() {
-        return btnGuardar;
-    }
-
+    /**
+     * Muestra un mensaje emergente en la vista.
+     * @param mensaje el texto a mostrar.
+     */
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
+    /**
+     * Establece las preguntas que se deben mostrar al usuario.
+     * @param p1 pregunta 1.
+     * @param p2 pregunta 2.
+     * @param p3 pregunta 3.
+     */
     public void setPreguntas(String p1, String p2, String p3) {
         lblPregunta1.setText(p1);
         lblPregunta2.setText(p2);
         lblPregunta3.setText(p3);
     }
 
+    /**
+     * Establece el nombre de usuario en el campo correspondiente.
+     * @param username nombre de usuario.
+     */
     public void setUsername(String username) {
         txtUsername.setText(username);
     }
+
+    /**
+     * Actualiza los textos mostrados en la interfaz según el idioma actual.
+     */
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("contrasena.titulo"));
         lblUsuario.setText(mensajeInternacionalizacionHandler.get("login.usuario"));

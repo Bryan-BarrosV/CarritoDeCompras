@@ -12,15 +12,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con productos,
+ * incluyendo la creación, búsqueda, modificación y eliminación de productos.
+ * Interactúa con las vistas y el DAO correspondiente.
+ */
 public class ProductoController {
 
     private final ProductoAnadirView productoAnadirView;
     private final ProductoListaView productoListaView;
     private final CarritoAnadirView carritoAnadirView;
-    private final ProductoDAO productoDAO;
+    private ProductoDAO productoDAO;
     private final EliminarProductoView eliminarProductoView;
     private final ModificarProductoView modificarProductoView;
 
+    /**
+     * Constructor que inicializa las vistas y el DAO, y configura los eventos.
+     */
     public ProductoController(ProductoDAO productoDAO,
                               ProductoAnadirView productoAnadirView,
                               ProductoListaView productoListaView,
@@ -37,6 +45,9 @@ public class ProductoController {
         this.configurarEventosEnVistas();
     }
 
+    /**
+     * Registra los listeners de acciones en todas las vistas relacionadas con producto.
+     */
     private void configurarEventosEnVistas() {
         productoAnadirView.getBtnAceptar().addActionListener(new ActionListener() {
             @Override
@@ -95,6 +106,9 @@ public class ProductoController {
         });
     }
 
+    /**
+     * Guarda un nuevo producto ingresado desde la vista de anadir.
+     */
     private void guardarProducto() {
         try {
             int codigo = Integer.parseInt(productoAnadirView.getTxtCodigo().getText());
@@ -109,17 +123,26 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Busca productos por nombre y los muestra en la vista correspondiente.
+     */
     private void buscarProducto() {
         String nombre = productoListaView.getTxtBuscar().getText();
         List<Producto> productosEncontrados = productoDAO.buscarPorNombre(nombre);
         productoListaView.cargarDatos(productosEncontrados);
     }
 
+    /**
+     * Lista todos los productos disponibles en la vista de lista.
+     */
     private void listarProductos() {
         List<Producto> productos = productoDAO.listarTodos();
         productoListaView.cargarDatos(productos);
     }
 
+    /**
+     * Busca un producto por código en la vista de carrito y muestra sus datos.
+     */
     private void buscarProductoPorCodigo() {
         try {
             int codigo = Integer.parseInt(carritoAnadirView.getTxtCodigo().getText());
@@ -135,6 +158,9 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Busca un producto por código en la vista de eliminación y muestra sus datos.
+     */
     private void buscarProductoParaEliminar() {
         try {
             int codigo = Integer.parseInt(eliminarProductoView.getTextCodigo().getText());
@@ -145,6 +171,9 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Elimina un producto si existe y actualiza la vista.
+     */
     private void eliminarProducto() {
         try {
             int codigo = Integer.parseInt(eliminarProductoView.getTextCodigo().getText());
@@ -161,6 +190,9 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Busca un producto para modificarlo y carga sus datos en la vista.
+     */
     private void buscarProductoParaModificar() {
         try {
             int codigo = Integer.parseInt(modificarProductoView.getTextCodigo().getText());
@@ -176,6 +208,9 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Modifica los datos de un producto existente y actualiza la vista.
+     */
     private void modificarProducto() {
         try {
             int codigo = Integer.parseInt(modificarProductoView.getTextCodigo().getText());
@@ -195,5 +230,14 @@ public class ProductoController {
         } catch (NumberFormatException ex) {
             modificarProductoView.mostrarMensaje("Datos inválidos");
         }
+    }
+
+    /**
+     * Permite actualizar el DAO de producto en tiempo de ejecución.
+     *
+     * @param productoDAO nueva implementación de {@link ProductoDAO}
+     */
+    public void setProductoDAO(ProductoDAO productoDAO) {
+        this.productoDAO = productoDAO;
     }
 }

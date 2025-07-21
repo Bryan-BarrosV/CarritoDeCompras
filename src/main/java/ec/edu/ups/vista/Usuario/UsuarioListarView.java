@@ -8,6 +8,10 @@ import javax.swing.table.DefaultTableModel;
 import java.net.URL;
 import java.util.List;
 
+/**
+ * Vista interna que permite listar y buscar usuarios dentro del sistema.
+ * Utiliza internacionalización para mostrar etiquetas y botones en diferentes idiomas.
+ */
 public class UsuarioListarView extends JInternalFrame {
 
     private JPanel panelPrincipal;
@@ -19,8 +23,12 @@ public class UsuarioListarView extends JInternalFrame {
     private DefaultTableModel modelo;
     private MensajeInternacionalizacionHandler mensajeInternacionalizacionHandler;
 
+    /**
+     * Constructor que inicializa los componentes visuales y aplica íconos e internacionalización.
+     * @param handler Manejador para los textos internacionalizados.
+     */
     public UsuarioListarView(MensajeInternacionalizacionHandler handler) {
-        this.mensajeInternacionalizacionHandler= handler;
+        this.mensajeInternacionalizacionHandler = handler;
         setTitle(handler.get("usuario.listar.titulo"));
         setContentPane(panelPrincipal);
         setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
@@ -44,6 +52,7 @@ public class UsuarioListarView extends JInternalFrame {
 
         actualizarTextos();
 
+        // Ícono de ID
         URL idURL = UsuarioListarView.class.getClassLoader().getResource("imagenes/id.png");
         if (idURL != null) {
             lblId.setIcon(new ImageIcon(new ImageIcon(idURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
@@ -51,6 +60,7 @@ public class UsuarioListarView extends JInternalFrame {
             System.err.println("No se encontró id.png");
         }
 
+        // Ícono de buscar
         URL buscarURL = UsuarioListarView.class.getClassLoader().getResource("imagenes/buscar.png");
         if (buscarURL != null) {
             btnBuscar.setIcon(new ImageIcon(new ImageIcon(buscarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
@@ -59,6 +69,7 @@ public class UsuarioListarView extends JInternalFrame {
             System.err.println("No se encontró buscar.png");
         }
 
+        // Ícono de listar
         URL listarURL = UsuarioListarView.class.getClassLoader().getResource("imagenes/listar.png");
         if (listarURL != null) {
             btnListar.setIcon(new ImageIcon(new ImageIcon(listarURL).getImage().getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH)));
@@ -66,9 +77,12 @@ public class UsuarioListarView extends JInternalFrame {
         } else {
             System.err.println("No se encontró listar.png");
         }
-
     }
 
+    /**
+     * Carga en la tabla los datos de una lista de usuarios.
+     * @param listaUsuarios Lista de usuarios a mostrar.
+     */
     public void cargarDatosTabla(List<Usuario> listaUsuarios) {
         modelo.setRowCount(0);
         for (Usuario u : listaUsuarios) {
@@ -83,26 +97,34 @@ public class UsuarioListarView extends JInternalFrame {
         }
     }
 
+    /** @return Campo de texto para buscar usuarios. */
     public JTextField getTxtBuscar() {
         return txtBuscar;
     }
 
+    /** @return Tabla que muestra la lista de usuarios. */
     public JTable getTblUsuarios() {
         return tblUsuarios;
     }
 
+    /** @return Botón para listar todos los usuarios. */
     public JButton getBtnListar() {
         return btnListar;
     }
 
+    /** @return Botón para buscar un usuario específico. */
     public JButton getBtnBuscar() {
         return btnBuscar;
     }
 
+    /** @return Panel principal de la vista. */
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
 
+    /**
+     * Actualiza los textos visibles de la vista con base en el idioma seleccionado.
+     */
     public void actualizarTextos() {
         setTitle(mensajeInternacionalizacionHandler.get("usuario.listar.titulo"));
         lblId.setText(mensajeInternacionalizacionHandler.get("usuario.label.username"));
@@ -117,4 +139,20 @@ public class UsuarioListarView extends JInternalFrame {
                 mensajeInternacionalizacionHandler.get("usuario.label.rol")
         });
     }
+
+    /**
+     * Muestra un mensaje emergente en la interfaz.
+     * @param mensaje Mensaje a mostrar.
+     */
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    /**
+     * Limpia la tabla de usuarios.
+     */
+    public void limpiarTabla() {
+        modelo.setRowCount(0);
+    }
+
 }
